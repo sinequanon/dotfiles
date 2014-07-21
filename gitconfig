@@ -1,0 +1,36 @@
+[core]
+	excludesfile = /Users/rowell/.gitignore
+[diff]
+    tool = vimdiff --no-prompt
+    #external = p4diff
+    # Prevents having to enter "" to go to next file
+    prompt = false
+[difftool "vimdiff"]
+    #cmd = /Users/rowell/bin/git_diff_wrapper
+[pager]
+    diff = 
+[user]
+	name = Rowell Sotto
+	email = github@sotto.org
+[merge]
+    keepBackup = false;
+	conflictstyle = diff3
+    tool = p4merge
+[mergetool "p4merge"]
+        cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+        keepTemporaries = false
+        trustExitCode = false
+        keepBackup = false
+[difftool "sourcetree"]
+	cmd = /Users/rowell/Applications/p4merge.app/Contents/MacOS/p4merge \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Users/rowell/Applications/p4merge.app/Contents/MacOS/p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[alias]
+	co = checkout
+    cm = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:\"%h %ad %s %an %ar\" --graph --date=short
+    sf = show --pretty="format:" --name-only
