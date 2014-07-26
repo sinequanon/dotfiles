@@ -146,10 +146,10 @@ let mapleader=","                           " change the mapleader from \ to ,
 
     "Easy save files
     map <silent> <leader><leader>s :update<CR>
-    imap <silent> <leader><leader>s <esc>:update<CR>
+    inoremap <silent> <leader><leader>s <esc>:update<CR>
 
     "Change inner word in insert mode
-    imap ciw <esc>ciw<esc>
+    inoremap ciw <esc>ciw<esc>
 
     " Use Q for formatting the current paragraph (or selection)
     vmap Q gq                                               
@@ -391,15 +391,13 @@ let mapleader=","                           " change the mapleader from \ to ,
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw' 
         let g:ctrlp_custom_ignore = '\.(git|hg|svn)$\|web$'
-        nnoremap <leader>t :CtrlP<cr>
+        nnoremap <leader>ch :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
     " }}}
 
     " {{{ plugin : GitGutter
         au VimEnter * highlight clear SignColumn
-        nmap <silent> ]h :<C-U>execute v:count1 . "GitGutterNextHunk"<CR>
-        nmap <silent> [h :<C-U>execute v:count1 . "GitGutterPrevHunk"<CR>
     " }}}
 
     " {{{ plugin : Sideways
@@ -438,11 +436,11 @@ let mapleader=","                           " change the mapleader from \ to ,
     " }}}
 
     " {{{ plugin : Tern JS
-        nnoremap <Leader>ht :TernType<CR> 
-        nnoremap <Leader>hf :TernDef<CR> 
-        nnoremap <Leader>hd :TernDoc<CR> 
-        nnoremap <Leader>hr :TernRename<CR> 
-        nnoremap <Leader>hs :TernRefs<CR> 
+        nnoremap <Leader>tt :TernType<CR> 
+        nnoremap <Leader>tf :TernDef<CR> 
+        nnoremap <Leader>td :TernDoc<CR> 
+        nnoremap <Leader>tr :TernRename<CR> 
+        nnoremap <Leader>ts :TernRefs<CR> 
         " Display argument type hints when cursore is left over a function
         let g:tern_show_argument_hints = 'on_hold'
     " }}}
