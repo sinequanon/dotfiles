@@ -197,9 +197,14 @@ let mapleader=","                           " change the mapleader from \ to ,
         autocmd filetype python set expandtab
         autocmd filetype html,xml set listchars-=tab:>.
 
-        " Autocomplete javascript
+        " Autocomplete most file types
         autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-
+        autocmd FileType python set omnifunc=pythoncomplete#Complete
+        autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+        autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+        autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+        autocmd FileType c set omnifunc=ccomplete#Complete
         "scss support
         au BufNewFile,BufRead *.scss set filetype=scss
 
@@ -376,6 +381,10 @@ let mapleader=","                           " change the mapleader from \ to ,
     " {{{ plugin : javascript
         let javascript_enable_domhtmlcss = 1
         let g:javascript_conceal = 1
+        let b:javascript_fold = 1
+        " Allow plugin to conceal js keywords and phrases by turning on
+        " conceallevel
+        set conceallevel=1
     " }}}
 
     " {{{ plugin : Fugitive.vim
@@ -443,6 +452,11 @@ let mapleader=","                           " change the mapleader from \ to ,
         nnoremap <Leader>ts :TernRefs<CR> 
         " Display argument type hints when cursore is left over a function
         let g:tern_show_argument_hints = 'on_hold'
+    " }}}
+
+    " {{{ plugin : vim-indent-guides
+        " Set guide size to be narrower than default shift width
+        let g:indent_guides_guide_size = 1
     " }}}
 
 " }}}
