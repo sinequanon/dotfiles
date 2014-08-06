@@ -66,7 +66,7 @@ alias stop='$CATALINA_HOME/bin/shutdown.sh -force'
 alias startup='start merchweb && tail -f $CATALINA_HOME/logs/catalina.out | python -u /Users/rsotto/Dropbox/pipeme.py'
 alias tmux='TERM=screen-256color-bce tmux'
 #alias lognfapp="idevicesyslog  | grep UI_SCRIPT | grep -v 'scroll event\|SCROLLER' | spc -c ~/Dropbox/spcrc-nfapplog"
-alias nflog="idevicesyslog  | ack -i UI_SCRIPT | ack -v 'scroll event\|SCROLLER' | spc -c ~/Dropbox/spcrc-nfapplog"
+alias nflog="idevicesyslog  | ack -i UI_SCRIPT | ack -v 'SCROLLER' | cut -d ' ' -f4,10-40 | spc -c ~/Dropbox/spcrc-nfapplog"
 alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
 alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 alias build-tenfootui='build-tablet $1 $2 $3 && cd ~/git-mobileui/10FootUI/Apps/HTML/Tablet/$3/web/ && send-tenfootui'
