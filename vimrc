@@ -1,19 +1,21 @@
-set nocompatible                                  "  Disable vi compatability. This must be first, because it changes other options as side effect.
+"{{{ Preamble
+    set nocompatible                                  "  Disable vi compatability. This must be first, because it changes other options as side effect.
 
-runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
+    runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
-call pathogen#infect()                            " Execute pathogen to easily modify the runtime path to include all  plugins under the ~/.vim/bundle directory
-call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory 
+    call pathogen#infect()                            " Execute pathogen to easily modify the runtime path to include all  plugins under the ~/.vim/bundle directory
+    call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory 
 
-syntax on
-filetype plugin indent on                   " Turn on plugin indent for each type
-if &diff                                    " I'm only interested in diff colours
-	syntax on
-endif
+    syntax on
+    filetype plugin indent on                   " Turn on plugin indent for each type
+    if &diff                                    " I'm only interested in diff colours
+        syntax on
+    endif
 
-let mapleader=","                           " change the mapleader from \ to ,
+    let mapleader=","                           " change the mapleader from \ to ,
+"}}}
 
-" Sets {{{
+" {{{ Sets
     set hidden                                  " Sets buffers to hidden when abandoned
     set modelines=1                             
     set nowrap                                  " Don't wrap lines
