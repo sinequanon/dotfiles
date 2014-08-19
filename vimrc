@@ -127,7 +127,7 @@
     nmap <C-Right> >>
     vmap <C-Right> >gv
     vnoremap > >gv
-    nmap <C-Right> <<
+    nmap <C-Left> <<
     vmap <C-Left> <gv
     vnoremap < <gv
     vnoremap = =gv
