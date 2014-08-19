@@ -123,10 +123,20 @@
     " File-wide replace
     nnoremap <leader>sr :%s/
 
-    " Easier indentation
+    " Left-Right text block movement in normal and visual mode
+    nmap <C-Right> >>
+    vmap <C-Right> >gv
     vnoremap > >gv
+    nmap <C-Right> <<
+    vmap <C-Left> <gv
     vnoremap < <gv
     vnoremap = =gv
+
+    " Up-Down text block moving using unimpaired plugin 
+    nmap <C-Up> [e
+    nmap <C-Down> ]e
+    vmap <C-Up> [egv
+    vmap <C-Down> ]egv
 
     " Uppercase the last word from insert mode - useful for constants
     inoremap <C-u> <esc>viwUea
@@ -190,6 +200,9 @@
     " Folding
     nnoremap <Space> za
     vnoremap <Space> za
+
+    " Visually select the text that was last edited/pasted
+    nmap gV `[v`]
 
 " }}}
 
