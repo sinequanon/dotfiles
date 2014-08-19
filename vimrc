@@ -156,7 +156,7 @@ let mapleader=","                           " change the mapleader from \ to ,
     nmap Q gqap
 
     " Quickly close the current window
-    nnoremap <leader>q :q<CR>                               
+    nnoremap <leader><leader>q :q<CR>                               
 
     " Complete whole filenames/lines with a quicker shortcut key in insert mode
     imap <C-f> <C-x><C-f>
@@ -285,23 +285,6 @@ let mapleader=","                           " change the mapleader from \ to ,
 
 " }}}
 
-" {{{ Custom functions
-    " {{{ Toggle the quick fix window 
-        command! -bang -nargs=? QFix call QFixToggle(<bang>0)
-        function! QFixToggle(forced)
-            if exists("g:qfix_win") && a:forced == 0
-                cclose
-                unlet g:qfix_win
-            else
-                copen 10
-                let g:qfix_win = bufnr("$")
-            endif
-        endfunction
-    " }}}
-    " Open the quick fix window
-    nmap <silent> <leader>l :QFix<cr>
-" }}}
-
 " Plugins {{{
     " {{{ plugin : tagbar
         " Toggle tagbar
@@ -347,6 +330,8 @@ let mapleader=","                           " change the mapleader from \ to ,
         let g:syntastic_auto_loc_list=2
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }   
+        "Make syntastic use jsxhint instead of the default jshint
+        let g:syntastic_javascript_checkers = ['jsxhint']
         nnoremap <silent> <F4> :SyntasticCheck<cr>
     " }}}
 
@@ -448,8 +433,8 @@ let mapleader=","                           " change the mapleader from \ to ,
         nnoremap <Leader>tt :TernType<CR> 
         nnoremap <Leader>tf :TernDef<CR> 
         nnoremap <Leader>td :TernDoc<CR> 
-        nnoremap <Leader>tr :TernRename<CR> 
-        nnoremap <Leader>ts :TernRefs<CR> 
+        nnoremap <Leader>tR :TernRename<CR> 
+        nnoremap <Leader>tr :TernRefs<CR> 
         " Display argument type hints when cursore is left over a function
         let g:tern_show_argument_hints = 'on_hold'
     " }}}
@@ -457,6 +442,10 @@ let mapleader=","                           " change the mapleader from \ to ,
     " {{{ plugin : vim-indent-guides
         " Set guide size to be narrower than default shift width
         let g:indent_guides_guide_size = 1
+    " }}}
+
+    " {{{ plugin : ListToggle
+        "let g:lt_height = 10
     " }}}
 
 " }}}
