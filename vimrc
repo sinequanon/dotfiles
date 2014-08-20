@@ -17,7 +17,7 @@
 
 " {{{ Sets
     set hidden                                  " Sets buffers to hidden when abandoned
-    set modelines=1                             
+    set modelines=1
     set nowrap                                  " Don't wrap lines
     set textwidth=0                             " Allow any size of inserted text
     "set wrapmargin=5                            " Number of characters from the right window border where wrapping starts.
@@ -124,19 +124,19 @@
     nnoremap <leader>sr :%s/
 
     " Left-Right text block movement in normal and visual mode
-    nmap <C-Right> >>
-    vmap <C-Right> >gv
+    nmap <C-l> >>
+    vmap <C-l> >gv
     vnoremap > >gv
-    nmap <C-Left> <<
-    vmap <C-Left> <gv
+    nmap <C-h> <<
+    vmap <C-h> <gv
     vnoremap < <gv
     vnoremap = =gv
 
     " Up-Down text block moving using unimpaired plugin 
-    nmap <C-Up> [e
-    nmap <C-Down> ]e
-    vmap <C-Up> [egv
-    vmap <C-Down> ]egv
+    nmap <C-k> [e
+    nmap <C-j> ]e
+    vmap <C-k> [egv
+    vmap <C-j> ]egv
 
     " Uppercase the last word from insert mode - useful for constants
     inoremap <C-u> <esc>viwUea
@@ -283,10 +283,6 @@
     " Easy window navigation
     nnoremap <leader>w :vsplit<cr>
     nnoremap <leader>s :split<cr>
-    nnoremap <c-h> <c-w>h
-    nnoremap <c-j> <c-w>j
-    nnoremap <c-k> <c-w>k
-    nnoremap <c-l> <c-w>l
     nnoremap <leader>wl <c-w>l
     nnoremap <leader>wh <c-w>h
     nnoremap <leader>wj <c-w>j
