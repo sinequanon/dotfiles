@@ -124,19 +124,21 @@
     nnoremap <leader>sr :%s/
 
     " Left-Right text block movement in normal and visual mode
-    nmap <C-l> >>
-    vmap <C-l> >gv
     vnoremap > >gv
-    nmap <C-h> <<
-    vmap <C-h> <gv
     vnoremap < <gv
+    nmap <C-right> >>
+    nmap <C-left> <<
+    vnoremap <C-right> >gv
+    vnoremap <C-left> <gv
     vnoremap = =gv
 
     " Up-Down text block moving using unimpaired plugin 
-    nmap <C-k> [e
-    nmap <C-j> ]e
-    vmap <C-k> [egv
-    vmap <C-j> ]egv
+    nmap <C-up> [e
+    nmap <C-down> ]e
+    vmap <C-up> [egv
+    vmap <C-down> ]egv
+    vmap <S-j> ]egv
+    vmap <S-k> [egv
 
     " Uppercase the last word from insert mode - useful for constants
     inoremap <C-u> <esc>viwUea
@@ -283,6 +285,10 @@
     " Easy window navigation
     nnoremap <leader>w :vsplit<cr>
     nnoremap <leader>s :split<cr>
+    nnoremap <C-l> <c-w>l
+    nnoremap <C-h> <c-w>h
+    nnoremap <C-j> <c-w>j
+    nnoremap <C-k> <c-w>k
     nnoremap <leader>wl <c-w>l
     nnoremap <leader>wh <c-w>h
     nnoremap <leader>wj <c-w>j
