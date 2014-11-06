@@ -4,6 +4,7 @@ alias vi='vim'
 alias vim='mvim -v'
 
 source ~/.server
+
 if [ -f `brew --prefix`/etc/bash_completion ]; then
     . `brew --prefix`/etc/bash_completion
 fi
@@ -14,27 +15,19 @@ LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 
 set -o vi
 
-#export JDK_16=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
-#export JDK_15=/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home
-
-export GROOVY_HOME=/usr/local/Cellar/groovy/2.0.5/libexec #/Users/$USERNAME/dev/groovy-1.8.5
-export API_NEXT_HOST=
 export P4CONFIG=~/.p4config
 export P4HOST=$P4_HOST
 export P4CLIENT=$P4_CLIENT
 export P4_HOME=/Users/$USERNAME/$WORKSPACE
 export GIT_P4_HOME=/Users/$USERNAME/p4-git-mobileui
-#export ANT_HOME=$GIT_P4_HOME/Tools/apache-ant/apache-ant-1.7.1
-export JAVA_HOME=$JDK_16
-export CATALINA_HOME=$P4_HOME/thirdparty/tomcat/6.0.32
-export PATH=/Users/$USERNAME/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/$USERNAME/Applications:$CATALINA_HOME/bin:$GROOVY_HOME/bin:/Users/$USERNAME/dev/api-sdk/bin:/Developer/usr/bin:/Users/rowell/libimobiledevice-macosx-master:$PATH
+export PATH=/Users/$USERNAME/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/$USERNAME/Applications:/Users/$USERNAME/dev/api-sdk/bin:/Developer/usr/bin::$PATH
 export EDITOR="vim"
 export CDPATH=.:$HOME/git-mobileui/10FootUI/Apps/HTML/Tablet:$HOME/
 
 alias p4='p4 -d `pwd`'
 alias ls='ls -FG'
 alias tmux='TERM=screen-256color-bce tmux'
-alias nflog="idevicesyslog  | ack -i UI_SCRIPT | ack -v 'SCROLLER' | cut -d ' ' -f3,10-40 | spc -c ~/Dropbox/spcrc-nfapplog"
+alias nflog="deviceconsole  | ack -i UI_SCRIPT | ack -v 'SCROLLER' | cut -d ' ' -f10-40 | spc -c ~/Dropbox/spcrc-nfapplog"
 alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
 alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
