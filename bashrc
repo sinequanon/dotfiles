@@ -43,9 +43,9 @@ alias st="git status"
 alias br="git branch"
 
 source /Users/rowell/Dropbox/dev/base16-shell/base16-railscasts.dark.sh
-# Start Z https://github.com/rupa/z
 
-. $HOME/Dropbox/bin/z.sh
+# Start Z https://github.com/rupa/z
+. `brew --prefix`/etc/profile.d/z.sh
 
 # Open man page in preview
 pman () {
