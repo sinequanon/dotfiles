@@ -1,3 +1,6 @@
+# Prevent SCP from sourcing this .bashrc
+[ -z "$PS1"  ] && return
+
 alias sourcebash='source ~/.bashrc'
 alias vibash='vi ~/.bashrc'
 alias vi='vim'
@@ -15,6 +18,11 @@ LS_COLORS="no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:
 
 set -o vi
 
+# Activate the autocd option. It will let you type .. for cd .. and will actually let you use any directory as a command name and will cd to it:
+shopt -s autocd
+shopt -s cdable_vars
+shopt -s cdspell
+
 export P4CONFIG=~/.p4config
 export P4HOST=$P4_HOST
 export P4CLIENT=$P4_CLIENT
@@ -26,6 +34,9 @@ export CDPATH=.:$HOME/git-mobileui/10FootUI/Apps/HTML/Tablet:$HOME/
 
 alias p4='p4 -d `pwd`'
 alias ls='ls -FG'
+alias la='ls -FGa'
+alias ll='ls -FGl'
+alias lla='ls -FGla'
 alias tmux='TERM=screen-256color-bce tmux'
 alias nflog="deviceconsole  | ack -i UI_SCRIPT | ack -v 'SCROLLER' | cut -d ' ' -f10-40 | spc -c ~/Dropbox/spcrc-nfapplog"
 alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
@@ -51,3 +62,4 @@ pman () {
 tman () {
   MANWIDTH=160 MANPAGER='col -bx' man $@ | mate
 }
+cs() { cd $1; ls; }
