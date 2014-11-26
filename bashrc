@@ -1,8 +1,8 @@
 # Prevent SCP from sourcing this .bashrc
 [ -z "$PS1"  ] && return
 
-alias sourcebash='source ~/.bashrc'
-alias vibash='vi ~/.bashrc'
+alias sb='source ~/.bashrc'
+alias vb='vi ~/.bashrc'
 alias vi='vim'
 alias vim='mvim -v'
 
@@ -47,6 +47,28 @@ alias st="git status"
 alias br="git branch"
 
 source /Users/rowell/Dropbox/dev/base16-shell/base16-railscasts.dark.sh
+
+IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
+subscriber-fail-test () {
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo $FOO
+    curl -i -X POST "fit.us-west-2.dyntest.netflix.net:7101/v1/sessions/new/s/subscriber?$FOO" 
+}
+subscriber-restore-test () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo $FOO
+    curl -i -X POST "fit.us-west-2.dyntest.netflix.net:7101/v1/sessions/end?$FOO" 
+}
+subscriber-fail-prod () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo $FOO
+    curl -i -X POST "fit.netflix.net:7101/v1/sessions/new/s/subscriber?$FOO" 
+}
+subscriber-restore-prod () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo $FOO
+    curl -i -X POST "fit.netflix.net:7101/v1/sessions/end?$FOO" 
+}
 
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh

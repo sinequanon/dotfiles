@@ -11,7 +11,7 @@
     diff = 
 [user]
 	name = Rowell Sotto
-	email = github@sotto.org
+	email = rsotto@netflix.com
 [merge]
     keepBackup = false;
 	conflictstyle = diff3
