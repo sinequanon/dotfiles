@@ -48,28 +48,6 @@ alias br="git branch"
 
 source /Users/rowell/Dropbox/dev/base16-shell/base16-railscasts.dark.sh
 
-IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
-subscriber-fail-test () {
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo $FOO
-    curl -i -X POST "fit.us-west-2.dyntest.netflix.net:7101/v1/sessions/new/s/subscriber?$FOO" 
-}
-subscriber-restore-test () { 
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo $FOO
-    curl -i -X POST "fit.us-west-2.dyntest.netflix.net:7101/v1/sessions/end?$FOO" 
-}
-subscriber-fail-prod () { 
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo $FOO
-    curl -i -X POST "fit.netflix.net:7101/v1/sessions/new/s/subscriber?$FOO" 
-}
-subscriber-restore-prod () { 
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo $FOO
-    curl -i -X POST "fit.netflix.net:7101/v1/sessions/end?$FOO" 
-}
-
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -85,3 +63,32 @@ tman () {
   MANWIDTH=160 MANPAGER='col -bx' man $@ | mate
 }
 cs() { cd $1; ls; }
+
+#########################
+
+IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
+FIT_SERVER_TEST='fit.us-west-2.dyntest.netflix.net:7101'
+FIT_SERVER_PROD='fit.netflix.net:7101'
+END_SUBSCRIBER_SESSION='v1/sessions/end'
+BEGIN_SUBSCRIBER_SESSION='v1/sessions/new/s/subscriber'
+subscriber-fail-test () {
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+    curl -i -X POST "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO" 
+}
+subscriber-restore-test () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
+    curl -i -X POST "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO" 
+}
+subscriber-fail-prod () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+    curl -i -X POST "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO" 
+}
+subscriber-restore-prod () { 
+    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+    echo "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
+    curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO" 
+}
+
