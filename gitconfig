@@ -34,10 +34,11 @@
     br = branch
     hist = log --pretty=format:\"%h %ad %s %an %ar\" --graph --date=short
     sf = show --pretty="format:" --name-only
+	create-pull-request = !sh -c 'stash pull-request $0'
 [difftool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
+	cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
 [mergetool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+	cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
 	trustExitCode = false
 [mergetool]
 	keepBackup = false

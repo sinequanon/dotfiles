@@ -30,7 +30,7 @@ export P4_HOME=/Users/$USERNAME/$WORKSPACE
 export GIT_P4_HOME=/Users/$USERNAME/p4-git-mobileui
 export PATH=/Users/$USERNAME/bin:/usr/local/bin:/usr/local/share/npm/bin:/Users/$USERNAME/Applications:/Users/$USERNAME/dev/api-sdk/bin:/Developer/usr/bin::$PATH
 export EDITOR="vim"
-export CDPATH=.:$HOME/git-mobileui/10FootUI/Apps/HTML/Tablet:$HOME/
+export CDPATH=.:$HOME/stash:$HOME/
 
 alias p4='p4 -d `pwd`'
 alias ls='ls -FG'
