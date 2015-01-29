@@ -55,7 +55,7 @@ setopt share_history
 
 setopt auto_cd
 
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/share/npm/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/share/npm/bin:~/dev/api-sdk/bin/:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -69,6 +69,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
