@@ -141,7 +141,7 @@
     vmap <S-k> [egv
 
     " Uppercase the last word from insert mode - useful for constants
-    inoremap <C-u> <esc>viwUea
+    "inoremap <C-u> <esc>viwUea
 
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
     noremap p p`[
@@ -190,10 +190,10 @@
     " Quickly get out of insert mode without your fingers having to leave the
     " home row (either use 'jj' or 'jk')
     inoremap jj <Esc>l
-    inoremap ii <Esc>l
-    inoremap kk <Esc>l
-    inoremap uu <Esc>l
-    inoremap hh  <Esc>l
+    "inoremap ii <Esc>l
+    "inoremap kk <Esc>l
+    "inoremap uu <Esc>l
+    "inoremap hh  <Esc>l
 
     " Pull word under cursor into LHS of a substitute (for quick search and
     " replace)
@@ -237,7 +237,7 @@
 
 " {{{ Color schemes 
     set background=dark
-    colorscheme base16-railscasts
+    colorscheme jellybeans "base16-railscasts
 
     highlight clear SignColumn
     highlight VertSplit    ctermbg=236
