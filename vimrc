@@ -210,8 +210,8 @@
     " Easy map adding semicolon or dot
     inoremap ;<cr> <end>;
     inoremap .<cr> <end>.
-    inoremap ;;<cr> <Esc>]}A;<Esc>``<Ins>
-    inoremap ..<cr> <Esc>]}A.<Esc>``<Ins>
+    inoremap ;;<cr> <down><end>;<up>
+    inoremap ..<cr> <down><end>.<up>
 " }}}
 
 " {{{ Autogroups 
