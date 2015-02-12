@@ -217,8 +217,11 @@
     inoremap ;;<bs> <down><end>;<up>
     inoremap ..<bs> <down><end>.<up>
 
-    " Open previously opened buffer
+    " Open previously opened buffer using tab
     nnoremap <tab> :b#<cr>
+    
+    " Duplicate visual selection
+    vnoremap <C-p> y'>p
 " }}}
 
 " {{{ Autogroups 
