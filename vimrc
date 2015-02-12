@@ -217,6 +217,8 @@
     inoremap ;;<bs> <down><end>;<up>
     inoremap ..<bs> <down><end>.<up>
 
+    " Open previously opened buffer
+    nnoremap <tab> :b#<cr>
 " }}}
 
 " {{{ Autogroups 
