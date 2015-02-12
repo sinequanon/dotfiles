@@ -207,6 +207,11 @@
     " Visually select the text that was last edited/pasted
     nmap gV `[v`]
 
+    " Easy map adding semicolon or dot
+    inoremap ;<cr> <end>;
+    inoremap .<cr> <end>.
+    inoremap ;;<cr> <Esc>]}A;<Esc>``<Ins>
+    inoremap ..<cr> <Esc>]}A.<Esc>``<Ins>
 " }}}
 
 " {{{ Autogroups 
