@@ -111,3 +111,6 @@
 [submodule "vim/bundle/ListToggle"]
 	path = vim/bundle/ListToggle
 	url = https://github.com/Valloric/ListToggle.git
+[submodule "vim/bundle/vim-bufsurf"]
+	path = vim/bundle/vim-bufsurf
+	url = https://github.com/ton/vim-bufsurf.git

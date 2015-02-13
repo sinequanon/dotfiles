@@ -87,6 +87,7 @@ export EDITOR='/usr/local/bin/mvim -v'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias vim="mvim -v"
+alias tmux="TERM=screen-256color-bce tmux";
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 

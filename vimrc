@@ -426,7 +426,7 @@
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw' 
         let g:ctrlp_custom_ignore = '\.(git|hg|svn)$\|web$'
-        nnoremap <leader>ch :CtrlP<cr>
+        nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
     " }}}
@@ -487,6 +487,12 @@
 
     " {{{ plugin : ListToggle
         "let g:lt_height = 10
+    " }}}
+
+    " {{{ plugin : BufSurf
+        " Overriding unimpaired mapping of :bnext and :bprevious
+        nnoremap ]b :BufSurfForward<cr>
+        nnoremap [b :BufSurfBack<cr>
     " }}}
 
 " }}}
