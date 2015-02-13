@@ -248,6 +248,8 @@
         " Redraw screen whenever focus is set to buffer
         :au FocusGained * :redraw!
 
+        " Move the preview window to the bottom regardless of splits
+        autocmd WinEnter * if &previewwindow | wincmd J | endif
     augroup end
 " }}}
 
