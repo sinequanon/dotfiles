@@ -207,15 +207,19 @@
     " Visually select the text that was last edited/pasted
     nmap gV `[v`]
 
-    " Easy map adding semicolon or dot
+    " Easy map adding semicolon, dot, or comma to the ends of functions
     inoremap ;<cr> <end>;
     inoremap .<cr> <end>.
+    inoremap ,<cr> <end>,
     inoremap ;<bs> <esc>maA;<esc>`ali
     inoremap .<bs> <esc>maA.<esc>`ali
+    inoremap ,<bs> <esc>maA,<esc>`ali
     inoremap ;;<cr> <down><end>;
     inoremap ..<cr> <down><end>.
+    inoremap ,,<cr> <down><end>,
     inoremap ;;<bs> <down><end>;<up>
     inoremap ..<bs> <down><end>.<up>
+    inoremap ,,<bs> <down><end>,<up>
 
     " Open previously opened buffer using tab
     nnoremap <tab> :b#<cr>
