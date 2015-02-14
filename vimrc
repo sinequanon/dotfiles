@@ -221,7 +221,7 @@
     nnoremap <tab> :b#<cr>
     
     " Duplicate visual selection
-    vnoremap <C-p> y'>p
+    vnoremap <leader>p y'>p
 " }}}
 
 " {{{ Autogroups 
