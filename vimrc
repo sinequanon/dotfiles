@@ -497,8 +497,8 @@
 
     " {{{ plugin : BufSurf
         " Overriding unimpaired mapping of :bnext and :bprevious
-        nnoremap ]b :BufSurfForward<cr>
-        nnoremap [b :BufSurfBack<cr>
+        nnoremap <tab> :BufSurfForward<cr>
+        nnoremap <s-tab> :BufSurfBack<cr>
     " }}}
 
 " }}}
