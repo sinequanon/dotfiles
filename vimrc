@@ -121,9 +121,6 @@
     " Strip trailing whitespace
     nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>`z
 
-    " File-wide replace
-    nnoremap <leader>sr :%s/
-
     " Left-Right text block movement in normal and visual mode
     vnoremap > >gv
     vnoremap < <gv
@@ -226,6 +223,12 @@
     
     " Duplicate visual selection
     vnoremap <leader>p y'>p
+
+    " Local refactoring of function scope
+    nnoremap <leader>sr [{V%::s/<c-r>///gic<left><left><left><left>
+
+    " Global refactoring of page scope
+    nnoremap <leader>sR gD:%s/<c-r>///gic<left><left><left><left>
 " }}}
 
 " {{{ Autogroups 
@@ -497,8 +500,8 @@
 
     " {{{ plugin : BufSurf
         " Overriding unimpaired mapping of :bnext and :bprevious
-        nnoremap <tab> :BufSurfForward<cr>
-        nnoremap <s-tab> :BufSurfBack<cr>
+        nnoremap ]b :BufSurfForward<cr>
+        nnoremap [b :BufSurfBack<cr>
     " }}}
 
 " }}}
