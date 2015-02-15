@@ -219,16 +219,16 @@
     inoremap ,,<bs> <down><end>,<up>
 
     " Open previously opened buffer using tab
-    nnoremap <tab> :b#<cr>
+    "nnoremap <tab> :b#<cr>
     
     " Duplicate visual selection
     vnoremap <leader>p y'>p
 
     " Local refactoring of function scope
-    nnoremap <leader>sr [{V%::s/<c-r>///gic<left><left><left><left>
+    nnoremap <leader>sr yaw[{V%::s/<c-r>0//gic<left><left><left><left>
 
     " Global refactoring of page scope
-    nnoremap <leader>sR gD:%s/<c-r>///gic<left><left><left><left>
+    nnoremap <leader>sR yaw:%s/<c-r>0//gic<left><left><left><left>
 " }}}
 
 " {{{ Autogroups 
