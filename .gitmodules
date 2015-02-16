@@ -106,3 +106,6 @@
 [submodule "vim/bundle/vim-bufsurf"]
 	path = vim/bundle/vim-bufsurf
 	url = https://github.com/ton/vim-bufsurf.git
+[submodule "vim/bundle/ultisnips"]
+	path = vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips.git

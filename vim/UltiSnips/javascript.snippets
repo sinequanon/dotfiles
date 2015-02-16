@@ -1,0 +1,18 @@
+snippet func "Simple function" i
+function ${1}(${2}) {
+	${0}
+}
+endsnippet
+
+snippet fore "Observable forEach" i
+forEach(function ${1} {
+		${0}
+	}${2:,
+	function ${3} {
+	
+	},
+	function ${4} {
+	}
+	}
+);
+endsnippet

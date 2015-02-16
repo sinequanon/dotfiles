@@ -214,9 +214,9 @@
     inoremap ;;<cr> <down><end>;
     inoremap ..<cr> <down><end>.
     inoremap ,,<cr> <down><end>,
-    inoremap ;;<bs> <down><end>;<up>
-    inoremap ..<bs> <down><end>.<up>
-    inoremap ,,<bs> <down><end>,<up>
+    inoremap ;;<bs> <down><end>;<up><end>
+    inoremap ..<bs> <down><end>.<up><end>
+    inoremap ,,<bs> <down><end>,<up><end>
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
@@ -502,6 +502,11 @@
         " Overriding unimpaired mapping of :bnext and :bprevious
         nnoremap ]b :BufSurfForward<cr>
         nnoremap [b :BufSurfBack<cr>
+    " }}}
+
+    " {{{ plugin : UltiSnips
+        let g:UltiSnipsJumpForwardTrigger='<tab>'
+        let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
     " }}}
 
 " }}}
