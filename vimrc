@@ -86,6 +86,7 @@
     set diffexpr=""                             " Tells vimdiff to ignore ALL whitespace changes
     set cursorline                              " Turn on cursor line highlighting
     set autoread                                " Auto reads if file has been changed outside of vim
+    set complete=.,b,u,]                        " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
 " }}}
 
 " {{{ Remappings 
