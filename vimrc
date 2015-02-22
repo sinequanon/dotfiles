@@ -151,8 +151,8 @@
     "noremap P gP
 
     " Enable magic mode when doing searches
-    nnoremap / /\v
-    vnoremap / /\v
+    "nnoremap / /\v
+    "vnoremap / /\v
 
     " Clear highlighted searches
     nnoremap <silent> <leader><space> :nohlsearch<CR> 
@@ -529,5 +529,11 @@
         let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
     " }}}
 
+    " {{{ plugin : Incsearch
+	    let g:incsearch#magic = '\v' " very magic
+        map /  <Plug>(incsearch-forward)
+        map ?  <Plug>(incsearch-backward)
+        map g/ <Plug>(incsearch-stay)
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
