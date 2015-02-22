@@ -143,12 +143,12 @@
     "inoremap <C-u> <esc>viwUea
 
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
-    "noremap p p`[
-    "noremap P P`[
+    noremap p p`[
+    noremap P P`[
     
     " Go to end of pasted text
-    noremap p gp
-    noremap P gP
+    "noremap p gp
+    "noremap P gP
 
     " Enable magic mode when doing searches
     nnoremap / /\v
