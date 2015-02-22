@@ -76,7 +76,7 @@
     set autochdir                               " Current directory is always matching the  content of the active window
     set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
     set ofu=syntaxcomplete#Complete
-    set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
+    "set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
     "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
     set sidescroll=5                            " Number of columns to scroll when margin is reached
     set encoding=utf-8                          " Default to UTF8
@@ -143,8 +143,12 @@
     "inoremap <C-u> <esc>viwUea
 
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
-    noremap p p`[
-    noremap P P`[
+    "noremap p p`[
+    "noremap P P`[
+    
+    " Go to end of pasted text
+    noremap p gp
+    noremap P gP
 
     " Enable magic mode when doing searches
     nnoremap / /\v
@@ -224,6 +228,7 @@
     
     " Duplicate visual selection
     vnoremap <leader>p y'>p
+    vnoremap <leader>P y'>P
 
     " Local refactoring of function scope
     nnoremap <leader>sr yiw[{V%::s/<c-r>0//gic<left><left><left><left>
@@ -246,21 +251,29 @@
         autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
         autocmd FileType php set omnifunc=phpcomplete#CompletePHP
         autocmd FileType c set omnifunc=ccomplete#Complete
+
         "scss support
-        au BufNewFile,BufRead *.scss set filetype=scss
-        au BufNewFile,BufRead * :checktime
+        autocmd BufNewFile,BufRead *.scss set filetype=scss
+        autocmd BufNewFile,BufRead * :checktime
 
         " Auto open quick fix window after any grep command. Mosty for GitGrep
         autocmd QuickFixCmdPost *grep* cwindow
 
         " Redraw screen whenever focus is set to buffer
-        :au FocusGained * :redraw!
+        autocmd FocusGained * :redraw!
 
         " Move the preview window to the bottom regardless of splits
         autocmd WinEnter * if &previewwindow | wincmd J | endif
 
         " Auto save a file when you leave insert mode
-        "autocmd InsertLeave * if expand('%') != '' | update | endif
+        autocmd InsertLeave * if expand('%') != '' | update | endif
+        
+        " Automatically source vimrc on save.
+        autocmd! BufWritePost $MYVIMRC source $MYVIMRC
+        
+        "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default 
+        "on Windows, but it needs to be added explicitly on Linux / OS X.
+        autocmd FileType vim setlocal keywordprg=:help
     augroup end
 " }}}
 
@@ -330,6 +343,9 @@
     nnoremap <silent> <S-Down> 5<C-W>-
     nnoremap <silent> <S-Up> 3<C-W>+
 
+" }}}
+
+" {{{ Functions
 " }}}
 
 " Plugins {{{
