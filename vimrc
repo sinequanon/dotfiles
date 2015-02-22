@@ -226,10 +226,10 @@
     vnoremap <leader>p y'>p
 
     " Local refactoring of function scope
-    nnoremap <leader>sr yaw[{V%::s/<c-r>0//gic<left><left><left><left>
+    nnoremap <leader>sr yiw[{V%::s/<c-r>0//gic<left><left><left><left>
 
     " Global refactoring of page scope
-    nnoremap <leader>sR yaw:%s/<c-r>0//gic<left><left><left><left>
+    nnoremap <leader>sR yiw:%s/<c-r>0//gic<left><left><left><left>
 " }}}
 
 " {{{ Autogroups 

@@ -101,6 +101,28 @@ source /Users/rowell/Dropbox/dev/base16-shell/base16-railscasts.dark.sh
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 
+# Unify all langs
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+
+# Reduce the default 0.4 second lag when pressing the ESC key to .1
+export KEYTIMEOUT=1
+
 #########################
 
 IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
