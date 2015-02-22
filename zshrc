@@ -87,7 +87,7 @@ export EDITOR='/usr/local/bin/nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias vim="mvim -v"
+alias vim="/usr/local/bin/nvim"
 alias tmux="TERM=screen-256color-bce tmux";
 alias -s txt=vim
 alias -s html=vim
