@@ -258,6 +258,9 @@
 
         " Move the preview window to the bottom regardless of splits
         autocmd WinEnter * if &previewwindow | wincmd J | endif
+
+        " Auto save a file when you leave insert mode
+        "autocmd InsertLeave * if expand('%') != '' | update | endif
     augroup end
 " }}}
 

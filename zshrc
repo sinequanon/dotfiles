@@ -69,7 +69,8 @@ export LANG=en_US.UTF-8
 # else
 #   export EDITOR='mvim'
 # fi
-export EDITOR='/usr/local/bin/mvim -v'
+#export EDITOR='/usr/local/bin/mvim -v'
+export EDITOR='/usr/local/bin/nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
