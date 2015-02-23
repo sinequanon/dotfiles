@@ -115,3 +115,9 @@
 [submodule "vim/bundle/jellybeans.vim"]
 	path = vim/bundle/jellybeans.vim
 	url = https://github.com/nanotech/jellybeans.vim.git
+[submodule "vim/bundle/ListToggle"]
+	path = vim/bundle/ListToggle
+	url = https://github.com/Valloric/ListToggle.git
+[submodule "vim/bundle/smartpairs.vim"]
+	path = vim/bundle/smartpairs.vim
+	url = https://github.com/gorkunov/smartpairs.vim.git
