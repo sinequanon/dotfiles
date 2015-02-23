@@ -91,15 +91,9 @@
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "vim/bundle/vim-indent-guides"]
-	path = vim/bundle/vim-indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides.git
 [submodule "vim/bundle/JavaScript-Indent"]
 	path = vim/bundle/JavaScript-Indent
 	url = https://github.com/vim-scripts/JavaScript-Indent.git
-[submodule "vim/bundle/vim-jsx"]
-	path = vim/bundle/vim-jsx
-	url = https://github.com/mxw/vim-jsx.git
 [submodule "vim/bundle/ListToggle"]
 	path = vim/bundle/ListToggle
 	url = https://github.com/Valloric/ListToggle.git
@@ -112,9 +106,6 @@
 [submodule "vim/bundle/smartpairs.vim"]
 	path = vim/bundle/smartpairs.vim
 	url = https://github.com/gorkunov/smartpairs.vim.git
-[submodule "vim/bundle/vim-indent-object"]
-	path = vim/bundle/vim-indent-object
-	url = https://github.com/michaeljsmith/vim-indent-object.git
 [submodule "vim/bundle/incsearch.vim"]
 	path = vim/bundle/incsearch.vim
 	url = https://github.com/haya14busa/incsearch.vim.git
