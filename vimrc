@@ -4,7 +4,7 @@
     runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
     call pathogen#infect()                            " Execute pathogen to easily modify the runtime path to include all  plugins under the ~/.vim/bundle directory
-    call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory 
+    call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory
 
     syntax on
     filetype plugin indent on                   " Turn on plugin indent for each type
@@ -58,7 +58,7 @@
     set wildmenu                                " Make tab completion for files/buffers act like bash
     set wildmode=list:longest                   " Show a list when pressing tab and complete first full match
 
-    "Ignore these files when completing names 
+    "Ignore these files when completing names
     set wildignore+=*/private/var/*,*/tmp/*,.svn,*.swp,CVS,.git,*.o,*.a,*.bak,*.class,*.mo,*.la,*.so,*.obj,*.pyc,*.swp,*.jpg,*.png,*.xpm,*.gif
     set mouse=a                                 " Enable mouse support
     set pastetoggle=<F2>
@@ -91,7 +91,7 @@
     set ttimeoutlen=0                           " Sets timeout for keycode delays
 " }}}
 
-" {{{ Remappings 
+" {{{ Remappings
     " Maps semicolon to colon key for easier command typing
     nnoremap ; :
 
@@ -101,7 +101,7 @@
     inoremap <c-]> g<c-]>
 
     " Use Ggrep for searching
-    nnoremap <f3> :Ggrep -i 
+    nnoremap <f3> :Ggrep -i
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
     nnoremap <up> <nop>
@@ -133,7 +133,7 @@
     vnoremap <C-left> <gv
     vnoremap = =gv
 
-    " Up-Down text block moving using unimpaired plugin 
+    " Up-Down text block moving using unimpaired plugin
     nmap <C-up> [e
     nmap <C-down> ]e
     vmap <C-up> [egv
@@ -147,7 +147,7 @@
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
     noremap p p`[
     noremap P P`[
-    
+
     " Go to end of pasted text
     "noremap p gp
     "noremap P gP
@@ -157,7 +157,7 @@
     "vnoremap / /\v
 
     " Clear highlighted searches
-    nnoremap <silent> <leader><space> :nohlsearch<CR> 
+    nnoremap <silent> <leader><space> :nohlsearch<CR>
 
     " Edit the vimrc file
     nnoremap <leader>V :so ~/.vimrc<CR>
@@ -171,11 +171,11 @@
     inoremap ciw <esc>ciw<esc>
 
     " Use Q for formatting the current paragraph (or selection)
-    vmap Q gq                                               
+    vmap Q gq
     nmap Q gqap
 
     " Quickly close the current window
-    nnoremap <leader><leader>q :q<CR>                               
+    nnoremap <leader><leader>q :q<CR>
 
     " Complete whole filenames/lines with a quicker shortcut key in insert mode
     imap <C-f> <C-x><C-f>
@@ -227,7 +227,7 @@
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
-    
+
     " Duplicate visual selection
     vnoremap <leader>p y'>p
     vnoremap <leader>P y'>P
@@ -239,7 +239,7 @@
     nnoremap <leader>sR yiw:%s/<c-r>0//gic<left><left><left><left>
 " }}}
 
-" {{{ Autogroups 
+" {{{ Autogroups
     augroup configgroup
         autocmd!
         autocmd filetype python set expandtab
@@ -269,18 +269,18 @@
 
         " Auto save a file when you leave insert mode
         autocmd InsertLeave * if expand('%') != '' | update | endif
-        
+
         " Automatically source vimrc on save.
         autocmd! BufWritePost $MYVIMRC source $MYVIMRC
-        
-        "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default 
+
+        "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default
         "on Windows, but it needs to be added explicitly on Linux / OS X.
         autocmd FileType vim setlocal keywordprg=:help
     augroup end
 " }}}
 
 
-" {{{ Color schemes 
+" {{{ Color schemes
     set background=dark
     colorscheme jellybeans "base16-railscasts
 
@@ -314,13 +314,13 @@
     endif
 " }}}
 
-" {{{ Windows 
+" {{{ Windows
     "{{{ Splits
         set equalalways                 " Automatically size splits equally
         set splitbelow                  " Create vsplits below current split
         set splitright                  " Create splits right of current split
 
-        " Resize splits when window is resized 
+        " Resize splits when window is resized
         augroup resized
             autocmd!
             au VimResized * exe "normal! \<c-w>="
@@ -394,7 +394,7 @@
         let g:syntastic_auto_jump=0
         let g:syntastic_auto_loc_list=2
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
-        let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }   
+        let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
         "Make syntastic use jsxhint instead of the default jshint
         let g:syntastic_javascript_checkers = ['jsxhint']
         nnoremap <silent> <F4> :SyntasticCheck<cr>
@@ -417,7 +417,7 @@
         endif
         " }}}
 
-    " {{{ Tmux 
+    " {{{ Tmux
         " Fix Cursor in TMUX
         if exists('$TMUX')
             let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -455,7 +455,7 @@
     " }}}
 
     " {{{ plugin : ctrlp.vim
-        let g:ctrlp_working_path_mode = 'rw' 
+        let g:ctrlp_working_path_mode = 'rw'
         let g:ctrlp_custom_ignore = '\.(git|hg|svn)$\|web$'
         nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
@@ -502,11 +502,11 @@
     " }}}
 
     " {{{ plugin : Tern JS
-        nnoremap <Leader>tt :TernType<CR> 
-        nnoremap <Leader>tf :TernDef<CR> 
-        nnoremap <Leader>td :TernDoc<CR> 
-        nnoremap <Leader>tR :TernRename<CR> 
-        nnoremap <Leader>tr :TernRefs<CR> 
+        nnoremap <Leader>tt :TernType<CR>
+        nnoremap <Leader>tf :TernDef<CR>
+        nnoremap <Leader>td :TernDoc<CR>
+        nnoremap <Leader>tR :TernRename<CR>
+        nnoremap <Leader>tr :TernRefs<CR>
         " Display argument type hints when cursore is left over a function
         let g:tern_show_argument_hints = 'on_hold'
     " }}}
