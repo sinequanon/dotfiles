@@ -89,6 +89,7 @@
     set complete=.,b,u,]                        " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
     set timeoutlen=1000                         " Sets timeout for mapping delays
     set ttimeoutlen=0                           " Sets timeout for keycode delays
+    set updatetime=1000                         " Change time in which swap file will be written to disk
 " }}}
 
 " {{{ Remappings
@@ -267,8 +268,8 @@
         " Move the preview window to the bottom regardless of splits
         autocmd WinEnter * if &previewwindow | wincmd J | endif
 
-        " Auto save a file when you leave insert mode
-        autocmd InsertLeave * if expand('%') != '' | update | endif
+        " Auto save a file when you leave insert mode or when the user hasn't pressed a key for allotted updatetime
+        autocmd InsertLeave,CursorHold * if expand('%') != '' | update | endif
 
         " Automatically source vimrc on save.
         autocmd! BufWritePost $MYVIMRC source $MYVIMRC
