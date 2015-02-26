@@ -542,6 +542,8 @@
     " {{{ plugin : auto-pairs
         let g:AutoPairsShortcutFastWrap = 'å'
         let g:AutoPairsShortcutBackInsert = 'â'
+        let g:AutoPairsShortcutJump = 'î'
+        let g:AutoPairsFlyMode = 1
     " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
