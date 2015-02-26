@@ -538,5 +538,10 @@
         map ?  <Plug>(incsearch-backward)
         map g/ <Plug>(incsearch-stay)
     " }}}
+
+    " {{{ plugin : auto-pairs
+        let g:AutoPairsShortcutFastWrap = 'å'
+        let g:AutoPairsShortcutBackInsert = 'â'
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
