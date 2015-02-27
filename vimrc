@@ -102,7 +102,7 @@
     inoremap <c-]> g<c-]>
 
     " Use Ggrep for searching
-    nnoremap <f3> :Ggrep -i
+    nnoremap <f3> :Ggrep -i 
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
     nnoremap <up> <nop>
