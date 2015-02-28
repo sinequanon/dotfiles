@@ -545,5 +545,9 @@
         let g:AutoPairsShortcutJump = 'î'
         let g:AutoPairsFlyMode = 1
     " }}}
+
+    " {{{ plugin : localvimrc
+        let g:localvimrc_ask = 0
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
