@@ -121,6 +121,3 @@
 [submodule "vim/bundle/smartpairs.vim"]
 	path = vim/bundle/smartpairs.vim
 	url = https://github.com/gorkunov/smartpairs.vim.git
-[submodule "vim/bundle/argtextobj.vim"]
-	path = vim/bundle/argtextobj.vim
-	url = https://github.com/vim-scripts/argtextobj.vim.git
