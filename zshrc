@@ -52,7 +52,7 @@ plugins=(git common-aliases osx zsh-syntax-highlighting)
 
 # Share zsh history across all open zsh sessions
 setopt share_history
-
+setopt extended_glob
 setopt auto_cd
 
 export PATH=$HOME/bin:/usr/local/bin:/usr/local/share/npm/bin:~/dev/api-sdk/bin/:$PATH
