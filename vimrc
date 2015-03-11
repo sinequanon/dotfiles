@@ -236,6 +236,9 @@
 
     " Global refactoring of page scope
     nnoremap <leader>sR yiw:%s/<c-r>0//gic<left><left><left><left>
+
+    " Select function
+    nnoremap <leader>vf [{V]}
 " }}}
 
 " {{{ Autogroups
