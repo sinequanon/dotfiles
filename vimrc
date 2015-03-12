@@ -48,7 +48,6 @@
     set nojoinspaces
     set colorcolumn=120		                    " Turn on column line at 120 chars
     exec matchadd('ColorColumn' ,'\%121v', 100)
-    set gdefault                                " Search/replace globally (on a line) by default
     set showcmd			                        " Show commands as you type
     set nobackup
     set noswapfile
@@ -61,7 +60,6 @@
     "Ignore these files when completing names
     set wildignore+=*/private/var/*,*/tmp/*,.svn,*.swp,CVS,.git,*.o,*.a,*.bak,*.class,*.mo,*.la,*.so,*.obj,*.pyc,*.swp,*.jpg,*.png,*.xpm,*.gif
     set mouse=a                                 " Enable mouse support
-    set pastetoggle=<F2>
     "set relativenumber 		                    " Show numbers relative from each other's distance
     set laststatus=2                            " Status line gnarliness
     set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
@@ -238,6 +236,9 @@
 
     " Global refactoring of page scope
     nnoremap <leader>sR yiw:%s/<c-r>0//gic<left><left><left><left>
+
+    " Select function
+    nnoremap <leader>vf [{V]}
 " }}}
 
 " {{{ Autogroups
