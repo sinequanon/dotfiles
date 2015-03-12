@@ -52,7 +52,7 @@ plugins=(git common-aliases osx zsh-syntax-highlighting)
 
 # Share zsh history across all open zsh sessions
 setopt share_history
-
+setopt extended_glob
 setopt auto_cd
 
 export PATH=$HOME/bin:/usr/local/bin:/usr/local/share/npm/bin:~/dev/api-sdk/bin/:$PATH
@@ -93,6 +93,9 @@ alias tmux="TERM=screen-256color-bce tmux";
 alias -s txt=vim
 alias -s html=vim
 alias -s vim=vim
+
+alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
+alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
