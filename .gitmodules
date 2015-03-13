@@ -90,9 +90,6 @@
 [submodule "vim/bundle/JavaScript-Indent"]
 	path = vim/bundle/JavaScript-Indent
 	url = https://github.com/vim-scripts/JavaScript-Indent.git
-[submodule "vim/bundle/vim-bufsurf"]
-	path = vim/bundle/vim-bufsurf
-	url = https://github.com/ton/vim-bufsurf.git
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
@@ -129,3 +126,6 @@
 [submodule "vim/bundle/vim-mundo"]
 	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
+[submodule "vim/bundle/last_edit_marker.vim"]
+	path = vim/bundle/last_edit_marker.vim
+	url = https://github.com/vim-scripts/last_edit_marker.vim.git
