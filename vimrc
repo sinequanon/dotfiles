@@ -522,12 +522,6 @@
         "let g:lt_height = 10
     " }}}
 
-    " {{{ plugin : BufSurf
-        " Overriding unimpaired mapping of :bnext and :bprevious
-        nnoremap ]b :BufSurfForward<cr>
-        nnoremap [b :BufSurfBack<cr>
-    " }}}
-
     " {{{ plugin : UltiSnips
         let g:UltiSnipsJumpForwardTrigger='<tab>'
         let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
