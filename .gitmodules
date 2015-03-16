@@ -126,3 +126,6 @@
 [submodule "vim/bundle/last_edit_marker.vim"]
 	path = vim/bundle/last_edit_marker.vim
 	url = https://github.com/vim-scripts/last_edit_marker.vim.git
+[submodule "vim/bundle/AutoComplPop"]
+	path = vim/bundle/AutoComplPop
+	url = https://github.com/vim-scripts/AutoComplPop.git
