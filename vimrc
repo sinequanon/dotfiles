@@ -214,15 +214,15 @@
     "inoremap ;<cr> <end>;
     "inoremap .<cr> <end>.
     "inoremap ,<cr> <end>,
-    "inoremap ;<bs> <esc>maA;<esc>`ali
-    "inoremap .<bs> <esc>maA.<esc>`ali
-    "inoremap ,<bs> <esc>maA,<esc>`ali
+    inoremap ;<bs> <esc>maA;<esc>`ali
+    inoremap .<bs> <esc>maA.<esc>`ali
+    inoremap ,<bs> <esc>maA,<esc>`ali
     "inoremap ;;<cr> <down><end>;
     "inoremap ..<cr> <down><end>.
     "inoremap ,,<cr> <down><end>,
-    "inoremap ;;<bs> <down><end>;<up><end>
-    "inoremap ..<bs> <down><end>.<up><end>
-    "inoremap ,,<bs> <down><end>,<up><end>
+    inoremap ;;<bs> <down><end>;<up><end>
+    inoremap ..<bs> <down><end>.<up><end>
+    inoremap ,,<bs> <down><end>,<up><end>
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
