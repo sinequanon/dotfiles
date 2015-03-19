@@ -77,51 +77,64 @@
 [submodule "vim/bundle/vim-pathogen"]
 	path = vim/bundle/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
-[submodule "vim/bundle/ShowMarks"]
-	path = vim/bundle/ShowMarks
-	url = https://github.com/vim-scripts/ShowMarks.git
+    ignore = dirty
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
+    ignore = dirty
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
+    ignore = dirty
 [submodule "vim/bundle/incsearch.vim"]
 	path = vim/bundle/incsearch.vim
 	url = https://github.com/haya14busa/incsearch.vim.git
+    ignore = dirty
 [submodule "vim/bundle/vim-indent-guides"]
 	path = vim/bundle/vim-indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
+    ignore = dirty
 [submodule "vim/bundle/vim-indent-object"]
 	path = vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
+    ignore = dirty
 [submodule "vim/bundle/vim-jsx"]
 	path = vim/bundle/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
+    ignore = dirty
 [submodule "vim/bundle/jellybeans.vim"]
 	path = vim/bundle/jellybeans.vim
 	url = https://github.com/nanotech/jellybeans.vim.git
+    ignore = dirty
 [submodule "vim/bundle/ListToggle"]
 	path = vim/bundle/ListToggle
 	url = https://github.com/Valloric/ListToggle.git
+    ignore = dirty
 [submodule "vim/bundle/smartpairs.vim"]
 	path = vim/bundle/smartpairs.vim
 	url = https://github.com/gorkunov/smartpairs.vim.git
+    ignore = dirty
 [submodule "vim/bundle/argtextobj.vim"]
 	path = vim/bundle/argtextobj.vim
 	url = https://github.com/vim-scripts/argtextobj.vim.git
+    ignore = dirty
 [submodule "vim/bundle/vim-localvimrc"]
 	path = vim/bundle/vim-localvimrc
 	url = https://github.com/embear/vim-localvimrc.git
+    ignore = dirty
 [submodule "vim/bundle/vim-bracketed-paste"]
 	path = vim/bundle/vim-bracketed-paste
 	url = https://github.com/ConradIrwin/vim-bracketed-paste.git
+    ignore = dirty
 [submodule "vim/bundle/vim-mundo"]
 	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
+    ignore = dirty
 [submodule "vim/bundle/last_edit_marker.vim"]
 	path = vim/bundle/last_edit_marker.vim
 	url = https://github.com/vim-scripts/last_edit_marker.vim.git
+    ignore = dirty
 [submodule "vim/bundle/AutoComplPop"]
 	path = vim/bundle/AutoComplPop
 	url = https://github.com/vim-scripts/AutoComplPop.git
+    ignore = dirty
