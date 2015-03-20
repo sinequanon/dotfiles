@@ -155,3 +155,10 @@ subscriber-restore-prod () {
     curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO" 
 }
 
+compilejstags () {
+    for f ($1/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
+}
+
+kubrickjstags () {
+    for f (/Users/rowell/stash/kubrick/device/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
+}
