@@ -239,6 +239,9 @@
 
     " Select function
     nnoremap <leader>vf [{V]}
+    
+    " Select previously pasted text in visual mode
+    nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " }}}
 
 " {{{ Autogroups
@@ -399,6 +402,13 @@
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
         "Make syntastic use jsxhint instead of the default jshint
         let g:syntastic_javascript_checkers = ['jsxhint']
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_open = 0
+        let g:syntastic_check_on_wq = 0
+        "set statusline+=%#warningmsg#
+        "set statusline+=%{SyntasticStatuslineFlag()}
+        "set statusline+=%*
         nnoremap <silent> <F4> :SyntasticCheck<cr>
     " }}}
 

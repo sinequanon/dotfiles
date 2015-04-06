@@ -134,7 +134,7 @@
 	path = vim/bundle/last_edit_marker.vim
 	url = https://github.com/vim-scripts/last_edit_marker.vim.git
     ignore = dirty
-[submodule "vim/bundle/AutoComplPop"]
-	path = vim/bundle/AutoComplPop
-	url = https://github.com/vim-scripts/AutoComplPop.git
+[submodule "vim/bundle/supertab"]
+	path = vim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
     ignore = dirty
