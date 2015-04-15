@@ -554,5 +554,13 @@
     " {{{ plugin : localvimrc
         let g:localvimrc_ask = 0
     " }}}
+
+    " {{{ plugin : argtextobj 
+        let g:argumentobject_force_toplevel = 0
+    " }}}
+    
+    " {{{ plugin : SuperTab
+        let g:SuperTabDefaultCompletionType = "context"
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
