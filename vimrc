@@ -220,9 +220,9 @@
     "inoremap ;;<cr> <down><end>;
     "inoremap ..<cr> <down><end>.
     "inoremap ,,<cr> <down><end>,
-    inoremap ;;<bs> <down><end>;<up><end>
-    inoremap ..<bs> <down><end>.<up><end>
-    inoremap ,,<bs> <down><end>,<up><end>
+    inoremap ;;<bs> <down><end>;<cr><up><up><end>
+    inoremap ..<bs> <down><end>.<cr><up><up><end>
+    inoremap ,,<bs> <down><end>,<cr><up><up><end>
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
@@ -464,6 +464,10 @@
         nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h<c-w>c<cr>
         " git status
         nnoremap <silent> <leader>gs :Gstatus<cr>
+        " git blame
+        nnoremap <silent> <leader>gb :Gblame<cr>
+        " git log
+        nnoremap <silent> <leader>gl :Glog<cr><cr>
     " }}}
 
     " {{{ plugin : ctrlp.vim
@@ -555,12 +559,13 @@
         let g:localvimrc_ask = 0
     " }}}
 
-    " {{{ plugin : argtextobj 
-        let g:argumentobject_force_toplevel = 0
-    " }}}
-    
     " {{{ plugin : SuperTab
         let g:SuperTabDefaultCompletionType = "context"
+    " }}}
+
+    " {{{ plugin : space.vim
+        " Prevent overriding ; mapping
+        let g:space_no_character_movements = 1
     " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0

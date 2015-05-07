@@ -138,3 +138,6 @@
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
     ignore = dirty
+[submodule "vim/bundle/vim-space"]
+	path = vim/bundle/vim-space
+	url = https://github.com/spiiph/vim-space.git
