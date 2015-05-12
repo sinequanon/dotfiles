@@ -242,6 +242,9 @@
     
     " Select previously pasted text in visual mode
     nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+    " Insert newline without entering insert mode
+    nmap <silent> <cr><cr> i<cr><Esc>
 " }}}
 
 " {{{ Autogroups
