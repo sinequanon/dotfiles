@@ -85,9 +85,9 @@
     set cursorline                              " Turn on cursor line highlighting
     set autoread                                " Auto reads if file has been changed outside of vim
     set complete=.,b,u,]                        " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
-    set timeoutlen=1000                         " Sets timeout for mapping delays
+    set timeoutlen=500                         " Sets timeout for mapping delays
     set ttimeoutlen=0                           " Sets timeout for keycode delays
-    set updatetime=1000                         " Change time in which swap file will be written to disk
+    set updatetime=500                         " Change time in which swap file will be written to disk
 " }}}
 
 " {{{ Remappings
@@ -312,7 +312,8 @@
         let s:uname = system("uname")
         if s:uname == "Darwin\n"
 
-            set guifont=Droid\ Sans\ Mono\ for\ Powerline:h14
+            "set guifont=Droid\ Sans\ Mono\ for\ Powerline:h14
+            set guifont=Meslo\ LG\ M\ for\ Powerline:h14
 
             " Turn off gui scrollbars
             set guioptions-=r
@@ -556,6 +557,8 @@
         let g:AutoPairsShortcutBackInsert = 'â'
         let g:AutoPairsShortcutJump = 'î'
         let g:AutoPairsFlyMode = 1
+        " Only jump to the closing pair on the same line
+        let g:AutoPairsMultilineClose = 0
     " }}}
 
     " {{{ plugin : localvimrc

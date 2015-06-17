@@ -141,3 +141,6 @@
 [submodule "vim/bundle/vim-space"]
 	path = vim/bundle/vim-space
 	url = https://github.com/spiiph/vim-space.git
+[submodule "vim/bundle/vim-expand-region"]
+	path = vim/bundle/vim-expand-region
+	url = https://github.com/terryma/vim-expand-region.git
