@@ -284,6 +284,22 @@
         "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default
         "on Windows, but it needs to be added explicitly on Linux / OS X.
         autocmd FileType vim setlocal keywordprg=:help
+
+        " Commenting blocks of code instead of using NERDCommenter
+        autocmd FileType c,cpp,java,scala,javascript let b:comment_leader = '// '
+        autocmd FileType sh,ruby,python              let b:comment_leader = '# '
+        autocmd FileType conf,fstab                  let b:comment_leader = '# '
+        autocmd FileType tex                         let b:comment_leader = '% '
+        autocmd FileType mail                        let b:comment_leader = '> '
+        autocmd FileType vim                         let b:comment_leader = '" '
+        noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+        noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+        " Trim whitespace on save
+        autocmd BufWritePre * %s/\s\+$//e 
+
+        " Return cursor to previous location on load
+        autocmd BufReadPost * normal `"
     augroup end
 " }}}
 
@@ -405,7 +421,7 @@
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
         "Make syntastic use jsxhint instead of the default jshint
-        let g:syntastic_javascript_checkers = ['jsxhint']
+        let g:syntastic_javascript_checkers = ['eslint']
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list = 1
         let g:syntastic_check_on_open = 0
@@ -449,15 +465,6 @@
             execute "set <xRight>=\e[1;*C"
             execute "set <xLeft>=\e[1;*D"
         endif
-    " }}}
-
-    " {{{ plugin : javascript
-        let javascript_enable_domhtmlcss = 1
-        let g:javascript_conceal = 1
-        let b:javascript_fold = 1
-        " Allow plugin to conceal js keywords and phrases by turning on
-        " conceallevel
-        set conceallevel=1
     " }}}
 
     " {{{ plugin : Fugitive.vim
@@ -521,16 +528,6 @@
         nmap <Leader>a <Plug>(EasyAlign)
     " }}}
 
-    " {{{ plugin : Tern JS
-        nnoremap <Leader>tt :TernType<CR>
-        nnoremap <Leader>tf :TernDef<CR>
-        nnoremap <Leader>td :TernDoc<CR>
-        nnoremap <Leader>tR :TernRename<CR>
-        nnoremap <Leader>tr :TernRefs<CR>
-        " Display argument type hints when cursore is left over a function
-        let g:tern_show_argument_hints = 'on_hold'
-    " }}}
-
     " {{{ plugin : vim-indent-guides
         " Set guide size to be narrower than default shift width
         let g:indent_guides_guide_size = 1
@@ -572,6 +569,10 @@
     " {{{ plugin : space.vim
         " Prevent overriding ; mapping
         let g:space_no_character_movements = 1
+    " }}}
+
+    " {{{ plugin : rainbow parentheses 
+        let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
     " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
