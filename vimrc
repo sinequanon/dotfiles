@@ -262,8 +262,9 @@
         autocmd FileType php set omnifunc=phpcomplete#CompletePHP
         autocmd FileType c set omnifunc=ccomplete#Complete
 
-        "scss support
+        "scss and less support
         autocmd BufNewFile,BufRead *.scss set filetype=scss
+        autocmd BufNewFile,BufRead *.less set filetype=less
         autocmd BufNewFile,BufRead * :checktime
 
         " Auto open quick fix window after any grep command. Mosty for GitGrep
@@ -420,7 +421,7 @@
         let g:syntastic_auto_loc_list=2
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
-        "Make syntastic use jsxhint instead of the default jshint
+        "Make syntastic use eslint instead of the default jshint
         let g:syntastic_javascript_checkers = ['eslint']
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list = 1
