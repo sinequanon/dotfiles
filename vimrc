@@ -99,8 +99,13 @@
     nnoremap <c-]> g<c-]>
     inoremap <c-]> g<c-]>
 
-    " Use Ggrep for searching
-    nnoremap <f3> :Ggrep -i 
+    " Create a custom command for silently opening a quick fix window after
+    " git grep
+    command -nargs=+ Ggr execute 'silent Ggrep!' <q-args> | cw | redraw!
+    " Free search
+    nnoremap <f3> :Ggr -i
+    " Search word under cursor
+    nnoremap <S-f3> :Ggr -i <cword><cr>
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
     nnoremap <up> <nop>
@@ -268,7 +273,7 @@
         autocmd BufNewFile,BufRead * :checktime
 
         " Auto open quick fix window after any grep command. Mosty for GitGrep
-        autocmd QuickFixCmdPost *grep* cwindow
+        "autocmd QuickFixCmdPost *grep* cwindow
 
         " Redraw screen whenever focus is set to buffer
         autocmd FocusGained * :redraw!
@@ -297,7 +302,7 @@
          "noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
         " Trim whitespace on save
-        autocmd BufWritePre * %s/\s\+$//e 
+        autocmd BufWritePre * %s/\s\+$//e
 
         " Return cursor to previous location on load
         autocmd BufReadPost * normal `"
@@ -572,7 +577,7 @@
         let g:space_no_character_movements = 1
     " }}}
 
-    " {{{ plugin : rainbow parentheses 
+    " {{{ plugin : rainbow parentheses
         let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
     " }}}
 " }}}
