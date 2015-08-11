@@ -141,6 +141,12 @@
 [submodule "vim/bundle/vim-sleuth"]
 	path = vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth.git
+    ignore = dirty
 [submodule "vim/bundle/rainbow.git"]
 	path = vim/bundle/rainbow.git
 	url = https://github.com/luochen1990/rainbow.git
+    ignore = dirty
+[submodule "vim/bundle/nerdcommenter"]
+	path = vim/bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git
+    ignore = dirty

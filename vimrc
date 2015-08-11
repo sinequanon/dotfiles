@@ -287,14 +287,14 @@
         autocmd FileType vim setlocal keywordprg=:help
 
         " Commenting blocks of code instead of using NERDCommenter
-        autocmd FileType c,cpp,java,scala,javascript let b:comment_leader = '// '
-        autocmd FileType sh,ruby,python              let b:comment_leader = '# '
-        autocmd FileType conf,fstab                  let b:comment_leader = '# '
-        autocmd FileType tex                         let b:comment_leader = '% '
-        autocmd FileType mail                        let b:comment_leader = '> '
-        autocmd FileType vim                         let b:comment_leader = '" '
-        noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-        noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+         "autocmd FileType c,cpp,java,scala,javascript let b:comment_leader = '// '
+         "autocmd FileType sh,ruby,python              let b:comment_leader = '# '
+         "autocmd FileType conf,fstab                  let b:comment_leader = '# '
+         "autocmd FileType tex                         let b:comment_leader = '% '
+         "autocmd FileType mail                        let b:comment_leader = '> '
+         "autocmd FileType vim                         let b:comment_leader = '" '
+         "noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+         "noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
         " Trim whitespace on save
         autocmd BufWritePre * %s/\s\+$//e 
