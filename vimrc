@@ -164,8 +164,7 @@
     nnoremap <silent> <leader><space> :nohlsearch<CR>
 
     " Edit the vimrc file
-    nnoremap <leader>V :so ~/.vimrc<CR>
-    nnoremap <leader>v :e ~/.vimrc<CR>
+    nnoremap <leader>v :e $MYVIMRC<CR>
 
     "Easy save files
     map <silent> <leader><leader>s :update<CR>
