@@ -101,9 +101,9 @@
 
     " Create a custom command for silently opening a quick fix window after
     " git grep
-    command -nargs=+ Ggr execute 'silent Ggrep!' <q-args> | cw | redraw!
+    command -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
     " Free search
-    nnoremap <f3> :Ggr -i
+    nnoremap <f3> :Ggr -i 
     " Search word under cursor
     nnoremap <S-f3> :Ggr -i <cword><cr>
 
@@ -149,8 +149,10 @@
     "inoremap <C-u> <esc>viwUea
 
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
-    noremap p p`[
-    noremap P P`[
+    "noremap p p`[
+    "noremap P P`[
+    noremap p ]p
+    noremap P ]P
 
     " Go to end of pasted text
     "noremap p gp
@@ -299,7 +301,9 @@
          "autocmd FileType vim                         let b:comment_leader = '" '
          "noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
          "noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
-
+         "autocmd FileType javascript.jsx :call rainbow#toggle()
+         "autocmd FileType javascript :call rainbow#toggle()
+         "autocmd FileType javascript syntax clear jsFuncBlock
         " Trim whitespace on save
         autocmd BufWritePre * %s/\s\+$//e
 
@@ -579,5 +583,7 @@
     " {{{ plugin : rainbow parentheses
         let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
     " }}}
+
+    let javascript_enable_domhtmlcss  = 1
 " }}}
 " vim:foldmethod=marker:foldlevel=0

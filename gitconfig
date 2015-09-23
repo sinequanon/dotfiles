@@ -8,7 +8,7 @@
 [difftool "vimdiff"]
     #cmd = /Users/rowell/bin/git_diff_wrapper
 [pager]
-    diff = 
+    diff =
 [user]
 	name = Rowell Sotto
 	email = github@sotto.org
@@ -21,12 +21,6 @@
         keepTemporaries = false
         trustExitCode = false
         keepBackup = false
-[difftool "sourcetree"]
-	cmd = /Users/rowell/Applications/p4merge.app/Contents/MacOS/p4merge \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Users/rowell/Applications/p4merge.app/Contents/MacOS/p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-	trustExitCode = true
 [alias]
 	co = checkout
     cm = commit
