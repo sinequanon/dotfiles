@@ -1,41 +1,43 @@
 [core]
-	excludesfile = /Users/rowell/.gitignore
+    excludesfile = /Users/rowell/.gitignore
 [diff]
 	tool = p4mergetool
     #external = p4diff
     # Prevents having to enter "" to go to next file
     prompt = false
+    external = /Users/rowell/bin/git-external_patdiff.sh
+    algorithm = patience
 [difftool "vimdiff"]
     #cmd = /Users/rowell/bin/git_diff_wrapper
 [pager]
     diff =
 [user]
-	name = Rowell Sotto
-	email = github@sotto.org
+    name = Rowell Sotto
+    email = github@sotto.org
 [merge]
     keepBackup = false;
-	conflictstyle = diff3
-	tool = p4mergetool
+    conflictstyle = diff3
+    tool = p4mergetool
 [mergetool "p4merge"]
-        cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
-        keepTemporaries = false
-        trustExitCode = false
-        keepBackup = false
+    cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+    keepTemporaries = false
+    trustExitCode = false
+    keepBackup = false
 [alias]
-	co = checkout
+    co = checkout
     cm = commit
     st = status
     br = branch
     hist = log --pretty=format:\"%h %ad %s %an %ar\" --graph --date=short
     sf = show --pretty="format:" --name-only
-	create-pull-request = !sh -c 'stash pull-request $0'
+    create-pull-request = !sh -c 'stash pull-request $0'
 [difftool "p4mergetool"]
-	cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
+    cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
 [mergetool "p4mergetool"]
-	cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
-	trustExitCode = false
+    cmd = /Users/rowell/Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+    trustExitCode = false
 [mergetool]
-	keepBackup = false
+    keepBackup = false
 [filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
+    clean = git-media-clean %f
+    smudge = git-media-smudge %f

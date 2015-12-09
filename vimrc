@@ -103,7 +103,7 @@
     " git grep
     command -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
     " Free search
-    nnoremap <f3> :Ggr -i 
+    nnoremap <f3> :Ggr -i
     " Search word under cursor
     nnoremap <S-f3> :Ggr -i <cword><cr>
 
@@ -151,8 +151,8 @@
     "don't move the cursor after pasting (by jumping to back start of previously changed text)
     "noremap p p`[
     "noremap P P`[
-    noremap p ]p
-    noremap P ]P
+    "noremap p ]p
+    "noremap P ]P
 
     " Go to end of pasted text
     "noremap p gp
@@ -245,12 +245,15 @@
 
     " Select function
     nnoremap <leader>vf [{V]}
-    
+
     " Select previously pasted text in visual mode
     nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
     " Insert newline without entering insert mode
     nmap <silent> <cr><cr> i<cr><Esc>
+
+    " delete surrounding function
+    nmap <silent> dsf ds)db
 " }}}
 
 " {{{ Autogroups
@@ -481,13 +484,15 @@
         nnoremap <silent> <leader>gd :Gdiff<cr>
         " turn off vim diff and delete diff buffer
         " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
-        nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h<c-w>c<cr>
+        nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
         " git status
         nnoremap <silent> <leader>gs :Gstatus<cr>
         " git blame
         nnoremap <silent> <leader>gb :Gblame<cr>
         " git log
         nnoremap <silent> <leader>gl :Glog<cr><cr>
+        " git edit
+        nnoremap <silent> <leader>ge :Gedit<cr>
     " }}}
 
     " {{{ plugin : ctrlp.vim

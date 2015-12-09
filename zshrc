@@ -178,3 +178,7 @@ compilejstags () {
 kubrickjstags () {
     for f (/Users/rowell/stash/kubrick/device/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
 }
+
+# OPAM configuration
+. /Users/rowell/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+(which opam > /dev/null) && eval $(opam config env)
