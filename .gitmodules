@@ -154,3 +154,6 @@
 	path = vim/bundle/matchit
 	url = https://github.com/tmhedberg/matchit.git
 	ignore = dirty
+[submodule "vim-javascript"]
+	path = vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git

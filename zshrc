@@ -182,3 +182,6 @@ kubrickjstags () {
 # OPAM configuration
 . /Users/rowell/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 (which opam > /dev/null) && eval $(opam config env)
+
+export NVM_DIR="/Users/rowell/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

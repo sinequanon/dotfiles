@@ -497,7 +497,7 @@
 
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw'
-        let g:ctrlp_custom_ignore = '\.(git|hg|svn)$\|web$'
+        let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
         nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -564,12 +564,15 @@
     " }}}
 
     " {{{ plugin : auto-pairs
-        let g:AutoPairsShortcutFastWrap = 'å'
-        let g:AutoPairsShortcutBackInsert = 'â'
         let g:AutoPairsShortcutJump = 'î'
         let g:AutoPairsFlyMode = 1
         " Only jump to the closing pair on the same line
         let g:AutoPairsMultilineClose = 0
+
+        let g:AutoPairsShortcutToggle     = 'π' " <m-p>
+        let g:AutoPairsShortcutFastWrap   = '∑' " <m-w>
+        let g:AutoPairsShortcutJump       = '∆' " <m-j>
+        let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
     " }}}
 
     " {{{ plugin : localvimrc
@@ -589,6 +592,13 @@
         let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
     " }}}
 
-    let javascript_enable_domhtmlcss  = 1
+    " {{{ plugin : javascript
+        let javascript_enable_domhtmlcss  = 1
+    
+    " }}}
+
+    " {{{ plugin : jellybeans
+        let g:jellybeans_use_term_italics = 1
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
