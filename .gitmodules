@@ -165,3 +165,8 @@
 [submodule "vim/bundle/vim-interestingwords"]
 	path = vim/bundle/vim-interestingwords
 	url = https://github.com/lfv89/vim-interestingwords.git
+	ignore = dirty
+[submodule "vim/bundle/vim-multiple-cursors"]
+	path = vim/bundle/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors.git
+	ignore = dirty
