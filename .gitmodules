@@ -157,6 +157,11 @@
 [submodule "vim/bundle/vim-javascript"]
 	path = vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
+	ignore = dirty
 [submodule "vim/bundle/vim-react-snippets"]
 	path = vim/bundle/vim-react-snippets
 	url = https://github.com/justinj/vim-react-snippets.git
+	ignore = dirty
+[submodule "vim/bundle/vim-interestingwords"]
+	path = vim/bundle/vim-interestingwords
+	url = https://github.com/lfv89/vim-interestingwords.git

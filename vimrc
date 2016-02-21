@@ -600,5 +600,9 @@
     " {{{ plugin : jellybeans
         let g:jellybeans_use_term_italics = 1
     " }}}
+
+    " {{{ plugin : smartpairs
+        let g:smartpairs_uber_mode = 1
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
