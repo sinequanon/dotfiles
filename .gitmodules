@@ -174,3 +174,6 @@
 	path = vim/bundle/vim-diminactive
 	url = https://github.com/blueyed/vim-diminactive.git
 	ignore = dirty
+[submodule "vim/bundle/cursorcross"]
+	path = vim/bundle/cursorcross
+	url = https://github.com/mtth/cursorcross.vim.git
