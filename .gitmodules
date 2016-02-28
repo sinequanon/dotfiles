@@ -170,3 +170,7 @@
 	path = vim/bundle/vim-multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors.git
 	ignore = dirty
+[submodule "vim/bundle/vim-diminactive"]
+	path = vim/bundle/vim-diminactive
+	url = https://github.com/blueyed/vim-diminactive.git
+	ignore = dirty
