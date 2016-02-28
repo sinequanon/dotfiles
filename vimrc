@@ -586,6 +586,8 @@
     " {{{ plugin : space.vim
         " Prevent overriding ; mapping
         let g:space_no_character_movements = 1
+        " Disable space for diff jumps
+        let g:space_no_diff = 1
     " }}}
 
     " {{{ plugin : rainbow parentheses
@@ -603,6 +605,10 @@
 
     " {{{ plugin : smartpairs
         let g:smartpairs_uber_mode = 1
+    " }}}
+
+    " {{{ plugin : cursorcross
+        let g:cursorcross_dynamic = 'clw'
     " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
