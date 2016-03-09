@@ -103,9 +103,9 @@
     " git grep
     command -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
     " Free search
-    nnoremap <f3> :Ggr -i
+    nnoremap <f3> :Ggr -i --untracked 
     " Search word under cursor
-    nnoremap <S-f3> :Ggr -i <cword><cr>
+    nnoremap <S-f3> :Ggr -i --untracked <cword><cr>
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
     nnoremap <up> <nop>

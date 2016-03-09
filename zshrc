@@ -86,8 +86,11 @@ export EDITOR='/usr/local/bin/nvim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-alias vim="/usr/local/bin/nvim"
+if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
+    alias vim="NVIM_TUI_ENABLE_TRUE_COLOR=1 /usr/local/bin/nvim"
+else
+    alias vim="/usr/local/bin/nvim"
+fi
 alias vi=vim
 alias tmux="TERM=screen-256color-bce tmux";
 alias -s txt=vim
