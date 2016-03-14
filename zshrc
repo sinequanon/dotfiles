@@ -86,7 +86,7 @@ export EDITOR='/usr/local/bin/nvim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-if [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; then
+if [ "$TERM" = "screen-256color" ] && [ -n "$TMUX" ]; then
     alias vim="NVIM_TUI_ENABLE_TRUE_COLOR=1 /usr/local/bin/nvim"
 else
     alias vim="/usr/local/bin/nvim"
@@ -156,22 +156,22 @@ BEGIN_SUBSCRIBER_SESSION='v1/sessions/new/s/subscriber'
 subscriber-fail-test () {
     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
     echo "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO" 
+    curl -i -X POST "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
 }
-subscriber-restore-test () { 
+subscriber-restore-test () {
     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
     echo "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO" 
+    curl -i -X POST "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
 }
-subscriber-fail-prod () { 
+subscriber-fail-prod () {
     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
     echo "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO" 
+    curl -i -X POST "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
 }
-subscriber-restore-prod () { 
+subscriber-restore-prod () {
     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
     echo "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO" 
+    curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
 }
 
 compilejstags () {
