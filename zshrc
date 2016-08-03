@@ -46,7 +46,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases osx zsh-syntax-highlighting)
+plugins=(git common-aliases gulp zsh-syntax-highlighting)
 
 # User configuration
 
@@ -96,6 +96,10 @@ alias tmux="TERM=screen-256color-bce tmux";
 alias -s txt=vim
 alias -s html=vim
 alias -s vim=vim
+
+alias jshakti="pkill gulp; gulp js && shakti"
+alias ashakti="pkill gulp; gulp assets && shakti"
+alias cshakti="pkill gulp; gulp clearCache && gulp clean && gulp locales && gulp assets && shakti"
 
 alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
 alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
@@ -182,9 +186,23 @@ kubrickjstags () {
     for f (/Users/rowell/stash/kubrick/device/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
 }
 
+# for dir in The\ Simpsons\ S[1\2]*
+# do
+# echo $dir
+# cd $dir
+# for i in *.mkv
+# do
+# echo $i
+# ffmpeg -i "$i" -map 0 -c copy -c:v libx264 "$i.mkv"
+# done
+# cd ..
+# done
+
 # OPAM configuration
 . /Users/rowell/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 (which opam > /dev/null) && eval $(opam config env)
 
 export NVM_DIR="/Users/rowell/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

@@ -27,7 +27,7 @@
     set expandtab                               " use spaces instead of tabs. Remove this to revert to tabs
     set autoindent                              " Always set autoindenting on
     set copyindent                              " Copy the previous indentation on autoindenting
-    set smartindent                             " Automatically inserts indentation
+    "set smartindent                             " Automatically inserts indentation
     set cindent                                 " Like smart indent but stricter and more customizable
     set shiftwidth=4                            " Number of spaces to use for autoindenting
     set shiftround                              " Use multiple of shiftwidth when indenting with '<' and '>'
@@ -254,6 +254,9 @@
 
     " delete surrounding function
     nmap <silent> dsf ds)db
+
+    " close tags
+    imap ,,/ </<C-x><C-o><Esc>%i
 " }}}
 
 " {{{ Autogroups
@@ -318,7 +321,8 @@
 
 " {{{ Color schemes
     set background=dark
-    colorscheme jellybeans "base16-railscasts
+    colorscheme base16-railscasts "jellybeans 
+    "colorscheme jellybeans 
 
     highlight clear SignColumn
     highlight VertSplit    ctermbg=236
@@ -610,5 +614,13 @@
     " {{{ plugin : cursorcross
         let g:cursorcross_dynamic = 'clw'
     " }}}
+
+    "{{{ plugin : interestingwords
+        let g:interestingWordsRandomiseColors = 1
+    "}}}
+ 
+    "{{ plugin : mustache-handlebars
+        let g:mustache_abbreviations = 1
+    "}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
