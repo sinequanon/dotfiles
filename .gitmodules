@@ -6,10 +6,6 @@
 	path = vim/bundle/css.vim
 	url = https://github.com/JulesWang/css.vim.git
     ignore = dirty
-[submodule "vim/bundle/ctrlp.vim"]
-	path = vim/bundle/ctrlp.vim
-	url = https://github.com/kien/ctrlp.vim.git
-    ignore = dirty
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
@@ -200,3 +196,9 @@
 [submodule "vim/bundle/vim-bundler"]
 	path = vim/bundle/vim-bundler
 	url = https://github.com/tpope/vim-bundler.git
+[submodule "vim/bundle/vim-coffee-script"]
+	path = vim/bundle/vim-coffee-script
+	url = https://github.com/strogonoff/vim-coffee-script.git
+[submodule "vim/bundle/vim-emblem"]
+	path = vim/bundle/vim-emblem
+	url = https://github.com/yalesov/vim-emblem.git
