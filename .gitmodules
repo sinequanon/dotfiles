@@ -202,3 +202,6 @@
 [submodule "vim/bundle/vim-emblem"]
 	path = vim/bundle/vim-emblem
 	url = https://github.com/yalesov/vim-emblem.git
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
