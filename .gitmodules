@@ -173,3 +173,6 @@
 [submodule "vim/bundle/vim-projectionist"]
 	path = vim/bundle/vim-projectionist
 	url = https://github.com/tpope/vim-projectionist.git
+[submodule "vim/bundle/vim-hybrid"]
+	path = vim/bundle/vim-hybrid
+	url = https://github.com/w0ng/vim-hybrid.git

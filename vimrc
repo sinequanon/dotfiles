@@ -77,9 +77,12 @@
     "set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
     "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
     set sidescroll=5                            " Number of columns to scroll when margin is reached
-    set encoding=utf-8                          " Default to UTF8
+    if !has('nvim')
+        set encoding=utf-8                      " UTF-8 encoding when displayed
+        set fileencoding=utf-8                  " UTF-8 encoding when written to file 
+    endif
     set diffopt=iwhite                          " Ignore whitespace during vimdiffs
-    set t_Co=256                                " Sets terminal colors to 256
+    "set t_Co=256                                " Sets terminal colors to 256
     set diffopt+=iwhite                         " Tells vimdiff to ignore whitespace
     set diffexpr=""                             " Tells vimdiff to ignore ALL whitespace changes
     set cursorline                              " Turn on cursor line highlighting
@@ -88,6 +91,7 @@
     set timeoutlen=500                         " Sets timeout for mapping delays
     set ttimeoutlen=0                           " Sets timeout for keycode delays
     set updatetime=500                         " Change time in which swap file will be written to disk
+    set lazyredraw                              " Screen is not redrawn while executing macros, registers, etc
 " }}}
 
 " {{{ Remappings
@@ -103,19 +107,19 @@
     " git grep
     command -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
     " Free search
-    nnoremap <f3> :Ggr -i --untracked 
+    nnoremap <f3> :Ggr -i --untracked
     " Search word under cursor
     nnoremap <S-f3> :Ggr -i --untracked <cword><cr>
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
-    nnoremap <up> <nop>
-    nnoremap <down> <nop>
-    nnoremap <left> <nop>
-    nnoremap <right> <nop>
-    inoremap <up> <nop>
-    inoremap <down> <nop>
-    inoremap <left> <nop>
-    inoremap <right> <nop>
+    "nnoremap <up> <nop>
+    "nnoremap <down> <nop>
+    "nnoremap <left> <nop>
+    "nnoremap <right> <nop>
+    "inoremap <up> <nop>
+    "inoremap <down> <nop>
+    "inoremap <left> <nop>
+    "inoremap <right> <nop>
 
     " Remap j and k to act as expected when used on long, wrapped, lines
     nnoremap j gj
@@ -142,8 +146,8 @@
     nmap <C-down> ]e
     vmap <C-up> [egv
     vmap <C-down> ]egv
-    vmap <S-j> ]egv
-    vmap <S-k> [egv
+    "vmap <S-j> ]egv
+    "vmap <S-k> [egv
 
     " Uppercase the last word from insert mode - useful for constants
     "inoremap <C-u> <esc>viwUea
@@ -315,29 +319,32 @@
 
         " Return cursor to previous location on load
         autocmd BufReadPost * normal `"
+
+        " Auto reload vimrc
+        au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
     augroup end
 " }}}
 
-
 " {{{ Color schemes
     set background=dark
-    colorscheme base16-railscasts "jellybeans 
-    "colorscheme jellybeans 
+    "colorscheme base16-railscasts
+    "colorscheme jellybeans
+    colorscheme hybrid
 
-    highlight clear SignColumn
-    highlight VertSplit    ctermbg=236
-    highlight ColorColumn  ctermbg=237
-    highlight LineNr       ctermbg=236 ctermfg=240
-    highlight CursorLineNr ctermbg=236 ctermfg=240
-    highlight CursorLine   ctermbg=236
-    highlight StatusLineNC ctermbg=238 ctermfg=0
-    highlight StatusLine   ctermbg=240 ctermfg=12
-    highlight IncSearch    ctermbg=3   ctermfg=1
-    highlight Search       ctermbg=1   ctermfg=3
-    highlight Visual       ctermbg=3   ctermfg=0
-    highlight Pmenu        ctermbg=240 ctermfg=12
-    highlight PmenuSel     ctermbg=3   ctermfg=1
-    highlight SpellBad     ctermbg=0   ctermfg=1
+    "highlight clear SignColumn
+    "highlight VertSplit    ctermbg=236
+    "highlight ColorColumn  ctermbg=237
+    "highlight LineNr       ctermbg=236 ctermfg=240
+    "highlight CursorLineNr ctermbg=236 ctermfg=240
+    "highlight CursorLine   ctermbg=236
+    "highlight StatusLineNC ctermbg=238 ctermfg=0
+    "highlight StatusLine   ctermbg=240 ctermfg=12
+    "highlight IncSearch    ctermbg=3   ctermfg=1
+    "highlight Search       ctermbg=1   ctermfg=3
+    "highlight Visual       ctermbg=3   ctermfg=0
+    "highlight Pmenu        ctermbg=240 ctermfg=12
+    "highlight PmenuSel     ctermbg=3   ctermfg=1
+    "highlight SpellBad     ctermbg=0   ctermfg=1
 
     " Setup from MacVim
     if has("gui_running")
@@ -353,6 +360,11 @@
 
         endif
     endif
+
+    " Configure colorcolumn
+    "highlight ColorColumn ctermbg=235 guibg=#2f1111
+    " Highlight column 80 and everything past column 120
+    let &colorcolumn="80,".join(range(120,999),",")
 " }}}
 
 " {{{ Windows
@@ -437,7 +449,7 @@
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
         "Make syntastic use eslint instead of the default jshint
-        let g:syntastic_javascript_checkers = ['eslint']
+        let g:syntastic_javascript_checkers = ['jshint', 'eslint']
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list = 1
         let g:syntastic_check_on_open = 0
@@ -501,7 +513,7 @@
 
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw'
-        let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
+        let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
         nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -600,11 +612,15 @@
 
     " {{{ plugin : javascript
         let javascript_enable_domhtmlcss  = 1
-    
+
     " }}}
 
     " {{{ plugin : jellybeans
-        let g:jellybeans_use_term_italics = 1
+        "let g:jellybeans_use_term_italics = 1
+    " }}}
+
+    " {{{ plugin : vim-hybrid
+        let g:hybrid_custom_term_colors = 1
     " }}}
 
     " {{{ plugin : smartpairs
@@ -615,12 +631,8 @@
         let g:cursorcross_dynamic = 'clw'
     " }}}
 
-    "{{{ plugin : interestingwords
-        let g:interestingWordsRandomiseColors = 1
-    "}}}
- 
-    "{{ plugin : mustache-handlebars
+    " {{{ plugin : mustache-handlebars
         let g:mustache_abbreviations = 1
-    "}}
+    " }}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
