@@ -54,10 +54,6 @@
 	path = vim/bundle/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
     ignore = dirty
-[submodule "vim/bundle/vim-visualstar"]
-	path = vim/bundle/vim-visualstar
-	url = https://github.com/thinca/vim-visualstar.git
-    ignore = dirty
 [submodule "vim/bundle/base16-vim"]
 	path = vim/bundle/base16-vim
 	url = https://github.com/chriskempson/base16-vim.git
@@ -86,10 +82,6 @@
 	path = vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
     ignore = dirty
-[submodule "vim/bundle/vim-jsx"]
-	path = vim/bundle/vim-jsx
-	url = https://github.com/mxw/vim-jsx.git
-    ignore = dirty
 [submodule "vim/bundle/jellybeans.vim"]
 	path = vim/bundle/jellybeans.vim
 	url = https://github.com/nanotech/jellybeans.vim.git
@@ -106,10 +98,6 @@
 	path = vim/bundle/argtextobj.vim
 	url = https://github.com/vim-scripts/argtextobj.vim.git
     ignore = dirty
-[submodule "vim/bundle/vim-localvimrc"]
-	path = vim/bundle/vim-localvimrc
-	url = https://github.com/embear/vim-localvimrc.git
-    ignore = dirty
 [submodule "vim/bundle/vim-bracketed-paste"]
 	path = vim/bundle/vim-bracketed-paste
 	url = https://github.com/ConradIrwin/vim-bracketed-paste.git
@@ -125,14 +113,6 @@
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
-    ignore = dirty
-[submodule "vim/bundle/vim-space"]
-	path = vim/bundle/vim-space
-	url = https://github.com/spiiph/vim-space.git
-    ignore = dirty
-[submodule "vim/bundle/vim-expand-region"]
-	path = vim/bundle/vim-expand-region
-	url = https://github.com/terryma/vim-expand-region.git
     ignore = dirty
 [submodule "vim/bundle/vim-sleuth"]
 	path = vim/bundle/vim-sleuth
@@ -153,14 +133,6 @@
 [submodule "vim/bundle/vim-javascript"]
 	path = vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
-	ignore = dirty
-[submodule "vim/bundle/vim-react-snippets"]
-	path = vim/bundle/vim-react-snippets
-	url = https://github.com/justinj/vim-react-snippets.git
-	ignore = dirty
-[submodule "vim/bundle/vim-interestingwords"]
-	path = vim/bundle/vim-interestingwords
-	url = https://github.com/lfv89/vim-interestingwords.git
 	ignore = dirty
 [submodule "vim/bundle/vim-multiple-cursors"]
 	path = vim/bundle/vim-multiple-cursors
@@ -186,16 +158,9 @@
 	path = vim/bundle/vim-mustache-handlebars
 	url = https://github.com/mustache/vim-mustache-handlebars.git
 	ignore = dirty
-[submodule "vim/bundle/vim-projectionist"]
-	path = vim/bundle/vim-projectionist
-	url = https://github.com/tpope/vim-projectionist.git
-	ignore = dirty
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
-[submodule "vim/bundle/vim-bundler"]
-	path = vim/bundle/vim-bundler
-	url = https://github.com/tpope/vim-bundler.git
 [submodule "vim/bundle/vim-coffee-script"]
 	path = vim/bundle/vim-coffee-script
 	url = https://github.com/strogonoff/vim-coffee-script.git
@@ -205,3 +170,6 @@
 [submodule "vim/bundle/ctrlp.vim"]
 	path = vim/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule "vim/bundle/vim-projectionist"]
+	path = vim/bundle/vim-projectionist
+	url = https://github.com/tpope/vim-projectionist.git
