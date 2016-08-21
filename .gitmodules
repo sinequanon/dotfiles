@@ -161,18 +161,32 @@
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
+	ignore = dirty
 [submodule "vim/bundle/vim-coffee-script"]
 	path = vim/bundle/vim-coffee-script
 	url = https://github.com/strogonoff/vim-coffee-script.git
+	ignore = dirty
 [submodule "vim/bundle/vim-emblem"]
 	path = vim/bundle/vim-emblem
 	url = https://github.com/yalesov/vim-emblem.git
+	ignore = dirty
 [submodule "vim/bundle/ctrlp.vim"]
 	path = vim/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
+	ignore = dirty
 [submodule "vim/bundle/vim-projectionist"]
 	path = vim/bundle/vim-projectionist
 	url = https://github.com/tpope/vim-projectionist.git
+	ignore = dirty
 [submodule "vim/bundle/vim-hybrid"]
 	path = vim/bundle/vim-hybrid
 	url = https://github.com/w0ng/vim-hybrid.git
+	ignore = dirty
+[submodule "vim/bundle/vim-pasta"]
+	path = vim/bundle/vim-pasta
+	url = https://github.com/sickill/vim-pasta.git
+	ignore = dirty
+[submodule "vim/bundle/whitespaste"]
+	path = vim/bundle/whitespaste
+	url = https://github.com/AndrewRadev/whitespaste.vim.git
+	ignore = dirty

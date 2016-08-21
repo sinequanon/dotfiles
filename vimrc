@@ -435,7 +435,7 @@
         nnoremap <silent> <leader>n :NERDTreeToggle<cr>
         let NERDTreeMinimalUI=1
         let NERDTreeDirArrows=1
-        nnoremap <leader>ns :NERDTreeFind<cr>
+        nnoremap <silent> <leader>ns :NERDTreeFind<cr>
         augroup NerdTree
             autocmd!
             au FileType nerdtree setlocal nolist
