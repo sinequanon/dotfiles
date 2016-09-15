@@ -79,7 +79,7 @@
     set sidescroll=5                            " Number of columns to scroll when margin is reached
     if !has('nvim')
         set encoding=utf-8                      " UTF-8 encoding when displayed
-        set fileencoding=utf-8                  " UTF-8 encoding when written to file 
+        set fileencoding=utf-8                  " UTF-8 encoding when written to file
     endif
     set diffopt=iwhite                          " Ignore whitespace during vimdiffs
     "set t_Co=256                                " Sets terminal colors to 256
@@ -107,9 +107,9 @@
     " git grep
     command -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
     " Free search
-    nnoremap <f3> :Ggr -i --untracked
+    nnoremap <f3> :Ggr -i --untracked<space>
     " Search word under cursor
-    nnoremap <S-f3> :Ggr -i --untracked <cword><cr>
+    nnoremap <S-f3> :Ggr -i --untracked<space><cword><cr>
 
     "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
     "nnoremap <up> <nop>
@@ -284,7 +284,7 @@
         autocmd BufNewFile,BufRead * :checktime
 
         " Auto open quick fix window after any grep command. Mosty for GitGrep
-        "autocmd QuickFixCmdPost *grep* cwindow
+        autocmd QuickFixCmdPost *grep* cwindow
 
         " Redraw screen whenever focus is set to buffer
         autocmd FocusGained * :redraw!
@@ -449,7 +449,7 @@
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
         let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'java','groovy'], 'passive_filetypes': ['less', 'css', 'scss'] }
         "Make syntastic use eslint instead of the default jshint
-        let g:syntastic_javascript_checkers = ['jshint', 'eslint']
+        let g:syntastic_javascript_checkers = ['eslint']
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list = 1
         let g:syntastic_check_on_open = 0
@@ -513,7 +513,7 @@
 
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw'
-        let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
+        let g:ctrlp_custom_ignore = '\v[\/](.*node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
         nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -521,6 +521,7 @@
 
     " {{{ plugin : GitGutter
         au VimEnter * highlight clear SignColumn
+        let g:gitgutter_sign_column_always = 1
     " }}}
 
     " {{{ plugin : Sideways
