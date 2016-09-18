@@ -2,3 +2,6 @@
 .DS_Store
 tags
 .gitignore
+screen-256color.ti
+\.*netrwhist
+

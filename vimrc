@@ -230,9 +230,16 @@
     "inoremap ;;<cr> <down><end>;
     "inoremap ..<cr> <down><end>.
     "inoremap ,,<cr> <down><end>,
-    inoremap ;;<bs> <down><end>;<cr><up><up><end>
-    inoremap ..<bs> <down><end>.<cr><up><up><end>
-    inoremap ,,<bs> <down><end>,<cr><up><up><end>
+    " Add punctuation then go back to last position
+    inoremap ;;<bs> <space><esc>]}a;<esc>''i
+    inoremap ..<bs> <space><esc>]}a.<esc>''i
+    inoremap ,,<bs> <space><esc>]}a,<esc>''i
+    " Add punctuation with carriage return below then go back to last position
+    inoremap ;;<bs><bs> <space><esc>]}a;<cr><esc>''i
+    inoremap ..<bs><bs> <space><esc>]}a.<cr><esc>''i
+    inoremap ,,<bs><bs> <space><esc>]}a,<cr><esc>''i
+    " Add return to end of block
+    inoremap <cr><cr><bs> <space><esc>]}o<esc>''i
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
@@ -635,5 +642,8 @@
     " {{{ plugin : mustache-handlebars
         let g:mustache_abbreviations = 1
     " }}}
-" }}}
+    "
+    " {{{ plugin : nerdcomment
+        let g:NERDSpaceDelims = 1 
+    " }}}
 " vim:foldmethod=marker:foldlevel=0
