@@ -237,31 +237,35 @@ endsnippet
 
 # console.log
 snippet cl
-console.log(${0});
+console.log(${0})
+endsnippet
+# console.log value with format
+snippet clf
+console.log('${1} : %${2}', $1)
 endsnippet
 # console.log value
 snippet clv
-console.log('${1} : %${2}', $1);
+console.log('${1}', $1)
 endsnippet
 # console.debug
 snippet cd
-console.debug(${0});
+console.debug(${0})
 endsnippet
 # console.trace
 snippet ct
-console.trace(${0:label});
+console.trace(${0:label})
 endsnippet
 # console.time
 snippet ctime
-console.time(${0:label});
+console.time(${0:label})
 endsnippet
 # console.assert
 snippet ca
-console.assert(${1:expression}, ${0:obj});
+console.assert(${1:expression}, ${0:obj})
 endsnippet
 # console.dir
 snippet cdir
-console.dir(${0:obj});
+console.dir(${0:obj})
 endsnippet
 
 # Misc

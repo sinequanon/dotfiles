@@ -357,9 +357,11 @@
     hi htmlArg gui=italic
     hi Comment gui=italic
     hi Type    gui=italic
+    hi jsClassKeywords gui=italic
     hi htmlArg cterm=italic
     hi Comment cterm=italic
     hi Type    cterm=italic
+    hi jsClassKeywords cterm=italic ctermfg=12
 
     " Setup from MacVim
     if has("gui_running")
@@ -367,7 +369,7 @@
         if s:uname == "Darwin\n"
 
             "set guifont=Droid\ Sans\ Mono\ for\ Powerline:h14
-            set guifont=Meslo\ LG\ M\ for\ Powerline:h14
+            set guifont=Operator\ Mono\ SSm:h14
 
             " Turn off gui scrollbars
             set guioptions-=r
@@ -624,10 +626,6 @@
         let g:space_no_diff = 1
     " }}}
 
-    " {{{ plugin : rainbow parentheses
-        let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-    " }}}
-
     " {{{ plugin : javascript
         let javascript_enable_domhtmlcss  = 1
 
@@ -654,6 +652,14 @@
     " }}}
     "
     " {{{ plugin : nerdcomment
-        let g:NERDSpaceDelims = 1 
+        let g:NERDSpaceDelims = 1
+    " }}}
+
+    " {{{ plugin : ragtag
+        let g:ragtag_global_maps = 1
+    " }}}
+    
+    " {{{ plugin : vim-jsx
+        let g:jsx_ext_required = 0 
     " }}}
 " vim:foldmethod=marker:foldlevel=0
