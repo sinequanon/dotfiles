@@ -224,22 +224,22 @@
     "inoremap ;<cr> <end>;
     "inoremap .<cr> <end>.
     "inoremap ,<cr> <end>,
-    inoremap ;<bs> <esc>maA;<esc>`ali
-    inoremap .<bs> <esc>maA.<esc>`ali
-    inoremap ,<bs> <esc>maA,<esc>`ali
+    " inoremap ;<bs> <esc>maA;<esc>`ali
+    " inoremap .<bs> <esc>maA.<esc>`ali
+    " inoremap ,<bs> <esc>maA,<esc>`ali
     "inoremap ;;<cr> <down><end>;
     "inoremap ..<cr> <down><end>.
     "inoremap ,,<cr> <down><end>,
     " Add punctuation then go back to last position
-    inoremap ;;<bs> <space><esc>]}a;<esc>''i
-    inoremap ..<bs> <space><esc>]}a.<esc>''i
-    inoremap ,,<bs> <space><esc>]}a,<esc>''i
+    " inoremap ;;<bs> <space><esc>]}a;<esc>''i
+    " inoremap ..<bs> <space><esc>]}a.<esc>''i
+    " inoremap ,,<bs> <space><esc>]}a,<esc>''i
     " Add punctuation with carriage return below then go back to last position
-    inoremap ;;<bs><bs> <space><esc>]}a;<cr><esc>''i
-    inoremap ..<bs><bs> <space><esc>]}a.<cr><esc>''i
-    inoremap ,,<bs><bs> <space><esc>]}a,<cr><esc>''i
+    " inoremap ;;<bs><bs> <space><esc>]}a;<cr><esc>''i
+    " inoremap ..<bs><bs> <space><esc>]}a.<cr><esc>''i
+    " inoremap ,,<bs><bs> <space><esc>]}a,<cr><esc>''i
     " Add return to end of block
-    inoremap <cr><cr><bs> <space><esc>]}o<esc>''i
+    " inoremap <cr><cr><bs> <space><esc>]}o<esc>''i
 
     " Open previously opened buffer using tab
     "nnoremap <tab> :b#<cr>
@@ -267,7 +267,8 @@
     nmap <silent> dsf ds)db
 
     " close tags
-    imap ,,/ </<C-x><C-o><Esc>%i
+    " Copied from ragtag
+    inoremap <silent> ,,/ <Esc>ciW<Lt><C-R>"></<C-R>"><Esc>F<i
 " }}}
 
 " {{{ Autogroups
@@ -352,6 +353,13 @@
     "highlight Pmenu        ctermbg=240 ctermfg=12
     "highlight PmenuSel     ctermbg=3   ctermfg=1
     "highlight SpellBad     ctermbg=0   ctermfg=1
+
+    hi htmlArg gui=italic
+    hi Comment gui=italic
+    hi Type    gui=italic
+    hi htmlArg cterm=italic
+    hi Comment cterm=italic
+    hi Type    cterm=italic
 
     " Setup from MacVim
     if has("gui_running")
@@ -520,7 +528,7 @@
 
     " {{{ plugin : ctrlp.vim
         let g:ctrlp_working_path_mode = 'rw'
-        let g:ctrlp_custom_ignore = '\v[\/](.*node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
+        let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
         nnoremap <leader>f :CtrlP<cr>
         nnoremap <leader>b :CtrlPBuffer<cr>
         nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -529,6 +537,8 @@
     " {{{ plugin : GitGutter
         au VimEnter * highlight clear SignColumn
         let g:gitgutter_sign_column_always = 1
+        " Ignore whitespace
+        let g:gitgutter_diff_args= '-w'
     " }}}
 
     " {{{ plugin : Sideways

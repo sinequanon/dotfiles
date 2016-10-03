@@ -4,4 +4,6 @@ tags
 .gitignore
 screen-256color.ti
 \.*netrwhist
+node_modules
+npm-debug.log
 
