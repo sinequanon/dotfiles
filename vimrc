@@ -662,4 +662,8 @@
     " {{{ plugin : vim-jsx
         let g:jsx_ext_required = 0
     " }}}
+
+    " {{{ plugin : airline-theme
+        let g:airline_theme='molokai'
+    " }}}
 " vim:foldmethod=marker:foldlevel=0
