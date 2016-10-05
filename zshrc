@@ -135,6 +135,9 @@ export KEYTIMEOUT=1
 infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
 tic $TERM.ti
 
+#Add personal github token
+export HOMEBREW_GITHUB_API_TOKEN=3d494ae13bbeeabc07bd51b1092326a76474981a
+#
 # Press ctrl-z to put a task into background, then ctrl-z again to get into foreground
 fancy-ctrl-z () {
     if [[ $#BUFFER -eq 0 ]]; then

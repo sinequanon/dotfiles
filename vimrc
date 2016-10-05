@@ -74,7 +74,7 @@
     set autochdir                               " Current directory is always matching the  content of the active window
     set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
     set ofu=syntaxcomplete#Complete
-    "set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
+    set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
     "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
     set sidescroll=5                            " Number of columns to scroll when margin is reached
     if !has('nvim')
@@ -658,8 +658,8 @@
     " {{{ plugin : ragtag
         let g:ragtag_global_maps = 1
     " }}}
-    
+
     " {{{ plugin : vim-jsx
-        let g:jsx_ext_required = 0 
+        let g:jsx_ext_required = 0
     " }}}
 " vim:foldmethod=marker:foldlevel=0
