@@ -29,7 +29,7 @@
     set copyindent                              " Copy the previous indentation on autoindenting
     "set smartindent                             " Automatically inserts indentation
     set cindent                                 " Like smart indent but stricter and more customizable
-    set shiftwidth=4                            " Number of spaces to use for autoindenting
+    set shiftwidth=2                            " Number of spaces to use for autoindenting
     set shiftround                              " Use multiple of shiftwidth when indenting with '<' and '>'
     set showmatch                               " Set show matching parenthesis
     set ignorecase                              " Ignore case when searching
@@ -330,6 +330,11 @@
 
         " Auto reload vimrc
         au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+
+        " Auto load NERDTree on vim open
+        autocmd vimenter * NERDTree
+        " Cursor in non NERDTree window on startup
+        autocmd vimenter * wincmd p
     augroup end
 " }}}
 
