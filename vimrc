@@ -77,6 +77,8 @@
     set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
     "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
     set sidescroll=5                            " Number of columns to scroll when margin is reached
+    set encoding=utf-8                      " UTF-8 encoding when displayed
+    set fileencoding=utf-8                  " UTF-8 encoding when written to file
     if !has('nvim')
         set encoding=utf-8                      " UTF-8 encoding when displayed
         set fileencoding=utf-8                  " UTF-8 encoding when written to file
@@ -483,7 +485,7 @@
     " }}}
 
     " {{{ plugin : Gundo
-        nnoremap <Leader>u :GundoToggle<cr>
+        nnoremap <Leader>u :MundoToggle<cr>
     " }}}
 
     " {{{ Silver Searcher
@@ -669,6 +671,10 @@
     " }}}
 
     " {{{ plugin : airline-theme
-        let g:airline_theme='molokai'
+        let g:airline_theme='hybridline'
+    " }}}
+    
+    " {{{ plugin : vim-closetag
+        let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js"
     " }}}
 " vim:foldmethod=marker:foldlevel=0

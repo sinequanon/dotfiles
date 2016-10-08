@@ -194,10 +194,6 @@
 	path = vim/bundle/vim-markdown
 	url = https://github.com/gabrielelana/vim-markdown.git
 	ignore = dirty
-[submodule "vim/bundle/vim-ragtag"]
-	path = vim/bundle/vim-ragtag
-	url = https://github.com/tpope/vim-ragtag.git
-	ignore = dirty
 [submodule "vim/bundle/html5.vim"]
 	path = vim/bundle/html5.vim
 	url = https://github.com/othree/html5.vim.git
@@ -217,4 +213,8 @@
 [submodule "vim/bundle/vim-nerdtree-syntax-highlight"]
 	path = vim/bundle/vim-nerdtree-syntax-highlight
 	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
+	ignore = dirty
+[submodule "vim/bundle/vim-closetag"]
+	path = vim/bundle/vim-closetag
+	url = https://github.com/alvan/vim-closetag.git
 	ignore = dirty
