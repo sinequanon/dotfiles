@@ -106,10 +106,6 @@
 	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
     ignore = dirty
-[submodule "vim/bundle/last_edit_marker.vim"]
-	path = vim/bundle/last_edit_marker.vim
-	url = https://github.com/vim-scripts/last_edit_marker.vim.git
-    ignore = dirty
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
@@ -157,14 +153,6 @@
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
-	ignore = dirty
-[submodule "vim/bundle/vim-coffee-script"]
-	path = vim/bundle/vim-coffee-script
-	url = https://github.com/strogonoff/vim-coffee-script.git
-	ignore = dirty
-[submodule "vim/bundle/vim-emblem"]
-	path = vim/bundle/vim-emblem
-	url = https://github.com/yalesov/vim-emblem.git
 	ignore = dirty
 [submodule "vim/bundle/ctrlp.vim"]
 	path = vim/bundle/ctrlp.vim

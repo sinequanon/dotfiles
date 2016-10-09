@@ -338,6 +338,19 @@
         " Cursor in non NERDTree window on startup
         autocmd vimenter * wincmd p
     augroup end
+
+    " Taken from last edit marker plugin
+    " Automatically adds a global mark whenever you leave Insert mode, so you can
+    " easily return to text you were last working on, even if you have moved to a
+    " different buffer!  I tend to need this after I have been navigating around
+    " files to do some research.  This saves us from hitting Ctrl-O repeatedly!
+
+    nmap <leader><leader>y g'Z
+
+    augroup LastEditMarker
+        autocmd!
+        autocmd InsertLeave * normal mZ
+    augroup END
 " }}}
 
 " {{{ Color schemes
@@ -676,5 +689,14 @@
     
     " {{{ plugin : vim-closetag
         let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js"
+    " }}}
+    
+    " {{{ plugin : split join
+        " Remove default split join mapping 
+        let g:splitjoin_split_mapping = ''
+        let g:splitjoin_join_mapping = ''
+
+        nmap sj :SplitjoinJoin<cr>
+        nmap sk :SplitjoinSplit<cr>
     " }}}
 " vim:foldmethod=marker:foldlevel=0
