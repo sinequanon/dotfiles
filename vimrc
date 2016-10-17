@@ -271,6 +271,9 @@
     " close tags
     " Copied from ragtag
     inoremap <silent> ,,/ <Esc>ciW<Lt><C-R>"></<C-R>"><Esc>F<i
+
+    " Disable ex mode
+    nnoremap gQ <nop>
 " }}}
 
 " {{{ Autogroups
@@ -686,17 +689,24 @@
     " {{{ plugin : airline-theme
         let g:airline_theme='hybridline'
     " }}}
-    
+
     " {{{ plugin : vim-closetag
         let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js"
     " }}}
-    
+
     " {{{ plugin : split join
-        " Remove default split join mapping 
+        " Remove default split join mapping
         let g:splitjoin_split_mapping = ''
         let g:splitjoin_join_mapping = ''
 
         nmap sj :SplitjoinJoin<cr>
         nmap sk :SplitjoinSplit<cr>
+    " }}}
+
+    " {{{ plugin : vim-jsdoc
+        let g:jsdoc_enable_es6 = 1 
+        let g:jsdoc_underscore_private = 1
+        " let g:jsdoc_allow_input_prompt = 1
+        nnoremap <silent> <leader>js :JsDoc<cr>
     " }}}
 " vim:foldmethod=marker:foldlevel=0
