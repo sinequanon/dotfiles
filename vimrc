@@ -712,4 +712,10 @@
         " let g:jsdoc_allow_input_prompt = 1
         nnoremap <silent> <leader>js :JsDoc<cr>
     " }}}
+
+    " {{{ plugin : vim-devicons
+        " ctrlp buffers don't appear correctly with devicons enabled so turn
+        " it off temporarily
+        let g:webdevicons_enable_ctrlp = 0 
+    " }}}
 " vim:foldmethod=marker:foldlevel=0
