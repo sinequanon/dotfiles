@@ -190,10 +190,6 @@
 	path = vim/bundle/javascript-libraries-syntax.vim
 	url = https://github.com/othree/javascript-libraries-syntax.vim.git
 	ignore = dirty
-[submodule "vim/bundle/yajs.vim"]
-	path = vim/bundle/yajs.vim
-	url = https://github.com/othree/yajs.vim.git
-	ignore = dirty
 [submodule "vim/bundle/es.next.syntax.vim"]
 	path = vim/bundle/es.next.syntax.vim
 	url = https://github.com/othree/es.next.syntax.vim.git
@@ -213,8 +209,4 @@
 [submodule "vim/bundle/vim-node"]
 	path = vim/bundle/vim-node
 	url = https://github.com/moll/vim-node.git
-	ignore = dirty
-[submodule "vim/bundle/jspc.vim"]
-	path = vim/bundle/jspc.vim
-	url = https://github.com/othree/jspc.vim.git
 	ignore = dirty
