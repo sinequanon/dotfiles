@@ -360,7 +360,8 @@
     set background=dark
     "colorscheme base16-railscasts
     "colorscheme jellybeans
-    colorscheme hybrid
+    let g:hybrid_custom_term_colors = 1
+    colorscheme hybrid_material
 
     "highlight clear SignColumn
     "highlight VertSplit    ctermbg=236
@@ -487,9 +488,10 @@
         let g:syntastic_auto_jump=0
         let g:syntastic_auto_loc_list=2
         "let g:syntastic_disabled_filetypes = ['scss', 'css']
-        let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'javascript.jsx', 'css', 'scss'], 'passive_filetypes': ['less'] }
+        let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'javascript.jsx', 'css', 'scss'] }
         "Make syntastic use eslint instead of the default jshint
         let g:syntastic_javascript_checkers = ['eslint']
+        let g:syntastic_css_checkers = ['stylelint']
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list = 1
         let g:syntastic_check_on_open = 0
@@ -707,7 +709,7 @@
     " }}}
 
     " {{{ plugin : vim-jsdoc
-        let g:jsdoc_enable_es6 = 1 
+        let g:jsdoc_enable_es6 = 1
         let g:jsdoc_underscore_private = 1
         " let g:jsdoc_allow_input_prompt = 1
         nnoremap <silent> <leader>js :JsDoc<cr>
@@ -716,6 +718,6 @@
     " {{{ plugin : vim-devicons
         " ctrlp buffers don't appear correctly with devicons enabled so turn
         " it off temporarily
-        let g:webdevicons_enable_ctrlp = 0 
+        let g:webdevicons_enable_ctrlp = 0
     " }}}
 " vim:foldmethod=marker:foldlevel=0

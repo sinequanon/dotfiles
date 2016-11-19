@@ -210,3 +210,6 @@
 	path = vim/bundle/vim-node
 	url = https://github.com/moll/vim-node.git
 	ignore = dirty
+[submodule "vim/bundle/vim-hybrid-material"]
+	path = vim/bundle/vim-hybrid-material
+	url = https://github.com/kristijanhusak/vim-hybrid-material.git
