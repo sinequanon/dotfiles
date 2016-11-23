@@ -153,6 +153,10 @@ bindkey '^Z' fancy-ctrl-z
 
 # Set the shakti environment
 export NODE_ENV=development
+
+# Set hybrid-material colors
+BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 #########################
 
 IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
