@@ -461,36 +461,23 @@
         edit! %
         Neomake
     endfunction
+
+    " Extract variable
+    function! ExtractVariable()
+      try
+        let save_a = @a
+        let variable = input('Variable name: ')
+        normal! gv"ay
+        execute "normal! gvc" . variable
+        execute "normal! O" . variable . " = " . @a
+      finally
+        let @a = save_a
+      endtry
+    endfunction
+    xnoremap <Leader>e <ESC>:call ExtractVariable()<CR>
 " }}}
 
 " Plugins {{{
-    " {{{ plugin : tagbar
-        " Toggle tagbar
-        nmap <silent> <F9> :TagbarToggle<CR>
-        let g:tagbar_type_groovy = {
-            \ 'ctagstype' : 'groovy',
-            \ 'kinds'     : [
-                \ 'p:package',
-                \ 'c:class',
-                \ 'i:interface',
-                \ 'f:function',
-                \ 'i:private variables',
-                \ 'o:protected variables',
-                \ 'u:public variables',
-        \ ]
-        \ }
-
-        let g:tagbar_type_markdown = {
-        \ 'ctagstype' : 'markdown',
-        \ 'kinds' : [
-            \ 'h:Heading_L1',
-            \ 'i:Heading_L2',
-            \ 'k:Heading_L3'
-        \ ]
-        \ }
-
-    " }}}
-
     " {{{ plugin : NERDTree
         nnoremap <silent> <leader>n :NERDTreeToggle<cr>
         let NERDTreeMinimalUI=1
