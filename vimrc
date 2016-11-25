@@ -70,7 +70,7 @@
     set foldlevelstart=10                        " Sets some folds automatically closed
     set nofoldenable                            " Disable folding
     set noesckeys                               " Turn off escape keys
-    set guifont=Menlo\ for\ Powerline:h13                       " Set the font size
+    set guifont=Operator\ Mono\ SSm:h14         " Set the font size
     set autochdir                               " Current directory is always matching the  content of the active window
     set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
     set ofu=syntaxcomplete#Complete
@@ -179,7 +179,7 @@
     inoremap <silent> <leader><leader>s <esc>:update<CR>
 
     "Change inner word in insert mode
-    inoremap ciw <esc>ciw<esc>
+    " inoremap ciw <esc>ciw<esc>
 
     " Use Q for formatting the current paragraph (or selection)
     vmap Q gq
@@ -306,10 +306,10 @@
         autocmd WinEnter * if &previewwindow | wincmd J | endif
 
         " Auto save a file when you leave insert mode or when the user hasn't pressed a key for allotted updatetime
-        autocmd InsertLeave,CursorHold * if expand('%') != '' | update | endif
+        " autocmd InsertLeave,CursorHold * if expand('%') != '' | update | endif
 
         " Automatically source vimrc on save.
-        autocmd! BufWritePost $MYVIMRC source $MYVIMRC
+        " autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 
         "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default
         "on Windows, but it needs to be added explicitly on Linux / OS X.
@@ -336,10 +336,11 @@
         " Auto reload vimrc
         au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
-        " Auto load NERDTree on vim open
-        autocmd vimenter * NERDTree
-        " Cursor in non NERDTree window on startup
-        autocmd vimenter * wincmd p
+        " Auto load NERDTree on vim open then Cursor in non NERDTree window on startup
+        autocmd vimenter * NERDTree | wincmd p
+
+        " Auto run neomake on every buffer write
+        autocmd BufWritePost * Neomake
     augroup end
 
     " Taken from last edit marker plugin
@@ -481,28 +482,6 @@
             autocmd!
             au FileType nerdtree setlocal nolist
         augroup END
-    " }}}
-
-    " {{{ plugin : Syntastic
-        let g:syntastic_enable_signs=1
-        let g:syntastic_auto_jump=0
-        let g:syntastic_auto_loc_list=2
-        "let g:syntastic_disabled_filetypes = ['scss', 'css']
-        let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['javascript', 'javascript.jsx', 'css', 'scss'] }
-        "Make syntastic use eslint instead of the default jshint
-        let g:syntastic_javascript_checkers = ['eslint']
-        let g:syntastic_css_checkers = ['stylelint']
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list = 1
-        let g:syntastic_check_on_open = 0
-        let g:syntastic_check_on_wq = 0
-        " Always run the locally installed eslint instead of the global
-        " version
-        let g:syntastic_javascript_eslint_exe = '$(npm bin)/eslint'
-        "set statusline+=%#warningmsg#
-        "set statusline+=%{SyntasticStatuslineFlag()}
-        "set statusline+=%*
-        nnoremap <silent> <F4> :SyntasticCheck<cr>
     " }}}
 
     " {{{ plugin : Gundo
@@ -720,4 +699,15 @@
         " it off temporarily
         let g:webdevicons_enable_ctrlp = 0
     " }}}
+
+    " {{{ plugin : Neomake
+        let g:neomake_open_list = 2
+        " let g:neomake_verbose = 10
+
+        " let g:neomake_javascript_eslint_maker = {
+        "     \ 'args': ['--fix'],
+        "     \}
+        let g:neomake_javascript_enabled_makers= ['eslint']
+    " }}}
+
 " vim:foldmethod=marker:foldlevel=0
