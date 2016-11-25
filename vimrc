@@ -274,6 +274,9 @@
 
     " Disable ex mode
     nnoremap gQ <nop>
+
+    " Run eslint with autofix
+    nnoremap <silent> <f4> :silent! :call ESLintFix()<CR>
 " }}}
 
 " {{{ Autogroups
@@ -443,6 +446,21 @@
 " }}}
 
 " {{{ Functions
+    function ESLintFix()
+        " let g:eslint_exe = nrun#Which('eslint')
+        " let g:neomake_eslintfix_maker = {
+        "     \ 'exe': g:eslint_exe,
+        "     \ 'args': ['--fix', '%', '>/dev/null', '2>&1'],
+        "     \}
+        " Neomake! eslintfix
+        " edit! %
+        " Neomake
+
+        let g:eslint_exe = nrun#Which('eslint')
+        silent execute "!" . g:eslint_exe . " --fix % >/dev/null 2>&1" | redraw!
+        edit! %
+        Neomake
+    endfunction
 " }}}
 
 " Plugins {{{
