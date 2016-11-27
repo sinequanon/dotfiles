@@ -214,3 +214,7 @@
 	path = vim/bundle/neomake
 	url = https://github.com/neomake/neomake.git
 	ignore = dirty
+[submodule "vim/bundle/nrun.vim"]
+	path = vim/bundle/nrun.vim
+	url = https://github.com/jaawerth/nrun.vim.git
+	ignore = dirty
