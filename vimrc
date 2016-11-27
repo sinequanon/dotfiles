@@ -668,7 +668,13 @@
     " let g:neomake_javascript_eslint_maker = {
     "     \ 'args': ['--fix'],
     "     \}
-    let g:neomake_javascript_enabled_makers= ['eslint']
+    " let g:neomake_javascript_enabled_makers= ['eslint']
+    " let g:neomake_css_enabled_makers= ['slint']
+    " Use git to find the root directory of a repo in order to use local
+    " versions of eslint and stylelint. Suppress errors if any are found
+    let gitroot = system("git rev-parse --show-toplevel 2> /dev/null | tr -d '\\n'")
+    let g:neomake_javascript_eslint_exe = gitroot . "/node_modules/.bin/eslint"
+    let g:neomake_css_stylelint_exe = gitroot . "/node_modules/.bin/stylelint"
   " }}}
 " }}}
 
