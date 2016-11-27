@@ -348,10 +348,13 @@
 
     " Auto load NERDTree on vim open then Cursor in non NERDTree window on startup
     autocmd vimenter * NERDTree | wincmd p
-
-    " Auto run neomake on every buffer write
-    autocmd BufWritePost * Neomake
   augroup end
+
+  augroup Neomake
+    " Auto run neomake on every buffer open or write
+    autocmd! BufEnter,BufWritePost *.css Neomake
+    autocmd! BufEnter,BufWritePost *.js Neomake
+  augroup END
 
   augroup LastEditMarker
     autocmd!
