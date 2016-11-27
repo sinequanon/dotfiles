@@ -632,7 +632,7 @@
   " }}}
 
   " {{{ plugin : airline-theme
-    let g:airline_theme='hybridline'
+    let g:airline_theme='molokai'
   " }}}
 
   " {{{ plugin : vim-closetag
