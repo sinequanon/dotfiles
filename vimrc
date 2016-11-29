@@ -458,7 +458,7 @@
       " Neomake
 
       let g:eslint_exe = nrun#Which('eslint')
-      silent execute "!" . g:eslint_exe . " --fix % >/dev/null 2>&1" | redraw!
+      silent execute "!" . g:eslint_exe . " --no-ignore --fix % >/dev/null 2>&1" | redraw!
       edit! %
       Neomake
   endfunction
