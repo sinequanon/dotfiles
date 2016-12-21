@@ -70,7 +70,7 @@
   set foldlevelstart=10                        " Sets some folds automatically closed
   set nofoldenable                            " Disable folding
   set noesckeys                               " Turn off escape keys
-  set guifont=Operator\ Mono\ SSm:h14         " Set the font size
+  set guifont=OperatorMonoSSm\ Nerd\ Font:h14 " Set the font size
   set autochdir                               " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
@@ -100,12 +100,9 @@
 
   " Always show multiple ctag definitions if it exists instead of jumping to the
   " first definition
-  nnoremap <c-]> g<c-]>
-  inoremap <c-]> g<c-]>
+  " nnoremap <c-]> g<c-]>
+  " inoremap <c-]> g<c-]>
 
-  " Create a custom command for silently opening a quick fix window after
-  " git grep
-  command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
   " Free search
   nnoremap <f3> :Ggr -i --untracked<space>
   " Search word under cursor
@@ -122,8 +119,8 @@
   "inoremap <right> <nop>
 
   " Remap j and k to act as expected when used on long, wrapped, lines
-  nnoremap j gj
-  nnoremap k gk
+  nnoremap <buffer> <silent> j gj
+  nnoremap <buffer> <silent> k gk
 
   " Use H and L to get to the beginning and end of the text on a line
   noremap H ^
@@ -174,7 +171,7 @@
 
   "Easy save files
   map <silent> <leader><leader>s :update<CR>
-  inoremap <silent> <leader><leader>s <esc>:update<CR>
+  " inoremap <silent> <leader><leader>s <esc>:update<CR>
 
   "Change inner word in insert mode
   " inoremap ciw <esc>ciw<esc>
@@ -282,6 +279,16 @@
   " different buffer!  I tend to need this after I have been navigating around
   " files to do some research.  This saves us from hitting Ctrl-O repeatedly!
   nmap <leader><leader>y g'Z
+
+  nnoremap <silent> <f7> :SortCssBraceContents<cr>
+" }}}
+
+" {{{ Commands
+  command! SortCssBraceContents :g#\({\n\)\@<=#.,/\.*[{}]\@=/-1 sort
+
+  " Create a custom command for silently opening a quick fix window after
+  " git grep
+  command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
 " }}}
 
 " {{{ Autogroups
@@ -384,6 +391,8 @@
   "highlight PmenuSel     ctermbg=3   ctermfg=1
   "highlight SpellBad     ctermbg=0   ctermfg=1
 
+  " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
+  " to get this working on new setups
   hi htmlArg gui=italic
   hi Comment gui=italic
   hi Type    gui=italic
@@ -395,17 +404,13 @@
 
   " Setup from MacVim
   if has("gui_running")
-      let s:uname = system("uname")
-      if s:uname == "Darwin\n"
-
-          "set guifont=Droid\ Sans\ Mono\ for\ Powerline:h14
-          set guifont=Operator\ Mono\ SSm:h14
-
-          " Turn off gui scrollbars
-          set guioptions-=r
-          set guioptions-=L
-
-      endif
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"
+      " Turn off gui scrollbars
+      set guioptions-=r
+      set guioptions-=L
+      set linespace=6
+    endif
   endif
 
   " Configure colorcolumn
@@ -595,7 +600,6 @@
   " }}}
 
   " {{{ plugin : auto-pairs
-    let g:AutoPairsShortcutJump = 'î'
     let g:AutoPairsFlyMode = 1
     " Only jump to the closing pair on the same line
     let g:AutoPairsMultilineClose = 0
@@ -659,6 +663,12 @@
   " }}}
 
   " {{{ plugin : vim-devicons
+    if has('gui_running')
+      " Fix half-width icons issue in macvim
+      " See https://github.com/ryanoasis/vim-devicons/issues/133
+      set ambiwidth=double
+    endif
+
     " ctrlp buffers don't appear correctly with devicons enabled so turn
     " it off temporarily
     let g:webdevicons_enable_ctrlp = 0
@@ -680,6 +690,16 @@
     " let g:neomake_css_stylelint_exe = gitroot . "/node_modules/.bin/stylelint"
     let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
     let g:neomake_css_stylelint_exe = nrun#Which('stylelint')
+    " let test_eslintrc = system("git rev-parse --show-toplevel 2> /dev/null | tr -d '\n' ") . '/test/.eslintrc'
+    " let g:neomake_javascript_eslinttest_maker = {
+          " \ 'exe': g:neomake_javascript_eslint_exe,
+          " \ 'args': ['-f', 'compact', '--config', test_eslintrc],
+          " \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
+          " \ '%W%f: line %l\, col %c\, Warning - %m'
+          " \ }
+
+    " autocmd! BufEnter,BufWritePost *.spec.js,*.jest.js Neomake eslinttest
+    " autocmd! BufEnter,BufWritePost \(^spec.js\)\@<! Neomake eslint
   " }}}
 " }}}
 
