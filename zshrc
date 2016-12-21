@@ -107,8 +107,6 @@ alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 
-source /Users/rowell/Dropbox/dev/base16-shell/base16-railscasts.dark.sh
-
 # Unify all langs
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
