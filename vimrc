@@ -406,6 +406,8 @@
   if has("gui_running")
     let s:uname = system("uname")
     if s:uname == "Darwin\n"
+
+      set guifont=OperatorMonoSSm\ Nerd\ Font:h15 " Set the font size
       " Turn off gui scrollbars
       set guioptions-=r
       set guioptions-=L
@@ -555,19 +557,18 @@
 
     let g:airline_powerline_fonts = 1
     let g:airline#extensions#branch#enabled = 1
-    let g:airline#extensions#syntastic#enabled = 1
     let g:airline#extensions#hunks#enabled = 1
     let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
     let g:airline#extensions#whitespace#enabled = 0
 
     " powerline symbols
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
+    " let g:airline_left_sep = ''
+    " let g:airline_left_alt_sep = ''
+    " let g:airline_right_sep = ''
+    " let g:airline_right_alt_sep = ''
+    " let g:airline_symbols.branch = ''
+    " let g:airline_symbols.readonly = ''
+    " let g:airline_symbols.linenr = ''
   " }}}
 
   " {{{ plugin : Easy align
@@ -690,6 +691,8 @@
     " let g:neomake_css_stylelint_exe = gitroot . "/node_modules/.bin/stylelint"
     let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
     let g:neomake_css_stylelint_exe = nrun#Which('stylelint')
+    " javascript.jsx types confuse neomake so explicitly set the maker
+    let g:neomake_jsx_enabled_makers = ['eslint']
     " let test_eslintrc = system("git rev-parse --show-toplevel 2> /dev/null | tr -d '\n' ") . '/test/.eslintrc'
     " let g:neomake_javascript_eslinttest_maker = {
           " \ 'exe': g:neomake_javascript_eslint_exe,

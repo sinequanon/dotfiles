@@ -130,8 +130,13 @@ bindkey '^r' history-incremental-search-backward
 export KEYTIMEOUT=1
 
 # Fix neovims handling of ctrl-h
-infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-tic $TERM.ti
+# infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+# tic $TERM.ti
+
+# Give iterm the ability to display font italics
+# https://disqus.com/home/discussion/alexpearce/enabling_italic_fonts_in_iterm_2_tmux_and_vim_19/#comment-2508208541
+{ infocmp -1 xterm-256color ; echo -e "\tsitm=\\E[3m,\n\tritm=\\E[23m,"; } > xterm-256color.terminfo
+tic xterm-256color.terminfo
 
 #Add personal github token
 export HOMEBREW_GITHUB_API_TOKEN=3d494ae13bbeeabc07bd51b1092326a76474981a
@@ -203,11 +208,7 @@ kubrickjstags () {
 # cd ..
 # done
 
-# OPAM configuration
-. /Users/rowell/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-(which opam > /dev/null) && eval $(opam config env)
-
 export NVM_DIR="/Users/rowell/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:`yarn global bin`"
