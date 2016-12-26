@@ -281,6 +281,14 @@
   nmap <leader><leader>y g'Z
 
   nnoremap <silent> <f7> :SortCssBraceContents<cr>
+
+  " Neovim / OSX incorrectly maps backspace with ctrl-H. Instead of a custom
+  " terminfo solution, just remap in vimrc
+  " https://github.com/neovim/neovim/issues/2048#issuecomment-78534227
+  if has('nvim')
+    nmap <BS> <C-W>h
+  endif
+
 " }}}
 
 " {{{ Commands
