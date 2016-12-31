@@ -360,9 +360,6 @@
 
     " Return cursor to previous location on load
     autocmd BufReadPost * normal `"
-
-    " Auto load NERDTree on vim open then Cursor in non NERDTree window on startup
-    autocmd vimenter * NERDTree | wincmd p
   augroup end
 
   augroup Neomake
@@ -494,17 +491,6 @@
 " }}}
 
 " Plugins {{{
-  " {{{ plugin : NERDTree
-    nnoremap <silent> <leader>n :NERDTreeToggle<cr>
-    let NERDTreeMinimalUI=1
-    let NERDTreeDirArrows=1
-    nnoremap <silent> <leader>ns :NERDTreeFind<cr>
-    augroup NerdTree
-        autocmd!
-        au FileType nerdtree setlocal nolist
-    augroup END
-  " }}}
-
   " {{{ plugin : Gundo
     nnoremap <Leader>u :MundoToggle<cr>
   " }}}
@@ -637,6 +623,7 @@
 
   " {{{ plugin : cursorcross
     let g:cursorcross_dynamic = 'clw'
+    let g:cursorcross_mappings = 0
   " }}}
 
   " {{{ plugin : nerdcomment
@@ -648,7 +635,11 @@
   " }}}
 
   " {{{ plugin : airline-theme
-    let g:airline_theme='molokai'
+    if has('gui_running')
+      let g:airline_theme='solarized'
+    else
+      let g:airline_theme='molokai'
+    endif
   " }}}
 
   " {{{ plugin : vim-closetag
@@ -669,18 +660,6 @@
     let g:jsdoc_underscore_private = 1
     " let g:jsdoc_allow_input_prompt = 1
     nnoremap <silent> <leader>js :JsDoc<cr>
-  " }}}
-
-  " {{{ plugin : vim-devicons
-    if has('gui_running')
-      " Fix half-width icons issue in macvim
-      " See https://github.com/ryanoasis/vim-devicons/issues/133
-      set ambiwidth=double
-    endif
-
-    " ctrlp buffers don't appear correctly with devicons enabled so turn
-    " it off temporarily
-    let g:webdevicons_enable_ctrlp = 0
   " }}}
 
   " {{{ plugin : Neomake

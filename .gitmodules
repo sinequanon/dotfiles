@@ -2,10 +2,6 @@
 	path = vim/bundle/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs.git
 	ignore = dirty
-[submodule "vim/bundle/nerdtree"]
-	path = vim/bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
-	ignore = dirty
 [submodule "vim/bundle/sideways.vim"]
 	path = vim/bundle/sideways.vim
 	url = https://github.com/AndrewRadev/sideways.vim.git
@@ -170,14 +166,6 @@
 	path = vim/bundle/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 	ignore = dirty
-[submodule "vim/bundle/vim-devicons"]
-	path = vim/bundle/vim-devicons
-	url = https://github.com/ryanoasis/vim-devicons.git
-	ignore = dirty
-[submodule "vim/bundle/vim-nerdtree-syntax-highlight"]
-	path = vim/bundle/vim-nerdtree-syntax-highlight
-	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
-	ignore = dirty
 [submodule "vim/bundle/vim-closetag"]
 	path = vim/bundle/vim-closetag
 	url = https://github.com/alvan/vim-closetag.git
@@ -218,3 +206,6 @@
 	path = vim/bundle/nrun.vim
 	url = https://github.com/jaawerth/nrun.vim.git
 	ignore = dirty
+[submodule "vim/bundle/vim-vinegar"]
+	path = vim/bundle/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar.git
