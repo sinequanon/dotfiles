@@ -104,6 +104,8 @@ alias cshakti="pkill gulp; gulp clearCache && gulp clean && gulp locales && gulp
 alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
 alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
+alias rm="trash"
+
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 

@@ -691,6 +691,11 @@
     " autocmd! BufEnter,BufWritePost *.spec.js,*.jest.js Neomake eslinttest
     " autocmd! BufEnter,BufWritePost \(^spec.js\)\@<! Neomake eslint
   " }}}
+
+  " {{{
+    " Allow netrw to remove non-empty local directories
+    let g:netrw_localrmdir='trash'
+  " }}}
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0
