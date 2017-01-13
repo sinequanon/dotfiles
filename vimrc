@@ -692,7 +692,7 @@
     " autocmd! BufEnter,BufWritePost \(^spec.js\)\@<! Neomake eslint
   " }}}
 
-  " {{{
+  " {{{ plugin : netrw
     " Allow netrw to remove non-empty local directories
     let g:netrw_localrmdir='trash'
   " }}}

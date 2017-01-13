@@ -146,14 +146,6 @@
 	path = vim/bundle/vim-hybrid
 	url = https://github.com/w0ng/vim-hybrid.git
 	ignore = dirty
-[submodule "vim/bundle/vim-pasta"]
-	path = vim/bundle/vim-pasta
-	url = https://github.com/sickill/vim-pasta.git
-	ignore = dirty
-[submodule "vim/bundle/whitespaste"]
-	path = vim/bundle/whitespaste
-	url = https://github.com/AndrewRadev/whitespaste.vim.git
-	ignore = dirty
 [submodule "vim/bundle/splitjoin"]
 	path = vim/bundle/splitjoin
 	url = https://github.com/AndrewRadev/splitjoin.vim.git

@@ -92,7 +92,7 @@ else
     alias vim="/usr/local/bin/nvim"
 fi
 alias vi=vim
-alias tmux="TERM=screen-256color-bce tmux";
+alias tmux="TERM=screen-256color tmux";
 alias -s txt=vim
 alias -s html=vim
 alias -s vim=vim
@@ -209,6 +209,9 @@ kubrickjstags () {
 # done
 # cd ..
 # done
+
+# Open Chrome with CORS disabled
+# open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --disable-web-security --user-data-dir
 
 export NVM_DIR="/Users/rowell/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
