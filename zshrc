@@ -46,7 +46,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases gulp zsh-syntax-highlighting)
+plugins=(git common-aliases gulp zsh-syntax-highlighting docker)
 
 # User configuration
 
@@ -105,6 +105,32 @@ alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
 alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
 alias rm="trash"
+
+# Docker aliases. From https://github.com/tcnksm/docker-alias/blob/master/zshrc
+#
+# Get container process
+alias dps="docker ps"
+
+# Get process included stop container
+alias dpa="docker ps -a"
+
+# Get images
+alias di="docker images"
+
+# Bash into running container
+dbash() { docker exec -it "$1" /bin/bash; }
+
+# Stop all containers
+dstop() { docker stop $(docker ps -a -q); }
+
+# Remove all containers
+drm() { docker rm $(docker ps -a -q); }
+
+# Stop and Remove all containers
+alias drmf='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)'
+
+# Find lines of code
+loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
 # Start Z https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
@@ -217,3 +243,6 @@ export NVM_DIR="/Users/rowell/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 export PATH="$PATH:`yarn global bin`"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

@@ -201,3 +201,16 @@
 [submodule "vim/bundle/vim-vinegar"]
 	path = vim/bundle/vim-vinegar
 	url = https://github.com/tpope/vim-vinegar.git
+	ignore = dirty
+[submodule "vim/bundle/vim-markdown-preview"]
+	path = vim/bundle/vim-markdown-preview
+	url = https://github.com/JamshedVesuna/vim-markdown-preview.git
+	ignore = dirty
+[submodule "vim/bundle/neoformat"]
+	path = vim/bundle/neoformat
+	url = https://github.com/sbdchd/neoformat.git
+	ignore = dirty
+[submodule "vim/bundle/ale"]
+	path = vim/bundle/ale
+	url = https://github.com/w0rp/ale.git
+	ignore = dirty

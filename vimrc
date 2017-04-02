@@ -92,6 +92,7 @@
   set ttimeoutlen=0                           " Sets timeout for keycode delays
   set updatetime=500                         " Change time in which swap file will be written to disk
   set lazyredraw                              " Screen is not redrawn while executing macros, registers, etc
+  set bufhidden=unload                        " Unload buffer when hidden
 " }}}
 
 " {{{ Remappings
@@ -270,8 +271,8 @@
   " Disable ex mode
   nnoremap gQ <nop>
 
-  " Run eslint with autofix
-  nnoremap <silent> <f4> :silent! :call ESLintFix()<CR>
+  " Run prettier-eslint with autofix
+  nnoremap <silent> <f4> :silent! :Neoformat<cr>
 
   " Taken from last edit marker plugin
   " Automatically adds a global mark whenever you leave Insert mode, so you can
@@ -289,6 +290,8 @@
     nmap <BS> <C-W>h
   endif
 
+  " Insert comma at end of line
+  imap <leader>c <c-o>ma<c-o>A,<c-o>`a
 " }}}
 
 " {{{ Commands
@@ -362,16 +365,12 @@
     autocmd BufReadPost * normal `"
   augroup end
 
-  augroup Neomake
-    " Auto run neomake on every buffer open or write
-    autocmd! BufEnter,BufWritePost *.css Neomake
-    autocmd! BufEnter,BufWritePost *.js Neomake
-  augroup END
-
   augroup LastEditMarker
     autocmd!
     autocmd InsertLeave * normal mZ
   augroup END
+
+  autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
 " }}}
 
 " {{{ Color schemes
@@ -459,22 +458,6 @@
 " }}}
 
 " {{{ Functions
-  function! ESLintFix()
-      " let g:eslint_exe = nrun#Which('eslint')
-      " let g:neomake_eslintfix_maker = {
-      "     \ 'exe': g:eslint_exe,
-      "     \ 'args': ['--fix', '%', '>/dev/null', '2>&1'],
-      "     \}
-      " Neomake! eslintfix
-      " edit! %
-      " Neomake
-
-      let g:eslint_exe = nrun#Which('eslint')
-      silent execute "!" . g:eslint_exe . " --no-ignore --fix % >/dev/null 2>&1" | redraw!
-      edit! %
-      Neomake
-  endfunction
-
   " Extract variable
   function! ExtractVariable()
     try
@@ -662,40 +645,28 @@
     nnoremap <silent> <leader>js :JsDoc<cr>
   " }}}
 
-  " {{{ plugin : Neomake
-    " let g:neomake_open_list = 2
-    " let g:neomake_verbose = 10
-
-    " let g:neomake_javascript_eslint_maker = {
-    "     \ 'args': ['--fix'],
-    "     \}
-    " let g:neomake_javascript_enabled_makers= ['eslint']
-    " let g:neomake_css_enabled_makers= ['slint']
-    " Use git to find the root directory of a repo in order to use local
-    " versions of eslint and stylelint. Suppress errors if any are found
-    " let gitroot = system("git rev-parse --show-toplevel 2> /dev/null | tr -d '\\n'")
-    " let g:neomake_javascript_eslint_exe = gitroot . "/node_modules/.bin/eslint"
-    " let g:neomake_css_stylelint_exe = gitroot . "/node_modules/.bin/stylelint"
-    let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
-    let g:neomake_css_stylelint_exe = nrun#Which('stylelint')
-    " javascript.jsx types confuse neomake so explicitly set the maker
-    let g:neomake_jsx_enabled_makers = ['eslint']
-    " let test_eslintrc = system("git rev-parse --show-toplevel 2> /dev/null | tr -d '\n' ") . '/test/.eslintrc'
-    " let g:neomake_javascript_eslinttest_maker = {
-          " \ 'exe': g:neomake_javascript_eslint_exe,
-          " \ 'args': ['-f', 'compact', '--config', test_eslintrc],
-          " \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-          " \ '%W%f: line %l\, col %c\, Warning - %m'
-          " \ }
-
-    " autocmd! BufEnter,BufWritePost *.spec.js,*.jest.js Neomake eslinttest
-    " autocmd! BufEnter,BufWritePost \(^spec.js\)\@<! Neomake eslint
-  " }}}
-
   " {{{ plugin : netrw
     " Allow netrw to remove non-empty local directories
     let g:netrw_localrmdir='trash'
   " }}}
-" }}}
 
+  "{{{ plugin: vim markdown preview
+    let vim_markdown_preview_github=1
+    let vim_markdown_preview_browser='Google Chrome'
+    let vim_markdown_preview_toggle=3
+    let vim_markdown_preview_hotkey='<C-m>'
+  "}}}
+
+  "{{{ plugin : neoformat
+    let g:neoformat_only_msg_on_error = 1
+    let g:neoformat_verbose = 0 " only affects the verbosity of neoformat
+    let g:neoformat_enabled_javascript = ['prettiereslint']
+  "}}}
+
+  "{{{ plugin: ale
+    let g:ale_linters = {
+    \     'javascript': ['eslint'],
+    \}
+  "}}}
+" }}}
 " vim:foldmethod=marker:foldlevel=0

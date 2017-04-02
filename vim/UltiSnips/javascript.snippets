@@ -276,13 +276,16 @@ endsnippet
 snippet clv
 console.log('${1}', $1)
 endsnippet
+snippet clvf
+console.log('${1}', JSON.stringify($1, null, 2))
+endsnippet
 # console.debug
 snippet cd
 console.debug(${0})
 endsnippet
 # console.debug value
-snippet cdv
-console.debug('${1}', $1)
+snippet cdvf
+console.debug('${1}', JSON.stringify($1, null, 2))
 endsnippet
 # console.trace
 snippet ct
@@ -291,6 +294,9 @@ endsnippet
 # console.time
 snippet ctime
 console.time(${0:label})
+endsnippet
+snippet ctimed
+console.timeEnd(${0:label})
 endsnippet
 # console.assert
 snippet ca
