@@ -69,7 +69,9 @@
   set foldmethod=syntax                       " Sets folding method to syntax based on filetype
   set foldlevelstart=10                        " Sets some folds automatically closed
   set nofoldenable                            " Disable folding
-  set noesckeys                               " Turn off escape keys
+  if has("gui_running")
+    set noesckeys                               " Turn off escape keys
+  endif
   set guifont=OperatorMonoSSm\ Nerd\ Font:h14 " Set the font size
   set autochdir                               " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
@@ -342,6 +344,8 @@
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
+    autocmd BufWritePost *.js,*.jsx call prettier#run(1)
+
     "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default
     "on Windows, but it needs to be added explicitly on Linux / OS X.
     autocmd FileType vim setlocal keywordprg=:help
@@ -377,8 +381,9 @@
   set background=dark
   "colorscheme base16-railscasts
   "colorscheme jellybeans
-  let g:hybrid_custom_term_colors = 1
+  "let g:hybrid_custom_term_colors = 1
   colorscheme hybrid_material
+  "colorscheme OceanicNext
 
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
@@ -422,7 +427,7 @@
   " Configure colorcolumn
   "highlight ColorColumn ctermbg=235 guibg=#2f1111
   " Highlight column 80 and everything past column 120
-  let &colorcolumn="80,".join(range(120,999),",")
+  let &colorcolumn="100,".join(range(120,999),",")
 " }}}
 
 " {{{ Windows
@@ -474,10 +479,6 @@
 " }}}
 
 " Plugins {{{
-  " {{{ plugin : Gundo
-    nnoremap <Leader>u :MundoToggle<cr>
-  " }}}
-
   " {{{ Silver Searcher
     " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
     if executable('ag')
@@ -522,11 +523,6 @@
     let g:gitgutter_diff_args= '-w'
   " }}}
 
-  " {{{ plugin : Sideways
-    nnoremap <silent> <leader>( :SidewaysLeft<cr>
-    nnoremap <silent> <leader>) :SidewaysRight<cr>
-  " }}}
-
   " {{{ plugin : Airline
     if !exists('g:airline_symbols')
         let g:airline_symbols = {}
@@ -548,14 +544,6 @@
     " let g:airline_symbols.linenr = ''
   " }}}
 
-  " {{{ plugin : Easy align
-    " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-    vmap <Enter> <Plug>(EasyAlign)
-
-    " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
-    nmap <Leader>a <Plug>(EasyAlign)
-  " }}}
-
   " {{{ plugin : vim-indent-guides
     " Set guide size to be narrower than default shift width
     let g:indent_guides_guide_size = 1
@@ -570,28 +558,6 @@
     let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
   " }}}
 
-  " {{{ plugin : Incsearch
-    let g:incsearch#magic = '\v' " very magic
-    map /  <Plug>(incsearch-forward)
-    map ?  <Plug>(incsearch-backward)
-    map g/ <Plug>(incsearch-stay)
-  " }}}
-
-  " {{{ plugin : auto-pairs
-    let g:AutoPairsFlyMode = 1
-    " Only jump to the closing pair on the same line
-    let g:AutoPairsMultilineClose = 0
-
-    let g:AutoPairsShortcutToggle     = 'π' " <m-p>
-    let g:AutoPairsShortcutFastWrap   = '∑' " <m-w>
-    let g:AutoPairsShortcutJump       = '∆' " <m-j>
-    let g:AutoPairsShortcutBackInsert = '∫' " <m-b>
-  " }}}
-
-  " {{{ plugin : SuperTab
-    let g:SuperTabDefaultCompletionType = "context"
-  " }}}
-
   " {{{ plugin : javascript
     let javascript_enable_domhtmlcss  = 1
   " }}}
@@ -600,21 +566,8 @@
       let g:hybrid_custom_term_colors = 1
   " }}}
 
-  " {{{ plugin : smartpairs
-    let g:smartpairs_uber_mode = 1
-  " }}}
-
-  " {{{ plugin : cursorcross
-    let g:cursorcross_dynamic = 'clw'
-    let g:cursorcross_mappings = 0
-  " }}}
-
   " {{{ plugin : nerdcomment
     let g:NERDSpaceDelims = 1
-  " }}}
-
-  " {{{ plugin : vim-jsx
-    let g:jsx_ext_required = 0
   " }}}
 
   " {{{ plugin : airline-theme
@@ -625,48 +578,18 @@
     endif
   " }}}
 
-  " {{{ plugin : vim-closetag
-    let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js"
-  " }}}
-
-  " {{{ plugin : split join
-    " Remove default split join mapping
-    let g:splitjoin_split_mapping = ''
-    let g:splitjoin_join_mapping = ''
-
-    nmap sj :SplitjoinJoin<cr>
-    nmap sk :SplitjoinSplit<cr>
-  " }}}
-
-  " {{{ plugin : vim-jsdoc
-    let g:jsdoc_enable_es6 = 1
-    let g:jsdoc_underscore_private = 1
-    " let g:jsdoc_allow_input_prompt = 1
-    nnoremap <silent> <leader>js :JsDoc<cr>
-  " }}}
-
   " {{{ plugin : netrw
     " Allow netrw to remove non-empty local directories
     let g:netrw_localrmdir='trash'
   " }}}
 
-  "{{{ plugin: vim markdown preview
-    let vim_markdown_preview_github=1
-    let vim_markdown_preview_browser='Google Chrome'
-    let vim_markdown_preview_toggle=3
-    let vim_markdown_preview_hotkey='<C-m>'
-  "}}}
-
-  "{{{ plugin : neoformat
-    let g:neoformat_only_msg_on_error = 1
-    let g:neoformat_verbose = 0 " only affects the verbosity of neoformat
-    let g:neoformat_enabled_javascript = ['prettiereslint']
-  "}}}
-
   "{{{ plugin: ale
-    let g:ale_linters = {
-    \     'javascript': ['eslint'],
-    \}
+    let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+    let g:ale_fix_on_save = 1
+
+    let g:ale_fixers = {
+          \   'javascript': ['prettier-eslint'],
+          \}
   "}}}
 " }}}
 " vim:foldmethod=marker:foldlevel=0
