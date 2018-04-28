@@ -151,8 +151,6 @@ export KEYTIMEOUT=1
 #{ infocmp -1 xterm-256color ; echo -e "\tsitm=\\E[3m,\n\tritm=\\E[23m,"; } > xterm-256color.terminfo
 #tic xterm-256color.terminfo
 
-#Add personal github token
-export HOMEBREW_GITHUB_API_TOKEN=3d494ae13bbeeabc07bd51b1092326a76474981a
 #
 # Press ctrl-z to put a task into background, then ctrl-z again to get into foreground
 fancy-ctrl-z () {
