@@ -378,6 +378,12 @@
 " }}}
 
 " {{{ Color schemes
+
+  if (has("termguicolors"))
+    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
   set background=dark
   "colorscheme base16-railscasts
   "colorscheme jellybeans
@@ -518,7 +524,7 @@
 
   " {{{ plugin : GitGutter
     au VimEnter * highlight clear SignColumn
-    let g:gitgutter_sign_column_always = 1
+    set signcolumn=yes
     " Ignore whitespace
     let g:gitgutter_diff_args= '-w'
   " }}}
@@ -591,5 +597,13 @@
           \   'javascript': ['prettier-eslint'],
           \}
   "}}}
-" }}}
+
+  "{{{ Oceanic Next
+    let g:oceanic_next_terminal_bold = 1
+    let g:oceanic_next_terminal_italic = 1
+  "}}}
+  "
+  "{{{ Javascript libraries syntax
+    let g:used_javascript_libs = 'lo-dash,react '
+  " }}}
 " vim:foldmethod=marker:foldlevel=0

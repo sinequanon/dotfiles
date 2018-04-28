@@ -92,7 +92,7 @@ else
     alias vim="/usr/local/bin/nvim"
 fi
 alias vi=vim
-alias tmux="TERM=screen-256color tmux";
+# alias tmux="TERM=screen-256color tmux";
 alias -s txt=vim
 alias -s html=vim
 alias -s vim=vim
@@ -106,28 +106,13 @@ alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
 alias rm="trash"
 
-# Docker aliases. From https://github.com/tcnksm/docker-alias/blob/master/zshrc
-#
-# Get container process
-alias dps="docker ps"
+#Postgres Aliases
+alias palpha='psql --host=prequel-dev.curho7ugte77.us-west-2.rds.amazonaws.com --username=prequel_dev prequel_alpha'
+alias pbeta='psql --host=prequelbeta.cjrtfdmnhffu.us-west-2.rds.amazonaws.com --username=prequel_dev prequel_dev'
+alias pprod='psql --host=prequel-prod.cjrtfdmnhffu.us-west-2.rds.amazonaws.com --username=prequel prequel_prod'
+alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_development'
 
-# Get process included stop container
-alias dpa="docker ps -a"
-
-# Get images
-alias di="docker images"
-
-# Bash into running container
-dbash() { docker exec -it "$1" /bin/bash; }
-
-# Stop all containers
-dstop() { docker stop $(docker ps -a -q); }
-
-# Remove all containers
-drm() { docker rm $(docker ps -a -q); }
-
-# Stop and Remove all containers
-alias drmf='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)'
+alias ssh='TERM=xterm-256color ssh'
 
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
@@ -163,8 +148,8 @@ export KEYTIMEOUT=1
 
 # Give iterm the ability to display font italics
 # https://disqus.com/home/discussion/alexpearce/enabling_italic_fonts_in_iterm_2_tmux_and_vim_19/#comment-2508208541
-{ infocmp -1 xterm-256color ; echo -e "\tsitm=\\E[3m,\n\tritm=\\E[23m,"; } > xterm-256color.terminfo
-tic xterm-256color.terminfo
+#{ infocmp -1 xterm-256color ; echo -e "\tsitm=\\E[3m,\n\tritm=\\E[23m,"; } > xterm-256color.terminfo
+#tic xterm-256color.terminfo
 
 #Add personal github token
 export HOMEBREW_GITHUB_API_TOKEN=3d494ae13bbeeabc07bd51b1092326a76474981a
@@ -183,7 +168,7 @@ zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
 # Set the shakti environment
-export NODE_ENV=development
+export NODE_ENV=local
 
 # Set hybrid-material colors
 BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
@@ -242,7 +227,8 @@ kubrickjstags () {
 export NVM_DIR="/Users/rowell/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export PATH="$PATH:`yarn global bin`"
+export PATH="$PATH:/Users/rowell/.config/yarn/global/node_modules/.bin:/Users/rowell/elasticsearch-2.4.1/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+# eval "$(newt --completion-script-zsh)"

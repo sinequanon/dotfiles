@@ -102,3 +102,6 @@
 	path = vim/bundle/vim-prettier
 	url = https://github.com/heavenshell/vim-prettier.git
 	ignore = dirty
+[submodule "vim/bundle/javascript-libraries-syntax"]
+	path = vim/bundle/javascript-libraries-syntax
+	url = https://github.com/othree/javascript-libraries-syntax.vim.git
