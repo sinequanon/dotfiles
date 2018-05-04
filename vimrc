@@ -72,7 +72,7 @@
   if has("gui_running")
     set noesckeys                               " Turn off escape keys
   endif
-  set guifont=OperatorMonoSSm\ Nerd\ Font:h14 " Set the font size
+  set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
   set autochdir                               " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
@@ -385,11 +385,11 @@
     set termguicolors
   endif
   set background=dark
-  "colorscheme base16-railscasts
-  "colorscheme jellybeans
+  " colorscheme base16-railscasts
+  " colorscheme jellybeans
   "let g:hybrid_custom_term_colors = 1
   colorscheme hybrid_material
-  "colorscheme OceanicNext
+  " colorscheme OceanicNext
 
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
@@ -408,21 +408,21 @@
 
   " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
   " to get this working on new setups
-  hi htmlArg gui=italic
-  hi Comment gui=italic
-  hi Type    gui=italic
-  hi jsClassKeywords gui=italic
-  hi htmlArg cterm=italic
-  hi Comment cterm=italic
-  hi Type    cterm=italic
-  hi jsClassKeywords cterm=italic ctermfg=12
+  hi htmlArg gui=italic cterm=italic
+  hi Comment gui=italic cterm=italic
+  hi Type gui=italic cterm=italic
+  hi jsImport gui=italic cterm=italic
+  hi jsExport gui=italic cterm=italic
+  hi jsFrom gui=italic cterm=italic
+  hi jsClassKeyword gui=italic cterm=italic
 
   " Setup from MacVim
   if has("gui_running")
     let s:uname = system("uname")
     if s:uname == "Darwin\n"
-
-      set guifont=OperatorMonoSSm\ Nerd\ Font:h15 " Set the font size
+      set macligatures
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
+      " set guifont=Operator\ Mono\ SSm\ Lig:h15 " Set the font size
       " Turn off gui scrollbars
       set guioptions-=r
       set guioptions-=L
@@ -578,9 +578,11 @@
 
   " {{{ plugin : airline-theme
     if has('gui_running')
-      let g:airline_theme='solarized'
+      " let g:airline_theme='solarized'
+      let g:airline_theme='hybrid'
     else
-      let g:airline_theme='molokai'
+      " let g:airline_theme='molokai'
+      let g:airline_theme='hybrid'
     endif
   " }}}
 
@@ -606,4 +608,13 @@
   "{{{ Javascript libraries syntax
     let g:used_javascript_libs = 'lo-dash,react '
   " }}}
+
+  "{{{ Javascript plugin
+    let g:javascript_plugin_jsdoc = 1
+    set conceallevel=1
+  "}}}
+
+  "{{{ Rainbow parens
+    let g:rainbow_active = 1
+  "}}}
 " vim:foldmethod=marker:foldlevel=0
