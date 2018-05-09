@@ -114,6 +114,8 @@ alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_developm
 
 alias ssh='TERM=xterm-256color ssh'
 
+alias ctags='`brew --prefix`/bin/ctags'
+
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 

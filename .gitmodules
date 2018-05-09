@@ -120,3 +120,6 @@
 [submodule "vim/bundle/rainbow"]
 	path = vim/bundle/rainbow
 	url = https://github.com/luochen1990/rainbow.git
+[submodule "vim/bundle/tagman.vim"]
+	path = vim/bundle/tagman.vim
+	url = https://github.com/grassdog/tagman.vim.git
