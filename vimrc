@@ -273,9 +273,6 @@
   " Disable ex mode
   nnoremap gQ <nop>
 
-  " Run prettier-eslint with autofix
-  nnoremap <silent> <f4> :silent! :Neoformat<cr>
-
   " Taken from last edit marker plugin
   " Automatically adds a global mark whenever you leave Insert mode, so you can
   " easily return to text you were last working on, even if you have moved to a
