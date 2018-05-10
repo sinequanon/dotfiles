@@ -123,3 +123,6 @@
 [submodule "vim/bundle/tagman.vim"]
 	path = vim/bundle/tagman.vim
 	url = https://github.com/grassdog/tagman.vim.git
+[submodule "vim/bundle/vim-startify"]
+	path = vim/bundle/vim-startify
+	url = https://github.com/mhinz/vim-startify.git
