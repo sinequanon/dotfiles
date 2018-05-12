@@ -83,7 +83,7 @@
       set encoding=utf-8                      " UTF-8 encoding when displayed
       set fileencoding=utf-8                  " UTF-8 encoding when written to file
   endif
-  set diffopt=iwhite                          " Ignore whitespace during vimdiffs
+  " set diffopt=iwhite                          " Ignore whitespace during vimdiffs
   "set t_Co=256                                " Sets terminal colors to 256
   set diffopt+=iwhite                         " Tells vimdiff to ignore whitespace
   set diffexpr=""                             " Tells vimdiff to ignore ALL whitespace changes
@@ -103,8 +103,8 @@
 
   " Always show multiple ctag definitions if it exists instead of jumping to the
   " first definition
-  " nnoremap <c-]> g<c-]>
-  " inoremap <c-]> g<c-]>
+  nnoremap <c-]> g<c-]>
+  inoremap <c-]> g<c-]>
 
   " Free search
   nnoremap <f3> :Ggr -i --untracked<space>
@@ -298,21 +298,27 @@
 
   " Create a custom command for silently opening a quick fix window after
   " git grep
-  command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
+  " command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
 " }}}
 
 " {{{ Autogroups
   augroup configgroup
     autocmd!
-    autocmd filetype python set expandtab
-    autocmd filetype html,xml set listchars-=tab:>.
 
     " Autocomplete most file types
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript
+      \ set omnifunc=javascriptcomplete#CompleteJS |
+      \ set formatprg=prettier-eslint\ --stdin
+    autocmd FileType python
+      \ set omnifunc=pythoncomplete#Complete |
+      \ set expandtab
+    autocmd FileType html
+      \ set omnifunc=htmlcomplete#CompleteTags |
+      \ set listchars-=tab:>.
+    autocmd FileType xml
+      \ set omnifunc=xmlcomplete#CompleteTags |
+      \ set listchars-=tab:>.
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c set omnifunc=ccomplete#Complete
 
@@ -327,14 +333,17 @@
     " Auto open quick fix window after any grep command. Mosty for GitGrep
     autocmd QuickFixCmdPost *grep* cwindow
 
+    " Make QuickFix window always on the bottom taking the whole horizontal space
+    autocmd FileType qf wincmd J
+
     " Redraw screen whenever focus is set to buffer
     autocmd FocusGained * :redraw!
 
     " Move the preview window to the bottom regardless of splits
     autocmd WinEnter * if &previewwindow | wincmd J | endif
 
-    " Auto save a file when you leave insert mode or when the user hasn't pressed a key for allotted updatetime
-    autocmd InsertLeave,CursorHold * nested if expand('%') != '' | update | endif
+    " Autosave a file when you leave insert mode or when the user hasn't pressed a key for allotted updatetime
+    " autocmd InsertLeave,CursorHold * nested if expand('%') != '' | update | endif
 
     " Automatically source vimrc on save.
     " autocmd! BufWritePost $MYVIMRC source $MYVIMRC
@@ -370,8 +379,6 @@
     autocmd!
     autocmd InsertLeave * normal mZ
   augroup END
-
-  autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
 " }}}
 
 " {{{ Color schemes
@@ -385,8 +392,8 @@
   " colorscheme base16-railscasts
   " colorscheme jellybeans
   "let g:hybrid_custom_term_colors = 1
-  colorscheme hybrid_material
-  " colorscheme OceanicNext
+  " colorscheme hybrid_material
+  colorscheme base16-material
 
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
@@ -408,9 +415,8 @@
   hi htmlArg gui=italic cterm=italic
   hi Comment gui=italic cterm=italic
   hi Type gui=italic cterm=italic
-  hi jsImport gui=italic cterm=italic
   hi jsExport gui=italic cterm=italic
-  hi jsFrom gui=italic cterm=italic
+  hi jsImport gui=italic cterm=italic
   hi jsClassKeyword gui=italic cterm=italic
 
   " Setup from MacVim
@@ -613,5 +619,10 @@
 
   "{{{ Rainbow parens
     let g:rainbow_active = 1
+  "}}}
+
+  "{{{
+    let g:enable_bold_font = 1
+    let g:enable_italic_font = 1
   "}}}
 " vim:foldmethod=marker:foldlevel=0
