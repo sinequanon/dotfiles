@@ -134,3 +134,9 @@
 	path = vim/bundle/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
 	ignore = dirty
+[submodule "vim-javascript-syntax"]
+	path = vim-javascript-syntax
+	url = https://github.com/jelera/vim-javascript-syntax.git
+[submodule "vim/bundle/supertab"]
+	path = vim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git

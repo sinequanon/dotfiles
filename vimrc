@@ -306,7 +306,7 @@
 
   " Create a custom command for silently opening a quick fix window after
   " git grep
-  " command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
+  command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
 " }}}
 
 " {{{ Autogroups
