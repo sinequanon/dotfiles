@@ -627,8 +627,19 @@
     let g:rainbow_active = 1
   "}}}
 
-  "{{{
+  "{{{ Base 16 Material
     let g:enable_bold_font = 1
     let g:enable_italic_font = 1
   "}}}
+
+  "{{{ Startify enable devicons
+    function! StartifyEntryFormat()
+      return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+    endfunction
+  "}}}
+  "
+  "{{{ devicons
+    set ambiwidth=double
+  "}}}
+  "
 " vim:foldmethod=marker:foldlevel=0
