@@ -79,10 +79,8 @@
   set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
   "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
   set sidescroll=5                            " Number of columns to scroll when margin is reached
-  if !has('nvim')
-      set encoding=utf-8                      " UTF-8 encoding when displayed
-      set fileencoding=utf-8                  " UTF-8 encoding when written to file
-  endif
+  set encoding=UTF-8                      " UTF-8 encoding when displayed
+  set fileencoding=UTF-8                  " UTF-8 encoding when written to file
   " set diffopt=iwhite                          " Ignore whitespace during vimdiffs
   "set t_Co=256                                " Sets terminal colors to 256
   set diffopt+=iwhite                         " Tells vimdiff to ignore whitespace
@@ -171,8 +169,8 @@
   "noremap P gP
 
   " Enable magic mode when doing searches
-  "nnoremap / /\v
-  "vnoremap / /\v
+  nnoremap / /\v
+  vnoremap / /\v
 
   " Clear highlighted searches
   nnoremap <silent> <leader><space> :nohlsearch<CR>
@@ -195,8 +193,8 @@
   nnoremap <leader><leader>q :q<CR>
 
   " Complete whole filenames/lines with a quicker shortcut key in insert mode
-  imap <C-f> <C-x><C-f>
-  imap <C-l> <C-x><C-l>
+  " imap <C-f> <C-x><C-f>
+  " imap <C-l> <C-x><C-l>
 
   " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the yanked stack (also, in visual mode)
   nmap <silent> <leader>d "_d
@@ -293,9 +291,9 @@
   " Neovim / OSX incorrectly maps backspace with ctrl-H. Instead of a custom
   " terminfo solution, just remap in vimrc
   " https://github.com/neovim/neovim/issues/2048#issuecomment-78534227
-  if has('nvim')
-    nmap <BS> <C-W>h
-  endif
+  " if has('nvim')
+  "   nmap <BS> <C-W>h
+  " endif
 
   " Insert comma at end of line
   imap <leader>c <c-o>ma<c-o>A,<c-o>`a
@@ -354,7 +352,7 @@
     " autocmd InsertLeave,CursorHold * nested if expand('%') != '' | update | endif
 
     " Automatically source vimrc on save.
-    " autocmd! BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd! BufWritePost $MYVIMRC source $MYVIMRC
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 

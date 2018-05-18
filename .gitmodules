@@ -137,6 +137,12 @@
 [submodule "vim-javascript-syntax"]
 	path = vim-javascript-syntax
 	url = https://github.com/jelera/vim-javascript-syntax.git
+	ignore = dirty
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
+	ignore = dirty
+[submodule "vim/bundle/vim-devicons"]
+	path = vim/bundle/vim-devicons
+	url = https://github.com/ryanoasis/vim-devicons.git
+	ignore = dirty
