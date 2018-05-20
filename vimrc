@@ -1,5 +1,5 @@
 "{{{ Preamble
-  set nocompatible                                  "  Disable vi compatability. This must be first, because it changes other options as side effect.
+  set nocompatible                                  " Disable vi compatability. This must be first, because it changes other options as side effect.
 
   runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
@@ -7,8 +7,8 @@
   call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory
 
   syntax on
-  filetype plugin indent on                   " Turn on plugin indent for each type
-  if &diff                                    " I'm only interested in diff colours
+  filetype plugin indent on                         " Turn on plugin indent for each type
+  if &diff                                          " I'm only interested in diff colours
       syntax on
   endif
 
@@ -16,84 +16,83 @@
 "}}}
 
 " {{{ Sets
-  set hidden                                  " Sets buffers to hidden when abandoned
+  set hidden                           " Sets buffers to hidden when abandoned
   set modelines=1
-  set nowrap                                  " Don't wrap lines
-  set textwidth=0                             " Allow any size of inserted text
-  "set wrapmargin=5                            " Number of characters from the right window border where wrapping starts.
-  set linebreak                               " Wrap between word boundaries
-  set tabstop=4                               " A tab is four spaces
-  set backspace=indent,eol,start              " Allow backspacing over everything in insert mode
-  set expandtab                               " use spaces instead of tabs. Remove this to revert to tabs
-  set autoindent                              " Always set autoindenting on
-  set copyindent                              " Copy the previous indentation on autoindenting
-  "set smartindent                             " Automatically inserts indentation
-  set cindent                                 " Like smart indent but stricter and more customizable
-  set shiftwidth=2                            " Number of spaces to use for autoindenting
-  set shiftround                              " Use multiple of shiftwidth when indenting with '<' and '>'
-  set showmatch                               " Set show matching parenthesis
-  set ignorecase                              " Ignore case when searching
-  set smartcase                               " Ignore case if search pattern is all lowercase, case-sensitive otherwise
-  set smarttab                                " Insert tabs on the start of a line according to shiftwidth, not tabstop
-  set hlsearch                                " Highlight search terms
-  set incsearch                               " Show search matches as you type
-  set history=1000                            " Remember more commands and search history
-  set undolevels=1000                         " Use many muchos levels of undo
-  set undofile 			                    " Create an undo file
-  set undodir=~/.vim/undo                     " Store undo files here
-  set title                                   " Change the terminal's title
-  set visualbell                              " Don't beep
-  set noerrorbells                            " Don't beep
-  set ruler				                    " Turn on the ruler
+  set nowrap                           " Don't wrap lines
+  set textwidth=0                      " Allow any size of inserted text
+  set wrapmargin=5                     " Number of characters from the right window border where wrapping starts.
+  set linebreak                        " Wrap between word boundaries
+  set tabstop=4                        " A tab is four spaces
+  set backspace=indent,eol,start       " Allow backspacing over everything in insert mode
+  set expandtab                        " use spaces instead of tabs. Remove this to revert to tabs
+  set autoindent                       " Always set autoindenting on
+  set copyindent                       " Copy the previous indentation on autoindenting
+  set smartindent                      " Automatically inserts indentation
+  set cindent                          " Like smart indent but stricter and more customizable
+  set shiftwidth=2                     " Number of spaces to use for autoindenting
+  set shiftround                       " Use multiple of shiftwidth when indenting with '<' and '>'
+  set showmatch                        " Set show matching parenthesis
+  set ignorecase                       " Ignore case when searching
+  set smartcase                        " Ignore case if search pattern is all lowercase, case-sensitive otherwise
+  set smarttab                         " Insert tabs on the start of a line according to shiftwidth, not tabstop
+  set hlsearch                         " Highlight search terms
+  set incsearch                        " Show search matches as you type
+  set history=1000                     " Remember more commands and search history
+  set undolevels=1000                  " Use many muchos levels of undo
+  set undofile                         " Create an undo file
+  set undodir=~/.vim/undo              " Store undo files here
+  set title                            " Change the terminal's title
+  set visualbell                       " Don't beep
+  set noerrorbells                     " Don't beep
+  set ruler                            " Turn on the ruler
   set nojoinspaces
-  set colorcolumn=120		                    " Turn on column line at 120 chars
-  exec matchadd('ColorColumn' ,'\%121v', 100)
-  set showcmd			                        " Show commands as you type
+  set colorcolumn=100                  " Turn on column line at 120 chars
+  exec matchadd('ColorColumn','\%121v', 100)
+  set showcmd                          " Show commands as you type
   set nobackup
   set noswapfile
-  set directory=~/.vim/.tmp,~/tmp,/tmp        " Store swap files in one of these directories (in case swapfile is ever turned on)
+  set directory=~/.vim/.tmp,~/tmp,/tmp " Store swap files in one of these directories (in case swapfile is ever turned on)
   set fileformats="unix,dos,mac"
-  set cmdheight=1                             " Use a status bar that is 1 lines high
-  set wildmenu                                " Make tab completion for files/buffers act like bash
-  set wildmode=list:longest                   " Show a list when pressing tab and complete first full match
+  set cmdheight=1                      " Use a status bar that is 1 lines high
+  set wildmenu                         " Make tab completion for files/buffers act like bash
+  set wildmode=list:longest            " Show a list when pressing tab and complete first full match
 
   "Ignore these files when completing names
   set wildignore+=*/private/var/*,*/tmp/*,.svn,*.swp,CVS,.git,*.o,*.a,*.bak,*.class,*.mo,*.la,*.so,*.obj,*.pyc,*.swp,*.jpg,*.png,*.xpm,*.gif
-  set mouse=a                                 " Enable mouse support
-  "set relativenumber 		                    " Show numbers relative from each other's distance
-  set laststatus=2                            " Status line gnarliness
-  set statusline=%F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
-  set comments=sl:/*,mb:*,elx:*/              " Set comments
-  set tags=./tags;./.tags;/                   " Look for ctags anywhere in the path up to the root
-  set makeprg=ant                             " Use ant as the make executable
-  set foldmethod=syntax                       " Sets folding method to syntax based on filetype
-  set foldlevelstart=10                        " Sets some folds automatically closed
-  set nofoldenable                            " Disable folding
+  set mouse=a                          " Enable mouse support
+  " set relativenumber                   " Show numbers relative from each other's distance
+  set laststatus=2                     " Status line gnarliness
+  set statusline=%F%m%r%h%w\(%{&ff}){%Y}\ [%l,%v][%p%%]
+  set comments=sl:/*,mb:*,elx:*/       " Set comments
+  set tags=./tags;./.tags;/            " Look for ctags anywhere in the path up to the root
+  set makeprg=ant                      " Use ant as the make executable
+  set foldmethod=syntax                " Sets folding method to syntax based on filetype
+  set foldlevelstart=10                " Sets some folds automatically closed
+  set nofoldenable                     " Disable folding
   if has("gui_running")
-    set noesckeys                               " Turn off escape keys
+    set noesckeys                      " Turn off escape keys
   endif
-  " set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
   set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
-  set autochdir                               " Current directory is always matching the  content of the active window
-  set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
+  set autochdir                        " Current directory is always matching the  content of the active window
+  set viminfo='20,<50,s10,h,%          " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
-  set clipboard=unnamed                       " Now all operations work with the OS clipboard. No need for "+, "*
+  set clipboard=unnamed                " Now all operations work with the OS clipboard. No need for "+, "*
   "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
-  set sidescroll=5                            " Number of columns to scroll when margin is reached
-  set encoding=UTF-8                      " UTF-8 encoding when displayed
-  set fileencoding=UTF-8                  " UTF-8 encoding when written to file
+  set sidescroll=5                     " Number of columns to scroll when margin is reached
+  set encoding=UTF-8                   " UTF-8 encoding when displayed
+  set fileencoding=UTF-8               " UTF-8 encoding when written to file
   " set diffopt=iwhite                          " Ignore whitespace during vimdiffs
   "set t_Co=256                                " Sets terminal colors to 256
-  set diffopt+=iwhite                         " Tells vimdiff to ignore whitespace
-  set diffexpr=""                             " Tells vimdiff to ignore ALL whitespace changes
-  set cursorline                              " Turn on cursor line highlighting
-  set autoread                                " Auto reads if file has been changed outside of vim
-  set complete=.,b,u,]                        " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
-  set timeoutlen=500                         " Sets timeout for mapping delays
-  set ttimeoutlen=0                           " Sets timeout for keycode delays
-  set updatetime=500                         " Change time in which swap file will be written to disk
-  set lazyredraw                              " Screen is not redrawn while executing macros, registers, etc
-  set bufhidden=unload                        " Unload buffer when hidden
+  set diffopt+=iwhite                  " Tells vimdiff to ignore whitespace
+  set diffexpr=""                      " Tells vimdiff to ignore ALL whitespace changes
+  set cursorline                       " Turn on cursor line highlighting
+  set autoread                         " Auto reads if file has been changed outside of vim
+  set complete=.,b,u,]                 " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
+  set timeoutlen=500                   " Sets timeout for mapping delays
+  set ttimeoutlen=0                    " Sets timeout for keycode delays
+  set updatetime=500                   " Change time in which swap file will be written to disk
+  set lazyredraw                       " Screen is not redrawn while executing macros, registers, etc
+  set bufhidden=unload                 " Unload buffer when hidden
 " }}}
 
 " {{{ Remappings
@@ -404,7 +403,6 @@
   colorscheme palenight
   let g:palenight_terminal_italics=1
 
-
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
   "highlight ColorColumn  ctermbg=237
@@ -422,20 +420,22 @@
 
   " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
   " to get this working on new setups
-  hi htmlArg gui=italic cterm=italic
   hi Comment gui=italic cterm=italic
+  hi Label gui=italic cterm=italic
+  hi Statement gui=italic cterm=italic
   hi Type gui=italic cterm=italic
+  hi htmlArg gui=italic cterm=italic
+  hi javaScriptReserved gui=italic cterm=italic
+  hi javascriptImport gui=italic cterm=italic
+  hi jsClassKeyword gui=italic cterm=italic
+  hi jsConditional gui=italic cterm=italic
+  hi jsDocTags gui=italic cterm=italic
   hi jsExport gui=italic cterm=italic
   hi jsExportDefault gui=italic cterm=italic
+  hi jsExtendsKeyword gui=italic cterm=italic
   hi jsFrom gui=italic cterm=italic
   hi jsModuleAs gui=italic cterm=italic
-  hi jsClassKeyword gui=italic cterm=italic
-  hi jsExtendsKeyword gui=italic cterm=italic
-  hi javascriptImport gui=italic cterm=italic
-  hi javaScriptReserved gui=italic cterm=italic
   hi jsStorageClass gui=italic cterm=italic
-  " hi jsReturn gui=italic cterm=italic
-  hi jsDocTags gui=italic cterm=italic
 
   " Setup from MacVim
   if has("gui_running")
@@ -649,9 +649,16 @@
       return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
     endfunction
   "}}}
-  "
+
   "{{{ devicons
     set ambiwidth=double
   "}}}
-  "
+
+  "{{{ Easy Align
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
+  "}}}
 " vim:foldmethod=marker:foldlevel=0
