@@ -72,7 +72,8 @@
   if has("gui_running")
     set noesckeys                               " Turn off escape keys
   endif
-  set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
+  " set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
+  set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
   set autochdir                               " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%                 " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
@@ -425,16 +426,24 @@
   hi Comment gui=italic cterm=italic
   hi Type gui=italic cterm=italic
   hi jsExport gui=italic cterm=italic
-  " hi jsImport gui=italic cterm=italic
+  hi jsExportDefault gui=italic cterm=italic
+  hi jsFrom gui=italic cterm=italic
+  hi jsModuleAs gui=italic cterm=italic
   hi jsClassKeyword gui=italic cterm=italic
+  hi jsExtendsKeyword gui=italic cterm=italic
+  hi javascriptImport gui=italic cterm=italic
+  hi javaScriptReserved gui=italic cterm=italic
+  hi jsStorageClass gui=italic cterm=italic
+  " hi jsReturn gui=italic cterm=italic
+  hi jsDocTags gui=italic cterm=italic
 
   " Setup from MacVim
   if has("gui_running")
     let s:uname = system("uname")
     if s:uname == "Darwin\n"
       set macligatures
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
-      " set guifont=Operator\ Mono\ SSm\ Lig:h15 " Set the font size
+      " set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
+      set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
       " Turn off gui scrollbars
       set guioptions-=r
       set guioptions-=L
