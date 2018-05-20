@@ -106,10 +106,6 @@
 	path = vim/bundle/javascript-libraries-syntax
 	url = https://github.com/othree/javascript-libraries-syntax.vim.git
 	ignore = dirty
-[submodule "vim-javascript"]
-	path = vim-javascript
-	url = https://github.com/pangloss/vim-javascript.git
-	ignore = dirty
 [submodule "vim-colors-solarized"]
 	path = vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
@@ -117,10 +113,6 @@
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
-	ignore = dirty
-[submodule "vim/bundle/vim-javascript"]
-	path = vim/bundle/vim-javascript
-	url = https://github.com/pangloss/vim-javascript.git
 	ignore = dirty
 [submodule "vim/bundle/rainbow"]
 	path = vim/bundle/rainbow
@@ -134,10 +126,6 @@
 	path = vim/bundle/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
 	ignore = dirty
-[submodule "vim-javascript-syntax"]
-	path = vim/bundle/vim-javascript-syntax
-	url = https://github.com/jelera/vim-javascript-syntax.git
-	ignore = dirty
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
@@ -149,3 +137,16 @@
 [submodule "vim/bundle/vim-closetag"]
 	path = vim/bundle/vim-closetag
 	url = https://github.com/alvan/vim-closetag.git
+	ignore = dirty
+[submodule "vim/bundle/vim-multiple-cursors"]
+	path = vim/bundle/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors.git
+	ignore = dirty
+[submodule "vim/bundle/vim-windowswap"]
+	path = vim/bundle/vim-windowswap
+	url = https://github.com/wesQ3/vim-windowswap.git
+	ignore = dirty
+[submodule "vim/bundle/palenight.vim"]
+	path = vim/bundle/palenight.vim
+	url = https://github.com/drewtempelmeyer/palenight.vim.git
+	ignore = dirty

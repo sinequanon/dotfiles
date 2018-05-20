@@ -399,7 +399,10 @@
   " colorscheme jellybeans
   "let g:hybrid_custom_term_colors = 1
   " colorscheme hybrid_material
-  colorscheme base16-material
+  " colorscheme base16-material
+  colorscheme palenight
+  let g:palenight_terminal_italics=1
+
 
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
@@ -422,7 +425,7 @@
   hi Comment gui=italic cterm=italic
   hi Type gui=italic cterm=italic
   hi jsExport gui=italic cterm=italic
-  hi jsImport gui=italic cterm=italic
+  " hi jsImport gui=italic cterm=italic
   hi jsClassKeyword gui=italic cterm=italic
 
   " Setup from MacVim
