@@ -86,7 +86,7 @@
   set diffopt+=iwhite                  " Tells vimdiff to ignore whitespace
   set diffexpr=""                      " Tells vimdiff to ignore ALL whitespace changes
   set cursorline                       " Turn on cursor line highlighting
-  set autoread                         " Auto reads if file has been changed outside of vim
+  set autoread                         " Auto reads if file has been changed outside of vim. Use in conjunction with checktime
   set complete=.,b,u,]                 " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
   set timeoutlen=500                   " Sets timeout for mapping delays
   set ttimeoutlen=0                    " Sets timeout for keycode delays
@@ -180,6 +180,7 @@
 
   "Easy save files
   map <silent> <leader><leader>s :update<CR>
+  map <silent> <leader><leader>S :wa<CR>
   " inoremap <silent> <leader><leader>s <esc>:update<CR>
 
   "Change inner word in insert mode
@@ -331,6 +332,8 @@
     "scss and less support
     autocmd BufNewFile,BufRead *.scss set filetype=scss
     autocmd BufNewFile,BufRead *.less set filetype=less
+
+    " reloads changed buffers outside of the editor
     autocmd BufNewFile,BufRead * :checktime
   augroup end
 
@@ -524,7 +527,8 @@
     nnoremap <silent> <leader>gd :Gdiff<cr>
     " turn off vim diff and delete diff buffer
     " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
-    nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
+    " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
+    nnoremap <silent> <leader>gD <c-w>h<c-w>c<cr>
     " git status
     nnoremap <silent> <leader>gs :Gstatus<cr>
     " git blame
@@ -615,6 +619,7 @@
   "{{{ plugin: ale
     let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
     let g:ale_fix_on_save = 1
+    let g:ale_lint_delay = 10
 
     let g:ale_fixers = {
           \   'javascript': ['prettier-eslint'],
