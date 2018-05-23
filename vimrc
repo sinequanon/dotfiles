@@ -578,6 +578,7 @@
   " {{{ plugin : vim-indent-guides
     " Set guide size to be narrower than default shift width
     let g:indent_guides_guide_size = 1
+    nnoremap <silent> <leader>ig :IndentGuidesToggle<cr>
   " }}}
 
   " {{{ plugin : ListToggle
