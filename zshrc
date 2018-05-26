@@ -114,13 +114,19 @@ alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_developm
 
 alias ssh='TERM=xterm-256color ssh'
 
-alias ctags='`brew --prefix`/bin/ctags'
+if [[ `uname` == 'Darwin' ]]; then
+  alias ctags='`brew --prefix`/bin/ctags'
+fi
 
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
 # Start Z https://github.com/rupa/z
+if [[ `uname` == 'Darwin' ]]; then
 . `brew --prefix`/etc/profile.d/z.sh
+elif [[ `uname` == 'Linux' ]]; then
+. ~/z.sh
+fi
 
 # Unify all langs
 LANG="en_US.UTF-8"

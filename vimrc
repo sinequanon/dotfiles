@@ -179,8 +179,8 @@
   nnoremap <leader>v :e $MYVIMRC<CR>
 
   "Easy save files
-  map <silent> <leader><leader>s :update<CR>
-  map <silent> <leader><leader>S :wa<CR>
+  map <silent> <leader>s :update<CR>
+  map <silent> <leader>S :wa<CR>
   " inoremap <silent> <leader><leader>s <esc>:update<CR>
 
   "Change inner word in insert mode
@@ -475,7 +475,7 @@
 
   " Easy window navigation
   nnoremap <leader>w :vsplit<cr>
-  nnoremap <leader>s :split<cr>
+  nnoremap <leader>- :split<cr>
   nnoremap <C-l> <c-w>l
   nnoremap <C-h> <c-w>h
   nnoremap <C-j> <c-w>j
