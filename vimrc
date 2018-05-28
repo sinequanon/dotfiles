@@ -461,6 +461,9 @@
     set guioptions-=m
     " Remove tool bar
     set guioptions-=T
+    " Do not source the menu options at all. This removes the weird gaps
+    " in the chrome
+    set guioptions-=M
     set linespace=6
   endif
 
