@@ -64,7 +64,7 @@
   set laststatus=2                     " Status line gnarliness
   set statusline=%F%m%r%h%w\(%{&ff}){%Y}\ [%l,%v][%p%%]
   set comments=sl:/*,mb:*,elx:*/       " Set comments
-  set tags=./tags;./.tags;/            " Look for ctags anywhere in the path up to the root
+  set tags=./tags;./*.tags;/            " Look for ctags anywhere in the path up to the root
   set makeprg=ant                      " Use ant as the make executable
   set foldmethod=syntax                " Sets folding method to syntax based on filetype
   set foldlevelstart=10                " Sets some folds automatically closed
@@ -102,7 +102,7 @@
   " Always show multiple ctag definitions if it exists instead of jumping to the
   " first definition
   nnoremap <c-]> g<c-]>
-  inoremap <c-]> g<c-]>
+  " inoremap <c-]> g<c-]>
 
   " Free search
   nnoremap <f3> :Ggr -i --untracked<space>
@@ -275,7 +275,7 @@
 
   " close tags
   " Copied from ragtag
-  inoremap <silent> ,,/ <Esc>ciW<Lt><C-R>"></<C-R>"><Esc>F<i
+  " inoremap <silent> ,,/ <Esc>ciW<Lt><C-R>"></<C-R>"><Esc>F<i
 
   " Disable ex mode
   nnoremap gQ <nop>
@@ -447,11 +447,21 @@
       set macligatures
       " set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
       set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
-      " Turn off gui scrollbars
-      set guioptions-=r
-      set guioptions-=L
-      set linespace=6
+    elseif s:uname == "Linux\n"
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 13
+      " Support ligatures from a special build
+      " See https://github.com/gasparch/vim8-ligatures-package
+      let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
     endif
+    " Remove right-hand scrollbar
+    set guioptions-=r
+    " Remove left-hand scrollbar
+    set guioptions-=L
+    " Remove menu bar
+    set guioptions-=m
+    " Remove tool bar
+    set guioptions-=T
+    set linespace=6
   endif
 
   " Configure colorcolumn

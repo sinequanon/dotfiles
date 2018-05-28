@@ -70,7 +70,11 @@ export LANG=en_US.UTF-8
 #   export EDITOR='mvim'
 # fi
 #export EDITOR='/usr/local/bin/mvim -v'
-export EDITOR='/usr/local/bin/vim'
+if [[ `uname` == 'Darwin' ]]; then
+  export EDITOR='/usr/local/bin/vim'
+elif [[ `uname` == 'Linux' ]]; then
+  export EDITOR='/usr/bin/vim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -230,10 +234,10 @@ kubrickjstags () {
 # Open Chrome with CORS disabled
 # open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --disable-web-security --user-data-dir
 
-export NVM_DIR="/Users/rowell/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export PATH="$PATH:/Users/rowell/.config/yarn/global/node_modules/.bin:/Users/rowell/elasticsearch-2.4.1/bin"
+export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin:$HOME/elasticsearch-2.4.1/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
