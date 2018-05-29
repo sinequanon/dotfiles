@@ -439,6 +439,7 @@
   hi jsFrom gui=italic cterm=italic
   hi jsModuleAs gui=italic cterm=italic
   hi jsStorageClass gui=italic cterm=italic
+  hi Keyword gui=italic cterm=italic
 
   " Setup from MacVim
   if has("gui_running")
@@ -454,16 +455,18 @@
       let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
     endif
     " Remove right-hand scrollbar
-    set guioptions-=r
+    " set guioptions-=r
     " Remove left-hand scrollbar
-    set guioptions-=L
+    " set guioptions-=L
     " Remove menu bar
-    set guioptions-=m
+    " set guioptions-=m
     " Remove tool bar
-    set guioptions-=T
+    " set guioptions-=T
     " Do not source the menu options at all. This removes the weird gaps
     " in the chrome
-    set guioptions-=M
+    " set guioptions-=M
+    " Remove all scrollbars
+    set guioptions=
     set linespace=6
   endif
 
