@@ -62,10 +62,6 @@
 	path = vim/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
 	ignore = dirty
-[submodule "vim/bundle/html5.vim"]
-	path = vim/bundle/html5.vim
-	url = https://github.com/othree/html5.vim.git
-	ignore = dirty
 [submodule "vim/bundle/vim-airline-themes"]
 	path = vim/bundle/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
@@ -93,10 +89,6 @@
 [submodule "vim/bundle/oceanic-next"]
 	path = vim/bundle/oceanic-next
 	url = https://github.com/mhartington/oceanic-next.git
-	ignore = dirty
-[submodule "vim/bundle/yajs"]
-	path = vim/bundle/yajs
-	url = https://github.com/othree/yajs.vim.git
 	ignore = dirty
 [submodule "vim/bundle/vim-prettier"]
 	path = vim/bundle/vim-prettier

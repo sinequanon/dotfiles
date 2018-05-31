@@ -136,6 +136,10 @@
     map <esc>[1;5B <C-Down>
     map <esc>[1;5C <C-Right>
     map <esc>[1;5D <C-Left>
+    map <esc>[1;2A <S-Up>
+    map <esc>[1;2B <S-Down>
+    map <esc>[1;2C <S-Right>
+    map <esc>[1;2D <S-Left>
     map <esc>[1;2R <S-F3>
   endif
 
