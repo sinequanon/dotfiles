@@ -96,17 +96,16 @@ fi
 #     alias vim="/usr/local/bin/nvim"
 # fi
 alias vi=vim
-# alias tmux="TERM=screen-256color tmux";
 alias -s txt=vim
 alias -s html=vim
 alias -s vim=vim
 
-alias jshakti="pkill gulp; gulp js && shakti"
-alias ashakti="pkill gulp; gulp assets && shakti"
-alias cshakti="pkill gulp; gulp clearCache && gulp clean && gulp locales && gulp assets && shakti"
+# alias jshakti="pkill gulp; gulp js && shakti"
+# alias ashakti="pkill gulp; gulp assets && shakti"
+# alias cshakti="pkill gulp; gulp clearCache && gulp clean && gulp locales && gulp assets && shakti"
 
-alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
-alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
+# alias easyget="curl -b ~/Dropbox/easynews.cookies.txt -v -L -O $1"
+# alias easyreget="curl -b ~/Dropbox/easynews.cookies.txt -C - -v -L -O $1"
 
 alias rm="trash"
 
@@ -185,39 +184,39 @@ BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-materi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 #########################
 
-IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
-FIT_SERVER_TEST='fit.us-west-2.dyntest.netflix.net:7101'
-FIT_SERVER_PROD='fit.netflix.net:7101'
-END_SUBSCRIBER_SESSION='v1/sessions/end'
-BEGIN_SUBSCRIBER_SESSION='v1/sessions/new/s/subscriber'
-subscriber-fail-test () {
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-}
-subscriber-restore-test () {
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
-}
-subscriber-fail-prod () {
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
-}
-subscriber-restore-prod () {
-    [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
-    echo "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
-    curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
-}
+# IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
+# FIT_SERVER_TEST='fit.us-west-2.dyntest.netflix.net:7101'
+# FIT_SERVER_PROD='fit.netflix.net:7101'
+# END_SUBSCRIBER_SESSION='v1/sessions/end'
+# BEGIN_SUBSCRIBER_SESSION='v1/sessions/new/s/subscriber'
+# subscriber-fail-test () {
+#     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+#     echo "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+#     curl -i -X POST "$FIT_SERVER_TEST/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+# }
+# subscriber-restore-test () {
+#     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+#     echo "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
+#     curl -i -X POST "$FIT_SERVER_TEST/$END_SUBSCRIBER_SESSION?$FOO"
+# }
+# subscriber-fail-prod () {
+#     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+#     echo "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+#     curl -i -X POST "$FIT_SERVER_PROD/$BEGIN_SUBSCRIBER_SESSION?$FOO"
+# }
+# subscriber-restore-prod () {
+#     [ $# -eq 0 ] && FOO="esn=$IPAD4WHITE_ESN" || FOO="cid=$1"
+#     echo "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
+#     curl -i -X POST "$FIT_SERVER_PROD/$END_SUBSCRIBER_SESSION?$FOO"
+# }
 
-compilejstags () {
-    for f ($1/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
-}
+# compilejstags () {
+#     for f ($1/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
+# }
 
-kubrickjstags () {
-    for f (/Users/rowell/stash/kubrick/device/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
-}
+# kubrickjstags () {
+#     for f (/Users/rowell/stash/kubrick/device/(^node_modules/)#*.js*) { jsctags $f -f >> ./tags }
+# }
 
 # for dir in The\ Simpsons\ S[1\2]*
 # do
@@ -235,10 +234,7 @@ kubrickjstags () {
 # open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --disable-web-security --user-data-dir
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin:$HOME/elasticsearch-2.4.1/bin"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-# eval "$(newt --completion-script-zsh)"
+export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rvm/bin"

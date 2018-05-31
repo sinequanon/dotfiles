@@ -66,7 +66,7 @@
   set comments=sl:/*,mb:*,elx:*/       " Set comments
   set tags=./tags;./*.tags;/            " Look for ctags anywhere in the path up to the root
   set makeprg=ant                      " Use ant as the make executable
-  set foldmethod=syntax                " Sets folding method to syntax based on filetype
+  set foldmethod=indent                " Sets folding method to indent for speed
   set foldlevelstart=10                " Sets some folds automatically closed
   set nofoldenable                     " Disable folding
   if has("gui_running")
@@ -85,7 +85,7 @@
   "set t_Co=256                                " Sets terminal colors to 256
   set diffopt+=iwhite                  " Tells vimdiff to ignore whitespace
   set diffexpr=""                      " Tells vimdiff to ignore ALL whitespace changes
-  set cursorline                       " Turn on cursor line highlighting
+  set nocursorline                       " Turn off cursor line highlighting. This speeds up rendering
   set autoread                         " Auto reads if file has been changed outside of vim. Use in conjunction with checktime
   set complete=.,b,u,]                 " Pull completion from keywords in the current file, other buffers (closed or still open), and from the current tags file.
   set timeoutlen=500                   " Sets timeout for mapping delays
@@ -446,8 +446,7 @@
     let s:uname = system("uname")
     if s:uname == "Darwin\n"
       set macligatures
-      " set guifont=OperatorMonoSSmLig\ Nerd\ Font:h15 " Set the font size
-      set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
+      set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
     elseif s:uname == "Linux\n"
       set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 13
       " Support ligatures from a special build
@@ -619,13 +618,7 @@
   " }}}
 
   " {{{ plugin : airline-theme
-    if has('gui_running')
-      " let g:airline_theme='solarized'
-      let g:airline_theme='hybrid'
-    else
-      " let g:airline_theme='molokai'
-      let g:airline_theme='hybrid'
-    endif
+    let g:airline_theme='solarized'
   " }}}
 
   " {{{ plugin : netrw
