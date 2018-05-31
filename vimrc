@@ -130,12 +130,13 @@
   " Strip trailing whitespace
   nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>`z
 
-  " Tell vim about ctrl + arrow keys while in tmux
+  " Tell vim about ctrl + arrow keys and shift keys while in tmux
   if &term == "tmux-256color"
     map <esc>[1;5A <C-Up>
     map <esc>[1;5B <C-Down>
     map <esc>[1;5C <C-Right>
     map <esc>[1;5D <C-Left>
+    map <esc>[1;2R <S-F3>
   endif
 
   " Left-Right text block movement in normal and visual mode
