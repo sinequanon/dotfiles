@@ -365,6 +365,8 @@
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
     autocmd BufWritePost *.js,*.jsx call prettier#run(1)
+    " Running before saving, changing text or leaving insert mode
+    " autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue call prettier#run(1)
 
     "Maps 'K' to open vim help for the word under cursor when editing vim files. This already is the system default
     "on Windows, but it needs to be added explicitly on Linux / OS X.
@@ -680,5 +682,10 @@
 
     " Start interactive EasyAlign for a motion/text object (e.g. gaip)
     nmap ga <Plug>(EasyAlign)
+  "}}}
+
+  "{{{ vim-prettier (with prettier-eslint support) Not to be confused with
+  "prettier/vim-prettier
+    nnoremap <silent> <leader>p :Prettier<cr>
   "}}}
 " vim:foldmethod=marker:foldlevel=0
