@@ -146,3 +146,7 @@
 	path = vim/bundle/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
 	ignore = dirty
+[submodule "vim/bundle/sideways.vim"]
+	path = vim/bundle/sideways.vim
+	url = https://github.com/AndrewRadev/sideways.vim.git
+	ignore = dirty

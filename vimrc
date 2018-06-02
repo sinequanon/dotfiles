@@ -564,6 +564,7 @@
   " {{{ plugin : ctrlp.vim
     let g:ctrlp_working_path_mode = 'rw'
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
+    let g:ctrlp_show_hidden = 1
     nnoremap <leader>f :CtrlP<cr>
     nnoremap <leader>b :CtrlPBuffer<cr>
     nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -687,5 +688,15 @@
   "{{{ vim-prettier (with prettier-eslint support) Not to be confused with
   "prettier/vim-prettier
     nnoremap <silent> <leader>p :Prettier<cr>
+  "}}}
+
+  "{{{ vim-sideways
+    nnoremap <leader>( :SidewaysLeft<cr>
+    nnoremap <leader>) :SidewaysRight<cr>
+    " Create inner and outer function arguments you can perform things like cia daa et al.
+    omap aa <Plug>SidewaysArgumentTextobjA
+    xmap aa <Plug>SidewaysArgumentTextobjA
+    omap ia <Plug>SidewaysArgumentTextobjI
+    xmap ia <Plug>SidewaysArgumentTextobjI
   "}}}
 " vim:foldmethod=marker:foldlevel=0
