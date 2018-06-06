@@ -1,0 +1,8 @@
+pane	0	0	:zsh	0	:	0	:/Users/rsotto/stash/cia-prequel-api/src	0	ruby	:/Users/rsotto/.rvm/rubies/ruby-2.3.1/bin/ruby bin/rails s
+pane	0	0	:zsh	0	:	1	:/Users/rsotto/stash/cia-prequel-ui	1	zsh	:
+pane	0	1	:vim	1	:*	0	:/Users/rsotto/stash/cia-prequel-ui	1	vim	:vim
+pane	0	2	:vim	0	:-	0	:/Users/rsotto/github/dotfiles	1	vim	:vim tmux.conf
+window	0	0	0	:	8c5b,173x40,0,0[173x19,0,0,0,173x20,0,20,1]
+window	0	1	1	:*	adbf,173x40,0,0,2
+window	0	2	0	:-	adc1,173x40,0,0,4
+state	0	

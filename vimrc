@@ -564,7 +564,7 @@
   " {{{ plugin : ctrlp.vim
     let g:ctrlp_working_path_mode = 'rw'
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
-    let g:ctrlp_show_hidden = 1
+    let g:ctrlp_showhidden = 1
     nnoremap <leader>f :CtrlP<cr>
     nnoremap <leader>b :CtrlPBuffer<cr>
     nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -698,5 +698,9 @@
     xmap aa <Plug>SidewaysArgumentTextobjA
     omap ia <Plug>SidewaysArgumentTextobjI
     xmap ia <Plug>SidewaysArgumentTextobjI
+  "}}}
+
+  "{{{
+    nnoremap <leader>u :MundoToggle<cr>
   "}}}
 " vim:foldmethod=marker:foldlevel=0

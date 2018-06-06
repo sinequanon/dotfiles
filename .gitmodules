@@ -150,3 +150,15 @@
 	path = vim/bundle/sideways.vim
 	url = https://github.com/AndrewRadev/sideways.vim.git
 	ignore = dirty
+[submodule "vim/bundle/vim-mundo"]
+	path = vim/bundle/vim-mundo
+	url = https://github.com/simnalamburt/vim-mundo.git
+[submodule "vim/bundle/vim-obsession"]
+	path = vim/bundle/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
+[submodule "vim/bundle/vim-prosession"]
+	path = vim/bundle/vim-prosession
+	url = https://github.com/dhruvasagar/vim-prosession.git
+[submodule "tmux/tmux-resurrect"]
+	path = tmux/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect.git
