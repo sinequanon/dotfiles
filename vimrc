@@ -131,7 +131,7 @@
   nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>`z
 
   " Tell vim about ctrl + arrow keys and shift keys while in tmux
-  if &term == "tmux-256color"
+  if &term == "tmux-256color" || &term == "xterm-256color"
     map <esc>[1;5A <C-Up>
     map <esc>[1;5B <C-Down>
     map <esc>[1;5C <C-Right>
@@ -196,7 +196,7 @@
   nmap Q gqap
 
   " Quickly close the current window
-  nnoremap <leader><leader>q :q<CR>
+  nnoremap <leader><leader>c :q<CR>
 
   " Complete whole filenames/lines with a quicker shortcut key in insert mode
   " imap <C-f> <C-x><C-f>
