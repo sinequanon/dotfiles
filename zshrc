@@ -55,13 +55,23 @@ setopt share_history
 setopt extended_glob
 setopt auto_cd
 
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/share/npm/bin:~/dev/api-sdk/bin/:$PATH
+export PATH=$PATH:$HOME/bin:/usr/local/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+
+if [[ `uname` == 'Darwin' ]]; then
+  alias ctags='`brew --prefix`/bin/ctags'
+  . `brew --prefix`/etc/profile.d/z.sh
+  export EDITOR='/usr/local/bin/vim'
+elif [[ `uname` == 'Linux' ]]; then
+  # Start Z https://github.com/rupa/z
+  export EDITOR='/usr/bin/vim'
+  . ~/z.sh
+fi
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -70,10 +80,15 @@ export LANG=en_US.UTF-8
 #   export EDITOR='mvim'
 # fi
 #export EDITOR='/usr/local/bin/mvim -v'
-if [[ `uname` == 'Darwin' ]]; then
-  export EDITOR='/usr/local/bin/vim'
-elif [[ `uname` == 'Linux' ]]; then
-  export EDITOR='/usr/bin/vim'
+
+if grep -qE "(Microsoft|WS)" /proc/version &> /dev/null ; then
+  WSL=true
+else
+  WSL=false
+fi
+if [[ $WSL == true ]]; then
+  # Prevent zsh in WSL from complaining
+  unsetopt BG_NICE
 fi
 
 # Compilation flags
@@ -117,19 +132,8 @@ alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_developm
 
 alias ssh='TERM=xterm-256color ssh'
 
-if [[ `uname` == 'Darwin' ]]; then
-  alias ctags='`brew --prefix`/bin/ctags'
-fi
-
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
-
-# Start Z https://github.com/rupa/z
-if [[ `uname` == 'Darwin' ]]; then
-. `brew --prefix`/etc/profile.d/z.sh
-elif [[ `uname` == 'Linux' ]]; then
-. ~/z.sh
-fi
 
 # Unify all langs
 LANG="en_US.UTF-8"
@@ -233,8 +237,5 @@ BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-materi
 # Open Chrome with CORS disabled
 # open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --disable-web-security --user-data-dir
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rvm/bin"
+export DISPLAY=:0
+export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
