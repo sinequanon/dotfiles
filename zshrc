@@ -185,9 +185,14 @@ bindkey '^Z' fancy-ctrl-z
 # Set the shakti environment
 export NODE_ENV=local
 
-# Set hybrid-material colors
-BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+if [[ $WSL == true ]]; then
+ BASE16_SHELL="$HOME/github/base16-shell/scripts/base16-material-palenight.sh"
+ [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+else
+  # Set hybrid-material colors
+  BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
+  [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+fi
 #########################
 
 # IPAD4WHITE_ESN='NFAPPL-D1-IPAD3=4-5E466F974D24EA3853A21720C67D64D3DA772EE7C991A01E2F4853FCC732BBEB'
@@ -245,12 +250,12 @@ export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PR
 if [[ $WSL == true ]]; then
   # Prevent zsh in WSL from complaining
   # https://github.com/wting/autojump/issues/474#issuecomment-294300096
-  unsetopt BG_NICE
-  export DISPLAY=:0
-  export LIBGL_ALWAYS_INDIRECT=1
+  # unsetopt BG_NICE
+  # export DISPLAY=:0
+  # export LIBGL_ALWAYS_INDIRECT=1
 
-  # Scale XAPPs in conjunction with native windows
-  export GDK_DPI_SCALE=1.5
+  # Scale XAPPs in conjunction with native windows for WSL
+  export GDK_DPI_SCALE=1
   #Change ls colours
   LS_COLORS="ow=01;36;40" && export LS_COLORS
 
