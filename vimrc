@@ -19,7 +19,7 @@
   set hidden                           " Sets buffers to hidden when abandoned
   set modelines=1
   set nowrap                           " Don't wrap lines
-  set textwidth=0                      " Allow any size of inserted text
+  set textwidth=100                    " Allow any size of inserted text
   set wrapmargin=5                     " Number of characters from the right window border where wrapping starts.
   set linebreak                        " Wrap between word boundaries
   set tabstop=4                        " A tab is four spaces
@@ -320,7 +320,7 @@
     " Autocomplete most file types
     autocmd FileType javascript
       \ set omnifunc=javascriptcomplete#CompleteJS |
-      \ set formatprg=prettier-eslint\ --stdin
+      " \ set formatprg=prettier-eslint\ --parser\ babylon\ --print-width\ 100\ --stdin
     autocmd FileType python
       \ set omnifunc=pythoncomplete#Complete |
       \ set expandtab

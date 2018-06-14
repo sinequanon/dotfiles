@@ -46,7 +46,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases gulp zsh-syntax-highlighting docker)
+plugins=(git common-aliases zsh-syntax-highlighting)
 
 # User configuration
 
@@ -131,6 +131,8 @@ alias pprod='psql --host=prequel-prod.cjrtfdmnhffu.us-west-2.rds.amazonaws.com -
 alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_development'
 
 alias ssh='TERM=xterm-256color ssh'
+
+alias apiWslStart='sudo service postgresql start && sudo service elasticsearch start && sudo mkdir -p /run/metatron/decrypted && sudo touch /run/metatron/decrypted/sentry_raven_dsn_test.txt && rails s'
 
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
@@ -237,5 +239,23 @@ BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-materi
 # Open Chrome with CORS disabled
 # open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --disable-web-security --user-data-dir
 
-export DISPLAY=:0
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+if [[ $WSL == true ]]; then
+  # Prevent zsh in WSL from complaining
+  # https://github.com/wting/autojump/issues/474#issuecomment-294300096
+  unsetopt BG_NICE
+  export DISPLAY=:0
+  export LIBGL_ALWAYS_INDIRECT=1
+
+  # Scale XAPPs in conjunction with native windows
+  export GDK_DPI_SCALE=1.5
+  #Change ls colours
+  LS_COLORS="ow=01;36;40" && export LS_COLORS
+
+  #make cd use the ls colours
+  zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+  autoload -Uz compinit
+  compinit
+fi
