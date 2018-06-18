@@ -455,7 +455,10 @@
       set macligatures
       set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
     elseif s:uname == "Linux\n"
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 13
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 12
+      set linespace=10
+      " Turn off cursor blinking
+      set guicursor+=a:blinkon0
       " Support ligatures from a special build
       " See https://github.com/gasparch/vim8-ligatures-package
       let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
