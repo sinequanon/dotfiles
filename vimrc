@@ -395,7 +395,7 @@
     autocmd!
     autocmd InsertLeave * normal mZ
   augroup END
-" }}}
+  " }}}
 
 " {{{ Color schemes
 
@@ -449,34 +449,41 @@
   hi Keyword gui=italic cterm=italic
 
   " Setup from MacVim
-  if has("gui_running")
-    let s:uname = system("uname")
-    if s:uname == "Darwin\n"
+  let s:uname = system("uname")
+  if s:uname == "Darwin\n"
+    if has("gui_running")
       set macligatures
       set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
-    elseif s:uname == "Linux\n"
+    endif
+  elseif s:uname == "Linux\n"
+    " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
+    " For VTE terminals
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+    if has("gui_running")
       set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 12
       set linespace=10
       " Turn off cursor blinking
       set guicursor+=a:blinkon0
+      " Remove right-hand scrollbar
+      " set guioptions-=r
+      " Remove left-hand scrollbar
+      " set guioptions-=L
+      " Remove menu bar
+      " set guioptions-=m
+      " Remove tool bar
+      " set guioptions-=T
+      " Do not source the menu options at all. This removes the weird gaps
+      " in the chrome
+      " set guioptions-=M
+      " Remove all scrollbars
+      set guioptions=
+      set linespace=6
       " Support ligatures from a special build
       " See https://github.com/gasparch/vim8-ligatures-package
       let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
     endif
-    " Remove right-hand scrollbar
-    " set guioptions-=r
-    " Remove left-hand scrollbar
-    " set guioptions-=L
-    " Remove menu bar
-    " set guioptions-=m
-    " Remove tool bar
-    " set guioptions-=T
-    " Do not source the menu options at all. This removes the weird gaps
-    " in the chrome
-    " set guioptions-=M
-    " Remove all scrollbars
-    set guioptions=
-    set linespace=6
   endif
 
   " Configure colorcolumn
