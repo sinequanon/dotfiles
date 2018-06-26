@@ -230,7 +230,10 @@
   vnoremap <Space> za
 
   " Visually select the text that was last edited/pasted
-  nmap gV `[v`]
+  nnoremap gV `[v`]
+  " Paste contents of clipboard, select pasted and adjust indents
+  nnoremap <leader>p p`[v`]=
+  nnoremap <leader>P P`[v`]=
 
   " Easy map adding semicolon, dot, or comma to the ends of functions
   "inoremap ;<cr> <end>;
@@ -462,7 +465,7 @@
     let &t_SR = "\<Esc>[4 q"
     let &t_EI = "\<Esc>[2 q"
     if has("gui_running")
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 12
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 15
       set linespace=10
       " Turn off cursor blinking
       set guicursor+=a:blinkon0
@@ -697,7 +700,7 @@
 
   "{{{ vim-prettier (with prettier-eslint support) Not to be confused with
   "prettier/vim-prettier
-    nnoremap <silent> <leader>p :Prettier<cr>
+    " nnoremap <silent> <leader>p :Prettier<cr>
   "}}}
 
   "{{{ vim-sideways
