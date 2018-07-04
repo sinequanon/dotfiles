@@ -461,14 +461,14 @@
   elseif s:uname == "Linux\n"
     " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
     " For VTE terminals
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
+    " let &t_SI = "\<Esc>[6 q"
+    " let &t_SR = "\<Esc>[4 q"
+    " let &t_EI = "\<Esc>[2 q"
+    set guicursor+=a:blinkon0
     if has("gui_running")
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 15
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 13
       set linespace=10
       " Turn off cursor blinking
-      set guicursor+=a:blinkon0
       " Remove right-hand scrollbar
       " set guioptions-=r
       " Remove left-hand scrollbar
@@ -650,11 +650,13 @@
   "{{{ plugin: ale
     let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
     let g:ale_fix_on_save = 1
-    let g:ale_lint_delay = 10
+    let g:ale_lint_delay = 0
 
     let g:ale_fixers = {
           \   'javascript': ['prettier-eslint'],
           \}
+    let g:ale_completion_enabled = 1
+    let g:ale_cache_executable_check_failures = 1
   "}}}
 
   "{{{ Oceanic Next
