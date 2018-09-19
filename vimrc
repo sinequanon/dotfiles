@@ -363,11 +363,12 @@
     " autocmd InsertLeave,CursorHold * nested if expand('%') != '' | update | endif
 
     " Automatically source vimrc on save.
-    autocmd! BufWritePost $MYVIMRC source $MYVIMRC
+    " use nested to allow other events to cascade
+    autocmd! BufWritePost $MYVIMRC nested source $MYVIMRC
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
-    autocmd BufWritePost *.js,*.jsx call prettier#run(1)
+    autocmd BufWritePost *.js,*.jsx nested call prettier#run(1)
     " Running before saving, changing text or leaving insert mode
     " autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue call prettier#run(1)
 
@@ -413,8 +414,12 @@
   "let g:hybrid_custom_term_colors = 1
   " colorscheme hybrid_material
   " colorscheme base16-material
-  colorscheme palenight
-  let g:palenight_terminal_italics=1
+  " let g:palenight_terminal_italics=1
+  " colorscheme palenight
+  let g:gruvbox_italic=1
+  let g:gruvbox_italicize_strings=1
+  let g:gruvbox_improved_strings=0
+  colorscheme gruvbox
 
   "highlight clear SignColumn
   "highlight VertSplit    ctermbg=236
@@ -433,23 +438,23 @@
 
   " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
   " to get this working on new setups
-  hi Comment gui=italic cterm=italic
-  hi Label gui=italic cterm=italic
-  hi Statement gui=italic cterm=italic
-  hi Type gui=italic cterm=italic
-  hi htmlArg gui=italic cterm=italic
-  hi javaScriptReserved gui=italic cterm=italic
-  hi javascriptImport gui=italic cterm=italic
-  hi jsClassKeyword gui=italic cterm=italic
-  hi jsConditional gui=italic cterm=italic
-  hi jsDocTags gui=italic cterm=italic
-  hi jsExport gui=italic cterm=italic
-  hi jsExportDefault gui=italic cterm=italic
-  hi jsExtendsKeyword gui=italic cterm=italic
-  hi jsFrom gui=italic cterm=italic
-  hi jsModuleAs gui=italic cterm=italic
-  hi jsStorageClass gui=italic cterm=italic
-  hi Keyword gui=italic cterm=italic
+  " hi Comment gui=italic cterm=italic
+  " hi Label gui=italic cterm=italic
+  " hi Statement gui=italic cterm=italic
+  " hi Type gui=italic cterm=italic
+  " hi htmlArg gui=italic cterm=italic
+  " hi javaScriptReserved gui=italic cterm=italic
+  " hi javascriptImport guifg=NONE guibg=NONE ctermbg=NONE ctermfg=NONE gui=italic cterm=italic
+  " hi jsClassKeyword gui=italic cterm=italic
+  " hi jsConditional gui=italic cterm=italic
+  " hi jsDocTags gui=italic cterm=italic
+  " hi jsExport gui=italic cterm=italic
+  " hi jsExportDefault gui=italic cterm=italic
+  " hi jsExtendsKeyword gui=italic cterm=italic
+  " hi jsFrom gui=italic cterm=italic
+  " hi jsModuleAs gui=italic cterm=italic
+  " hi jsStorageClass gui=italic cterm=italic
+  " hi Keyword gui=italic cterm=italic
 
   " Setup from MacVim
   let s:uname = system("uname")
@@ -461,12 +466,12 @@
   elseif s:uname == "Linux\n"
     " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
     " For VTE terminals
-    " let &t_SI = "\<Esc>[6 q"
-    " let &t_SR = "\<Esc>[4 q"
-    " let &t_EI = "\<Esc>[2 q"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
     set guicursor+=a:blinkon0
     if has("gui_running")
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 13
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 16
       set linespace=10
       " Turn off cursor blinking
       " Remove right-hand scrollbar
@@ -577,7 +582,7 @@
   " {{{ plugin : ctrlp.vim
     let g:ctrlp_working_path_mode = 'rw'
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
-    let g:ctrlp_showhidden = 1
+    let g:ctrlp_show_hidden = 1
     nnoremap <leader>f :CtrlP<cr>
     nnoremap <leader>b :CtrlPBuffer<cr>
     nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -650,7 +655,7 @@
   "{{{ plugin: ale
     let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
     let g:ale_fix_on_save = 1
-    let g:ale_lint_delay = 0
+    let g:ale_lint_delay = 200
 
     let g:ale_fixers = {
           \   'javascript': ['prettier-eslint'],

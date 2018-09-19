@@ -1,0 +1,8 @@
+pane	0	0	:ruby	0	:#	0	:/home/rowell/stash/cia-prequel-ui	0	node	:node /usr/share/yarn/bin/yarn.js start
+pane	0	0	:ruby	0	:#	1	:/home/rowell/stash/cia-prequel-api/src	1	ruby	:/home/rowell/.rvm/rubies/ruby-2.3.1/bin/ruby bin/rails s
+pane	0	1	:zsh	1	:*	0	:/tmp/vjtceoK	1	vim	:vim
+pane	0	2	:zsh	0	:-	0	:/home/rowell/github/dotfiles	1	zsh	:
+window	0	0	0	:#	d021,342x44,0,0[342x21,0,0,1,342x22,0,22,2]
+window	0	1	1	:*	bcc0,342x44,0,0,3
+window	0	2	0	:-	bcc3,342x44,0,0,6
+state	0	

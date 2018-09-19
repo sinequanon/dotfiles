@@ -1,12 +1,12 @@
 [core]
-    excludesfile = /Users/rowell/.gitignore
-[diff]
-	tool = p4mergetool
-    #external = p4diff
-    # Prevents having to enter "" to go to next file
-    prompt = false
-    external = /Users/rowell/bin/git-external_patdiff.sh
-    algorithm = patience
+    excludesfile = /home/rowell/.gitignore
+; [diff]
+;     tool = p4mergetool
+;     #external = p4diff
+;     # Prevents having to enter "" to go to next file
+;     prompt = false
+;     external = /home/rowell/bin/git-external_patdiff.sh
+;     algorithm = patience
 [difftool "vimdiff"]
     #cmd = /Users/rowell/bin/git_diff_wrapper
 [pager]

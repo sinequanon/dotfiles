@@ -134,6 +134,7 @@ alias ssh='TERM=xterm-256color ssh'
 
 alias apiWslStart='sudo service postgresql start && sudo service elasticsearch start && sudo mkdir -p /run/metatron/decrypted && sudo touch /run/metatron/decrypted/sentry_raven_dsn_test.txt && rails s'
 
+alias m3uget='ffmpeg -i https://url.com/videos/hls/e4/19/d4/e419d439729e1daf694979e0ed646869/hls-360p.m3u8\?e\=1531382653\&l\=0\&h\=37cb6081b2a2033f35d32e768dad1c76 -c copy -bsf:a aac_adtstoasc output1.mp4'
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
@@ -186,8 +187,8 @@ bindkey '^Z' fancy-ctrl-z
 export NODE_ENV=local
 
 if [[ $WSL == true ]]; then
- BASE16_SHELL="$HOME/github/base16-shell/scripts/base16-material-palenight.sh"
- [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+ # BASE16_SHELL="$HOME/github/base16-shell/scripts/base16-material-palenight.sh"
+ # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 else
   # Set hybrid-material colors
   BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
@@ -257,10 +258,11 @@ if [[ $WSL == true ]]; then
   # Scale XAPPs in conjunction with native windows for WSL
   export GDK_DPI_SCALE=1
   #Change ls colours
-  LS_COLORS="ow=01;36;40" && export LS_COLORS
+  # LS_COLORS="ow=01;36;40" && export LS_COLORS
+  # eval "$(dircolors ~/.gruvbox.dircolors)"
 
   #make cd use the ls colours
-  zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+  # zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
   autoload -Uz compinit
   compinit
 fi
