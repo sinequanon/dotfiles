@@ -368,7 +368,7 @@
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
-    autocmd BufWritePost *.js,*.jsx nested call prettier#run(1)
+    " autocmd BufWritePost *.js,*.jsx nested call prettier#run(1)
     " Running before saving, changing text or leaving insert mode
     " autocmd BufWritePre,TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue call prettier#run(1)
 
@@ -462,6 +462,9 @@
     if has("gui_running")
       set macligatures
       set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
+      set linespace=10
+      " Remove all scrollbars
+      set guioptions=
     endif
   elseif s:uname == "Linux\n"
     " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
@@ -559,6 +562,7 @@
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+        let g:ctrlp_use_caching = 0
     endif
   " }}}
 
@@ -580,7 +584,7 @@
   " }}}
 
   " {{{ plugin : ctrlp.vim
-    let g:ctrlp_working_path_mode = 'rw'
+    let g:ctrlp_working_path_mode = 'ra'
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_show_hidden = 1
     nnoremap <leader>f :CtrlP<cr>
@@ -656,12 +660,16 @@
     let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
     let g:ale_fix_on_save = 1
     let g:ale_lint_delay = 200
+    let g:ale_javascript_eslint_options = '--debug'
+    let g:ale_javascript_eslint_executable = 'eslint_d'
+    let g:ale_javascript_eslint_use_global = 0
 
     let g:ale_fixers = {
-          \   'javascript': ['prettier-eslint'],
+          \   'javascript': ['eslint'],
           \}
     let g:ale_completion_enabled = 1
-    let g:ale_cache_executable_check_failures = 1
+    let g:ale_cache_executable_check_failures = 0
+    nmap <silent> <leader>af :ALEFix<cr>
   "}}}
 
   "{{{ Oceanic Next

@@ -128,7 +128,8 @@ alias rm="trash"
 alias palpha='psql --host=prequel-dev.curho7ugte77.us-west-2.rds.amazonaws.com --username=prequel_dev prequel_alpha'
 alias pbeta='psql --host=prequelbeta.cjrtfdmnhffu.us-west-2.rds.amazonaws.com --username=prequel_dev prequel_dev'
 alias pprod='psql --host=prequel-prod.cjrtfdmnhffu.us-west-2.rds.amazonaws.com --username=prequel prequel_prod'
-alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_development'
+# alias plocal='psql --host=127.0.0.1 --username=postgres cia-prequel-api_development'
+alias pdev='psql --host=prequel-dev.chahntavgquc.us-west-2.rds.amazonaws.com --username=prequel_dev prequel_dev'
 
 alias ssh='TERM=xterm-256color ssh'
 
@@ -247,6 +248,7 @@ fi
 
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+export PREQUEL_DEV_MEECHAM_MOCK_EMAIL="rsotto@netflix.com"
 
 if [[ $WSL == true ]]; then
   # Prevent zsh in WSL from complaining
