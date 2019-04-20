@@ -60,6 +60,9 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 
 source $ZSH/oh-my-zsh.sh
 
+GRUVBOX_SHELL="$HOME/github/dotfiles/vim/bundle/gruvbox/gruvbox_256pallette_osx.sh"
+[[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
@@ -192,8 +195,8 @@ if [[ $WSL == true ]]; then
  # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 else
   # Set hybrid-material colors
-  BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
-  [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+  # BASE16_SHELL="$HOME/github/dotfiles/vim/bundle/vim-hybrid-material/base16-material/base16-material.dark.sh"
+  # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 fi
 #########################
 
