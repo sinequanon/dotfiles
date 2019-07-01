@@ -142,6 +142,38 @@ alias m3uget='ffmpeg -i https://url.com/videos/hls/e4/19/d4/e419d439729e1daf6949
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
+netflixtotals() {
+  # set -x
+  unset var
+  unset payload
+  unset nextPageToken
+  unset data
+  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
+  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+  data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+
+  echo "=== Total for this pass ==="
+  cat <<< "$data" | sort | uniq -c | sort -rn
+  var="$var $data"
+  runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+  echo "========= Running Total ========="
+  cat <<< "$runningTotal"
+  until [[ $nextPageToken == "null" ]]; do
+    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+    data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+    var="$var $data"
+    echo "=== Total for this pass ==="
+    cat <<< "$data" | sort | uniq -c | sort -rn
+    runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+    echo "========= Running Total ========="
+    cat <<< "$runningTotal"
+    total=$(cat <<< "$runningTotal" | awk '{sum+=$1} END{ print sum}')
+    cat <<< $total
+  done
+}
+
 # Unify all langs
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
@@ -188,7 +220,7 @@ zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
 # Set the shakti environment
-export NODE_ENV=local
+export NODE_ENV=development
 
 if [[ $WSL == true ]]; then
  # BASE16_SHELL="$HOME/github/base16-shell/scripts/base16-material-palenight.sh"
@@ -272,5 +304,18 @@ if [[ $WSL == true ]]; then
   compinit
 fi
 
+BROWSER="w3m"
+
+ulimit -n 65536 65536
+
+export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
+export PATH="/usr/local/opt/python@2/bin:$PATH"
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

@@ -585,6 +585,7 @@
 
   " {{{ plugin : ctrlp.vim
     let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_root_markers = ['.git', '.vscode']
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_show_hidden = 1
     nnoremap <leader>f :CtrlP<cr>
