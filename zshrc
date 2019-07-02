@@ -163,14 +163,17 @@ netflixtotals() {
     payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
     nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
     data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
-    var="$var $data"
-    echo "=== Total for this pass ==="
-    cat <<< "$data" | sort | uniq -c | sort -rn
-    runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
-    echo "========= Running Total ========="
-    cat <<< "$runningTotal"
-    total=$(cat <<< "$runningTotal" | awk '{sum+=$1} END{ print sum}')
-    cat <<< $total
+    # If data exists
+    if  [ -n "${data// }" ]; then
+      var="$var $data"
+      echo "=== Total for this pass ==="
+      cat <<< "$data" | sort | uniq -c | sort -rn
+      runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+      echo "========= Running Total ========="
+      cat <<< "$runningTotal"
+      total=$(cat <<< "$runningTotal" | awk '{sum+=$1} END{ print sum}')
+      cat <<< $total
+    fi
   done
 }
 
