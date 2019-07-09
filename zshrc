@@ -142,7 +142,7 @@ alias m3uget='ffmpeg -i https://url.com/videos/hls/e4/19/d4/e419d439729e1daf6949
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
-netflixtotals() {
+nftotals() {
   # set -x
   unset var
   unset payload
@@ -151,7 +151,8 @@ netflixtotals() {
   pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
-  data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+  # data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+  data=$(jq -r ".data[].customAttributes.location" <<< $payload)
 
   echo "=== Total for this pass ==="
   cat <<< "$data" | sort | uniq -c | sort -rn
@@ -162,7 +163,43 @@ netflixtotals() {
   until [[ $nextPageToken == "null" ]]; do
     payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
     nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
-    data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+    # data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
+    data=$(jq -r ".data[].customAttributes.location" <<< $payload)
+    # If data exists
+    if  [ -n "${data// }" ]; then
+      var="$var $data"
+      echo "=== Total for this pass ==="
+      cat <<< "$data" | sort | uniq -c | sort -rn
+      runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+      echo "========= Running Total ========="
+      cat <<< "$runningTotal"
+      total=$(cat <<< "$runningTotal" | awk '{sum+=$1} END{ print sum}')
+      cat <<< $total
+    fi
+  done
+}
+
+nftitles() {
+  # set -x
+  unset var
+  unset payload
+  unset nextPageToken
+  unset data
+  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
+  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+  data=$(jq -r ".data[].customAttributes.jobLevelDescription" <<< $payload)
+
+  echo "=== Total for this pass ==="
+  cat <<< "$data" | sort | uniq -c | sort -rn
+  var="$var $data"
+  runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+  echo "========= Running Total ========="
+  cat <<< "$runningTotal"
+  until [[ $nextPageToken == "null" ]]; do
+    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+    data=$(jq -r ".data[].customAttributes.jobLevelDescription" <<< $payload)
     # If data exists
     if  [ -n "${data// }" ]; then
       var="$var $data"
