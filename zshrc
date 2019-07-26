@@ -148,6 +148,7 @@ nftotals() {
   unset payload
   unset nextPageToken
   unset data
+  unset runningTotal
   pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
@@ -185,6 +186,7 @@ nftitles() {
   unset payload
   unset nextPageToken
   unset data
+  unset runningTotal
   pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
@@ -212,6 +214,49 @@ nftitles() {
       cat <<< $total
     fi
   done
+}
+
+nfdata() {
+  # set -x
+  unset var
+  unset payload
+  unset nextPageToken
+  unset data
+  unset runningTotal
+  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
+  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+  echo "{ \"data\": [" > stuff.json
+  data=$(jq ".data|join(\",\")" <<< $payload)
+  echo $data >> stuff.json
+
+  # echo "=== Total for this pass ==="
+  # cat <<< "$data" | sort | uniq -c | sort -rn
+  var="$var $data"
+  # runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+  # echo "========= Running Total ========="
+  # cat <<< "$runningTotal"
+  until [[ $nextPageToken == "null" ]]; do
+    echo "looping..."
+    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
+    echo $nextPageToken
+    data=$(jq -r ".data|join(\",\")" <<< $payload)
+    # If data exists
+    # if  [ -n "${data// }" ]; then
+      var="$var $data"
+      # echo "=== Total for this pass ==="
+      # cat <<< "$data" | sort | uniq -c | sort -rn
+      # runningTotal=$(cat <<< "$var" | sort | uniq -c | sort -rn)
+      # echo "========= Running Total ========="
+      # cat <<< "$runningTotal"
+      # total=$(cat <<< "$runningTotal" | awk '{sum+=$1} END{ print sum}')
+      # cat <<< $total
+    # fi
+  done
+  echo $var >> stuff.json
+  echo "end loop"
+  echo " ]}" >> stuff.json
 }
 
 # Unify all langs
