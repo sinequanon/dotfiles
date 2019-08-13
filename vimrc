@@ -669,6 +669,7 @@
 
     let g:ale_fixers = {
           \   'javascript': ['eslint'],
+          \   'less': ['stylelint']
           \}
     let g:ale_completion_enabled = 1
     let g:ale_cache_executable_check_failures = 0
