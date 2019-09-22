@@ -122,6 +122,12 @@
   " Remap j and k to act as expected when used on long, wrapped, lines
   nnoremap <buffer> <silent> j gj
   nnoremap <buffer> <silent> k gk
+  " Heavy handedly fix ligature redraw issues
+  "https://github.com/macvim-dev/macvim/issues/476
+  " nnoremap <buffer> <silent> k gk:redraw!<CR>
+  " nnoremap <buffer> <silent> j gj:redraw!<CR>
+  " nnoremap <buffer> <silent> h h:redraw!<CR>
+  " nnoremap <buffer> <silent> l l:redraw!<CR>
 
   " Use H and L to get to the beginning and end of the text on a line
   noremap H ^
@@ -668,7 +674,8 @@
     let g:ale_javascript_eslint_use_global = 0
 
     let g:ale_fixers = {
-          \   'javascript': ['eslint'],
+          \   'javascript': ['prettier'],
+          \   'javascriptreact': ['prettier'],
           \   'less': ['stylelint']
           \}
     let g:ale_completion_enabled = 1

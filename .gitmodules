@@ -153,18 +153,24 @@
 [submodule "vim/bundle/vim-mundo"]
 	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
+	ignore = dirty
 [submodule "vim/bundle/vim-obsession"]
 	path = vim/bundle/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+	ignore = dirty
 [submodule "vim/bundle/vim-prosession"]
 	path = vim/bundle/vim-prosession
 	url = https://github.com/dhruvasagar/vim-prosession.git
+	ignore = dirty
 [submodule "tmux/tmux-resurrect"]
 	path = tmux/tmux-resurrect
 	url = https://github.com/tmux-plugins/tmux-resurrect.git
+	ignore = dirty
 [submodule "vim/bundle/gruvbox"]
 	path = vim/bundle/gruvbox
 	url = https://github.com/morhetz/gruvbox.git
+	ignore = dirty
 [submodule "vim/bundle/ctrlp-py-matcher"]
 	path = vim/bundle/ctrlp-py-matcher
 	url = https://github.com/FelikZ/ctrlp-py-matcher
+	ignore = dirty
