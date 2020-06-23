@@ -356,6 +356,10 @@
     " Auto open quick fix window after any grep command. Mosty for GitGrep
     autocmd QuickFixCmdPost *grep* cwindow
 
+    " Make the QuickFix window automatically appear if :make has any errors
+    autocmd QuickFixCmdPost [^l]* nested cwindow
+    autocmd QuickFixCmdPost    l* nested lwindow
+
     " Make QuickFix window always on the bottom taking the whole horizontal space
     autocmd FileType qf wincmd J
 
@@ -663,6 +667,7 @@
   " {{{ plugin : netrw
     " Allow netrw to remove non-empty local directories
     let g:netrw_localrmdir='trash'
+    " let g:netrw_banner=1
   " }}}
 
   "{{{ plugin: ale
@@ -676,7 +681,9 @@
     let g:ale_fixers = {
           \   'javascript': ['prettier'],
           \   'javascriptreact': ['prettier'],
-          \   'less': ['stylelint']
+          \   'typescript': ['prettier'],
+          \   'typescriptreact': ['prettier'],
+          \   'less': ['prettier']
           \}
     let g:ale_completion_enabled = 1
     let g:ale_cache_executable_check_failures = 0
