@@ -590,7 +590,7 @@
     " git blame
     nnoremap <silent> <leader>gb :Gblame<cr>
     " git log
-    nnoremap <silent> <leader>gl :Glog<cr><cr>
+    nnoremap <silent> <leader>gl :0Glog<cr><cr>
     " git edit
     nnoremap <silent> <leader>ge :Gedit<cr>
   " }}}
