@@ -182,3 +182,7 @@
 	path = vim/bundle/tsuquyomi
 	url = https://github.com/Quramy/tsuquyomi.git
 	ignore = dirty
+[submodule "vim/bundle/coc.nvim"]
+	path = vim/bundle/coc.nvim
+	url = https://github.com/neoclide/coc.nvim.git
+	ignore = dirty

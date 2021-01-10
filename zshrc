@@ -145,7 +145,7 @@ alias ssh='TERM=xterm-256color ssh'
 
 alias apiWslStart='sudo service postgresql start && sudo service elasticsearch start && sudo mkdir -p /run/metatron/decrypted && sudo touch /run/metatron/decrypted/sentry_raven_dsn_test.txt && rails s'
 
-alias m3uget='f() { ffmpeg -user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:69.0) Gecko/20100101 Firefox/69.0" -i $1 -c copy $2; };f'
+alias m3uget='f() { ffmpeg -user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:82.0) Gecko/20100101 Firefox/82.0" -i $1 -c copy $2; };f'
 alias example='f() { echo Your arg was $1. $2; };f'
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
