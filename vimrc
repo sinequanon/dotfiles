@@ -93,6 +93,7 @@
   set updatetime=500                   " Change time in which swap file will be written to disk
   set lazyredraw                       " Screen is not redrawn while executing macros, registers, etc
   set bufhidden=unload                 " Unload buffer when hidden
+  set ttyfast
 " }}}
 
 " {{{ Remappings
@@ -734,7 +735,7 @@
 
   " Formatting selected code.
   xmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+  " nmap <leader>cf  <Plug>(coc-format-selected)
 
   augroup mygroup
     autocmd!
@@ -900,4 +901,10 @@
   "{{{
     nnoremap <leader>u :MundoToggle<cr>
   "}}}
+
+  "{{{ which-key
+  let g:maplocalleader="\<space>"               " local leader
+  nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
+  nnoremap <silent> <localleader> :<c-u>WhichKey '<space>'<CR>
+  "}}}"
 " vim:foldmethod=marker:foldlevel=0
