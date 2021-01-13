@@ -776,7 +776,7 @@
   " Add `:Fold` command to fold current buffer.
   command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-  command! -nargs=0 Prettier :CocCommand prettier.formatFile
+  " command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
   " Add `:OR` command for organize imports of the current buffer.
   command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
@@ -839,7 +839,7 @@
     " let g:ale_completion_enabled = 1
     " let g:ale_cache_executable_check_failures = 0
     " nmap <silent> <leader>af :ALEFix<cr>
-    nmap <silent> <leader>af :Prettier<cr>
+    nmap <silent> <leader>af :CocCommand prettier.formatFile<cr>
   "}}}
 
   "{{{ Oceanic Next
