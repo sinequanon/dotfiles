@@ -449,7 +449,7 @@
 
   " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
   " to get this working on new setups
-  " hi Comment gui=italic cterm=italic
+  hi Comment gui=italic cterm=italic
   " hi Label gui=italic cterm=italic
   " hi Statement gui=italic cterm=italic
   " hi Type gui=italic cterm=italic

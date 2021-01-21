@@ -266,18 +266,22 @@ endsnippet
 
 # console.log
 snippet clg
+// eslint-disable-next-line
 console.log(${0})
 endsnippet
 # console.log value with format
 snippet clf
+// eslint-disable-next-line
 console.log('${1} : %${2}', $1)
 endsnippet
 # console.log value
 snippet clv
-console.log('${1}', $1)
+// eslint-disable-next-line
+console.log('${1}', $1);
 endsnippet
 snippet clvf
-console.log('${1}', JSON.stringify($1, null, 2))
+// eslint-disable-next-line
+console.log('${1}', JSON.stringify($1, null, 2));
 endsnippet
 # console.debug
 snippet cdb
