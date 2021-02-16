@@ -22,10 +22,6 @@
 	path = vim/bundle/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 	ignore = dirty
-[submodule "vim/bundle/base16-vim"]
-	path = vim/bundle/base16-vim
-	url = https://github.com/chriskempson/base16-vim.git
-	ignore = dirty
 [submodule "vim/bundle/vim-pathogen"]
 	path = vim/bundle/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
@@ -74,17 +70,9 @@
 	path = vim/bundle/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
 	ignore = dirty
-[submodule "vim/bundle/vim-hybrid-material"]
-	path = vim/bundle/vim-hybrid-material
-	url = https://github.com/kristijanhusak/vim-hybrid-material.git
-	ignore = dirty
 [submodule "vim/bundle/vim-vinegar"]
 	path = vim/bundle/vim-vinegar
 	url = https://github.com/tpope/vim-vinegar.git
-	ignore = dirty
-[submodule "vim/bundle/oceanic-next"]
-	path = vim/bundle/oceanic-next
-	url = https://github.com/mhartington/oceanic-next.git
 	ignore = dirty
 [submodule "vim/bundle/vim-prettier"]
 	path = vim/bundle/vim-prettier
@@ -105,10 +93,6 @@
 [submodule "vim/bundle/rainbow"]
 	path = vim/bundle/rainbow
 	url = https://github.com/luochen1990/rainbow.git
-	ignore = dirty
-[submodule "vim/bundle/tagman.vim"]
-	path = vim/bundle/tagman.vim
-	url = https://github.com/grassdog/tagman.vim.git
 	ignore = dirty
 [submodule "vim/bundle/vim-startify"]
 	path = vim/bundle/vim-startify
@@ -134,10 +118,6 @@
 	path = vim/bundle/vim-windowswap
 	url = https://github.com/wesQ3/vim-windowswap.git
 	ignore = dirty
-[submodule "vim/bundle/palenight.vim"]
-	path = vim/bundle/palenight.vim
-	url = https://github.com/drewtempelmeyer/palenight.vim.git
-	ignore = dirty
 [submodule "vim/bundle/vim-easy-align"]
 	path = vim/bundle/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
@@ -149,14 +129,6 @@
 [submodule "vim/bundle/vim-mundo"]
 	path = vim/bundle/vim-mundo
 	url = https://github.com/simnalamburt/vim-mundo.git
-	ignore = dirty
-[submodule "vim/bundle/vim-obsession"]
-	path = vim/bundle/vim-obsession
-	url = https://github.com/tpope/vim-obsession.git
-	ignore = dirty
-[submodule "vim/bundle/vim-prosession"]
-	path = vim/bundle/vim-prosession
-	url = https://github.com/dhruvasagar/vim-prosession.git
 	ignore = dirty
 [submodule "tmux/tmux-resurrect"]
 	path = tmux/tmux-resurrect

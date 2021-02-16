@@ -94,6 +94,7 @@
   set lazyredraw                       " Screen is not redrawn while executing macros, registers, etc
   set bufhidden=unload                 " Unload buffer when hidden
   set ttyfast
+  set path+=**
 " }}}
 
 " {{{ Remappings
@@ -233,8 +234,8 @@
   nmap <leader>z :%s#\<<c-r>=expand("<cword>")<CR>\>#
 
   " Folding
-  nnoremap <Space> za
-  vnoremap <Space> za
+  " nnoremap <Space> za
+  " vnoremap <Space> za
 
   " Visually select the text that was last edited/pasted
   nnoremap gV `[v`]
@@ -286,7 +287,7 @@
   nmap <silent> <cr><cr> i<cr><Esc>
 
   " delete surrounding function
-  nmap <silent> dsf ds)db
+  " nmap <silent> dsf ds)db
 
   " close tags
   " Copied from ragtag
@@ -403,7 +404,7 @@
     autocmd BufWritePre * %s/\s\+$//e
 
     " Return cursor to previous location on load
-    autocmd BufReadPost * normal `"
+    " autocmd BufReadPost * normal `"
   augroup end
 
   augroup LastEditMarker
@@ -565,18 +566,29 @@
 " Plugins {{{
   " {{{ Silver Searcher
     " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-    if executable('ag')
-        let g:ackprg = 'ag --nogroup --column'
+    " if executable('ag')
+    "     let g:ackprg = 'ag --nogroup --column'
 
-        " Use Ag over Grep
-        set grepprg=ag\ --nogroup\ --nocolor
+    "     " Use Ag over Grep
+    "     set grepprg=ag\ --nogroup\ --nocolor
 
-        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-        let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
-        " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-        let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-        let g:ctrlp_use_caching = 0
-        " let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:20'
+    "     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    "     let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
+    "     " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+    "     let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+    "     let g:ctrlp_use_caching = 0
+    "     " let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:20'
+    " endif
+  " }}}
+
+  " {{{ RipGrep
+    if executable('rg')
+      set grepprg=rg\ --vimgrep
+      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+      let g:ctrlp_use_caching = 0
+      let g:ctrlp_working_path_mode = 'ra'
+      let g:ctrlp_switch_buffer = 'et'
+      let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
     endif
   " }}}
 
@@ -903,8 +915,12 @@
   "}}}
 
   "{{{ which-key
-  let g:maplocalleader="\<space>"               " local leader
-  nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
-  nnoremap <silent> <localleader> :<c-u>WhichKey '<space>'<CR>
+    let g:maplocalleader="\<space>"               " local leader
+    nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
+    nnoremap <silent> <localleader> :<c-u>WhichKey '<space>'<CR>
+  "}}}"
+
+  "{{{
+    nnoremap <leader>/ :CocSearch -S<space>
   "}}}"
 " vim:foldmethod=marker:foldlevel=0
