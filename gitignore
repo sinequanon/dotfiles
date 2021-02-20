@@ -5,6 +5,9 @@ tags
 .gitignore
 *-256color.ti
 \.*netrwhist
+*vim\/sessions
+*vim\/session
+tmux-client-*.log
 node_modules
 npm-debug.log
 yarn.lock
