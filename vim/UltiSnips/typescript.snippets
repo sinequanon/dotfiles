@@ -1,0 +1,351 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+snippet reactsf "React stateless function"
+import React from 'react';
+
+export default () =>
+  <div${1: className='${2}'>
+	${0}
+  </div>
+};
+endsnippet
+
+snippet reactclass "React class"
+import React, { Component } from 'react';
+
+export default class ${3} extends Component {
+  render() {
+	return <div${1: className='${2}'>
+	  ${0}
+	  </div>
+	}
+  }
+};
+endsnippet
+
+snippet fa "Fat arrow"
+(${1}) => {
+  ${0}
+};
+endsnippet
+
+# snippet subs "Observable forEach" i
+# subscribe(function ${1}() {
+#         ${0}
+#     }${2:,
+#     function ${3}() {
+
+#     },
+#     function ${4}() {
+#     }
+#     }
+# )
+# endsnippet
+
+# Functions
+
+# # prototype
+# snippet proto
+# ${1:class_name}.prototype.${2:method_name} = function (${3}) {
+#     ${0}
+# }
+# endsnippet
+# # Function
+# snippet fun "Function" i
+# function ${1:function_name} (${2}) {
+#     ${0}
+# }
+# endsnippet
+# # Anonymous Function
+# snippet f "Anonymous function" i
+# function (${1}) {
+#     ${0}
+# }
+# endsnippet
+# # Function assigned to variable
+# snippet vf
+# let ${1:function_name} = function $1(${2}) {
+#     ${0}
+# }
+# endsnippet
+# # Immediate function
+# snippet (fa
+# ( (${2}) => {
+# ${0}
+# }(${1})
+# endsnippet
+# Flow control
+
+# if
+snippet if
+if (${1:true}) {
+	${0}
+};
+endsnippet
+# if ... else
+snippet ife
+if (${1:true}) {
+	${2}
+} else {
+	${0}
+};
+endsnippet
+# tertiary conditional
+snippet ter
+${1:/* condition */} ? ${2:/* if true */} : ${0:/* if false */};
+endsnippet
+# switch
+snippet switch
+switch (${1:expression}) {
+	case '${3:case}':
+		${4}
+		break
+	${0}
+	default:
+		${2}
+};
+endsnippet
+# # case
+# snippet case
+# case '${1:case}':
+#     ${2}
+#     break
+# ${0}
+# endsnippet
+# try
+snippet try
+try {
+	${1}
+} catch (${2:e}) {
+	${0:/* handle error */}
+};
+endsnippet
+# # return
+# snippet ret
+# return ${0:result}
+# endsnippet
+
+# Loops
+
+# for loop
+snippet for
+for (let ${2:i} = 0, l = ${1:arr}.length $2 < l $2 ++) {
+	let ${3:v} = $1[$2]${0:}
+};
+endsnippet
+# Reversed for loop
+snippet forr
+for (let ${2:i} = ${1:arr}.length - 1 $2 >= 0 $2 --) {
+	let ${3:v} = $1[$2]${0:}
+};
+endsnippet
+# While loop
+snippet wh
+while (${1:/* condition */}) {
+	${0}
+};
+endsnippet
+# Do while loop
+snippet do
+do {
+	${0}
+} while (${1:/* condition */});
+endsnippet
+# For in loop
+snippet fori
+for (let ${1:prop} in ${2:object}) {
+	${0:$2[$1]}
+};
+endsnippet
+
+# Objects
+
+# # Object Method
+# snippet :f
+# ${1:method_name} : function (${2:attribute}) {
+#     ${0}
+# }${3},
+# endsnippet
+# # hasOwnProperty
+# snippet has
+# hasOwnProperty(${0})
+# endsnippet
+# # Define multiple properties
+# snippet props
+# var ${1:my_object} = Object.defineProperties(
+#     ${2:new Object()},
+#     {
+#         ${3:property} : {
+#             get : function $1_$3_getter() {
+#                 // getter code
+#             },
+#             set : function $1_$3_setter(value) {
+#                 // setter code
+#             },
+#             value        : ${4:value},
+#             writeable    : ${5:boolean},
+#             enumerable   : ${6:boolean},
+#             configurable : ${0:boolean}
+#         }
+#     }
+# )
+# endsnippet
+# # Define single property
+# snippet prop
+# Object.defineProperty(
+#     ${1:object},
+#     '${2:property}',
+#     {
+#         get : function $1_$2_getter() {
+#             // getter code
+#         },
+#         set : function $1_$2_setter(value) {
+#             // setter code
+#         },
+#         value        : ${3:value},
+#         writeable    : ${4:boolean},
+#         enumerable   : ${5:boolean},
+#         configurable : ${0:boolean}
+#     }
+# )
+# endsnippet
+
+# Documentation
+
+# docstring
+snippet /**
+/**
+ * ${0:description}
+ *
+ */
+endsnippet
+snippet @par
+@param {${1:type}} ${2:name} ${0:description}
+endsnippet
+snippet @ret
+@return {${1:type}} ${0:description}
+endsnippet
+
+# JSON
+
+# JSON.parse
+snippet jsonp
+JSON.parse(${0:jstr});
+endsnippet
+# JSON.stringify
+snippet jsons
+JSON.stringify(${0:object});
+endsnippet
+
+# DOM selectors
+
+# # Get elements
+# snippet get
+# getElementsBy${1:TagName}('${0}')
+# endsnippet
+# # Get element
+# snippet gett
+# getElementBy${1:Id}('${0}')
+# endsnippet
+# # Elements by class
+# snippet by.
+# ${1:document}.getElementsByClassName('${0:class}')
+# endsnippet
+# Element by ID
+snippet by#
+${1:document}.getElementById('${0:element ID}')
+endsnippet
+# Query selector
+snippet qs
+${1:document}.querySelector('${0:CSS selector}')
+endsnippet
+# Query selector all
+snippet qsa
+${1:document}.querySelectorAll('${0:CSS selector}')
+endsnippet
+
+# Debugging
+
+# console.log
+snippet clg
+// eslint-disable-next-line
+console.log(${0});
+endsnippet
+# console.log value with format
+snippet clf
+// eslint-disable-next-line
+console.log('${1} : %${2}', $1)
+endsnippet
+# console.log value
+snippet clv
+// eslint-disable-next-line
+console.log('${1}', $1);
+endsnippet
+snippet clvf
+// eslint-disable-next-line
+console.log('${1}', JSON.stringify($1, null, 2));
+endsnippet
+# console.debug
+snippet cdb
+// eslint-disable-next-line
+console.debug(${0});
+endsnippet
+# console.debug value
+snippet cdbf
+// eslint-disable-next-line
+console.debug('${1}', JSON.stringify($1, null, 2));
+endsnippet
+# console.trace
+snippet ct
+// eslint-disable-next-line
+console.trace(${0:label});
+endsnippet
+# console.time
+snippet ctime
+// eslint-disable-next-line
+console.time(${0:label});
+endsnippet
+snippet ctimed
+// eslint-disable-next-line
+console.timeEnd(${0:label});
+endsnippet
+# console.assert
+snippet ca
+// eslint-disable-next-line
+console.assert(${1:expression}, ${0:obj});
+endsnippet
+# console.dir
+snippet cdir
+// eslint-disable-next-line
+console.dir(${0:obj});
+endsnippet
+
+# Misc
+
+# setTimeout function
+snippet sett
+setTimeout(function () {${0}}${2}, ${1:10});
+endsnippet
