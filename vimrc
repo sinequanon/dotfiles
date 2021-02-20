@@ -697,6 +697,10 @@
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
 
+  " Use <Tab> and <S-Tab> to navigate the completion list
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
@@ -766,6 +770,8 @@
   nmap <leader>ac  <Plug>(coc-codeaction)
   " Apply AutoFix to problem on the current line.
   nmap <leader>qf  <Plug>(coc-fix-current)
+  " Format file
+  nmap <silent> <leader>af :CocCommand prettier.formatFile<cr>
 
   " Map function and class text objects
   " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -833,32 +839,6 @@
     " let g:netrw_banner=1
   " }}}
 
-  "{{{ plugin: ale
-    " let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
-    " let g:ale_fix_on_save = 1
-    " let g:ale_lint_delay = 200
-    " let g:ale_javascript_eslint_options = '--debug'
-    " let g:ale_javascript_eslint_executable = 'eslint_d'
-    " let g:ale_javascript_eslint_use_global = 0
-
-    " let g:ale_fixers = {
-    "       \   'javascript': ['prettier'],
-    "       \   'javascriptreact': ['prettier'],
-    "       \   'typescript': ['prettier'],
-    "       \   'typescriptreact': ['prettier'],
-    "       \   'less': ['prettier']
-    "       \}
-    " let g:ale_completion_enabled = 1
-    " let g:ale_cache_executable_check_failures = 0
-    " nmap <silent> <leader>af :ALEFix<cr>
-    nmap <silent> <leader>af :CocCommand prettier.formatFile<cr>
-  "}}}
-
-  "{{{ Oceanic Next
-    let g:oceanic_next_terminal_bold = 1
-    let g:oceanic_next_terminal_italic = 1
-  "}}}
-  "
   "{{{ Javascript libraries syntax
     let g:used_javascript_libs = 'lo-dash,react '
   " }}}
@@ -870,11 +850,6 @@
 
   "{{{ Rainbow parens
     let g:rainbow_active = 1
-  "}}}
-
-  "{{{ Base 16 Material
-    let g:enable_bold_font = 1
-    let g:enable_italic_font = 1
   "}}}
 
   "{{{ Startify enable devicons
@@ -893,11 +868,6 @@
 
     " Start interactive EasyAlign for a motion/text object (e.g. gaip)
     nmap ga <Plug>(EasyAlign)
-  "}}}
-
-  "{{{ vim-prettier (with prettier-eslint support) Not to be confused with
-  "prettier/vim-prettier
-    " nnoremap <silent> <leader>p :Prettier<cr>
   "}}}
 
   "{{{ vim-sideways
