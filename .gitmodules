@@ -145,3 +145,6 @@
 [submodule "vim/vim-which-key"]
 	path = vim/bundle/vim-which-key
 	url = https://github.com/liuchengxu/vim-which-key.git
+[submodule "vim/bundle/ctrlsf.vim"]
+	path = vim/bundle/ctrlsf.vim
+	url = https://github.com/dyng/ctrlsf.vim.git

@@ -107,9 +107,9 @@
   " inoremap <c-]> g<c-]>
 
   " Free search
-  nnoremap <f3> :Ggr -i --untracked<space>
+  nnoremap <leader>/ :Ggr -i --untracked<space>
   " Search word under cursor
-  nnoremap <S-f3> :Ggr -i --untracked<space><cword><cr>
+  nnoremap <leader>g/ :Ggr -i --untracked<space><cword><cr>
 
   "This will disable the arrow keys while you’re in normal mode to help you learn to use hjkl.
   "nnoremap <up> <nop>
@@ -888,7 +888,14 @@
     nnoremap <silent> <localleader> :<c-u>WhichKey '<space>'<CR>
   "}}}"
 
-  "{{{
-    nnoremap <leader>/ :CocSearch -S<space>
+  "{{{ CtrlSF
+    " Set working directory to project root where VCS (.git) file is located"
+    let g:ctrlsf_default_root = 'project'
+    " Auto focus to search results pane when complete
+    let g:ctrlsf_auto_focus = {
+    \ "at": "done",
+    \ "duration_less_than": 1000
+    \ }
+    nnoremap <F3> :CtrlSF <space>
   "}}}"
 " vim:foldmethod=marker:foldlevel=0
