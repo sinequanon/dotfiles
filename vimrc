@@ -94,7 +94,7 @@
   set lazyredraw                       " Screen is not redrawn while executing macros, registers, etc
   set bufhidden=unload                 " Unload buffer when hidden
   set ttyfast
-  set path+=**
+  set path+=**                         " Set recursive file finding
 " }}}
 
 " {{{ Remappings
@@ -212,6 +212,7 @@
 
   " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the yanked stack (also, in visual mode)
   nmap <silent> <leader>d "_d
+  nmap <silent> <leader>dd "_dd
   vmap <silent> <leader>d "_d
 
   " Don't pollute the default register with simple cuts
@@ -549,18 +550,18 @@
 
 " {{{ Functions
   " Extract variable
-  function! ExtractVariable()
-    try
-      let save_a = @a
-      let variable = input('Variable name: ')
-      normal! gv"ay
-      execute "normal! gvc" . variable
-      execute "normal! O" . variable . " = " . @a
-    finally
-      let @a = save_a
-    endtry
-  endfunction
-  xnoremap <Leader>e <ESC>:call ExtractVariable()<CR>
+  " function! ExtractVariable()
+  "   try
+  "     let save_a = @a
+  "     let variable = input('Variable name: ')
+  "     normal! gv"ay
+  "     execute "normal! gvc" . variable
+  "     execute "normal! O" . variable . " = " . @a
+  "   finally
+  "     let @a = save_a
+  "   endtry
+  " endfunction
+  " xnoremap <Leader>e <ESC>:call ExtractVariable()<CR>
 " }}}
 
 " Plugins {{{
@@ -657,11 +658,6 @@
     "let g:lt_height = 10
   " }}}
 
-  " {{{ plugin : UltiSnips
-    " let g:UltiSnipsJumpForwardTrigger='<tab>'
-    " let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
-  " }}}
-
   " {{{ plugin: Coc
   " Use <C-l> for trigger snippet expand.
 
@@ -751,7 +747,7 @@
 
   " Formatting selected code.
   xmap <leader>f  <Plug>(coc-format-selected)
-  " nmap <leader>cf  <Plug>(coc-format-selected)
+  nmap <leader>af  <Plug>(coc-format-selected)
 
   augroup mygroup
     autocmd!
@@ -771,7 +767,7 @@
   " Apply AutoFix to problem on the current line.
   nmap <leader>qf  <Plug>(coc-fix-current)
   " Format file
-  nmap <silent> <leader>af :CocCommand prettier.formatFile<cr>
+  nmap <silent> <leader>gf :CocCommand prettier.formatFile<cr>
 
   " Map function and class text objects
   " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -783,10 +779,12 @@
   omap ic <Plug>(coc-classobj-i)
   xmap ac <Plug>(coc-classobj-a)
   omap ac <Plug>(coc-classobj-a)
-  " Use CTRL-S for selections ranges.
+
+  " Use TAB for selections ranges.
   " Requires 'textDocument/selectionRange' support of language server.
-  nmap <silent> <C-s> <Plug>(coc-range-select)
-  xmap <silent> <C-s> <Plug>(coc-range-select)
+  nmap <silent> <Tab> <Plug>(coc-range-select)
+  xmap <silent> <Tab> <Plug>(coc-range-select)
+  xmap <silent> <S-Tab> <Plug>(coc-range-select-backward)
 
   " Add `:Format` command to format current buffer.
   command! -nargs=0 Format :call CocAction('format')
