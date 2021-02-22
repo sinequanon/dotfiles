@@ -595,11 +595,11 @@
 
   " {{{ plugin : Fugitive.vim
     " git diff current file vs HEAD
-    nnoremap <silent> <leader>gd :Gdiff<cr>
+    nnoremap <silent> <leader>gd :Gvdiffsplit!<cr>
     " turn off vim diff and delete diff buffer
     " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
     " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
-    nnoremap <silent> <leader>gD <c-w>h<c-w>c<cr>
+    nnoremap <silent> <leader>gD <c-W><c-O> :Gedit<cr>
     " git status
     nnoremap <silent> <leader>gs :Gstatus<cr>
     " git blame
