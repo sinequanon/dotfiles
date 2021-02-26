@@ -315,6 +315,9 @@
 
   " Insert comma at end of line
   imap <leader>c <c-o>ma<c-o>A,<c-o>`a
+
+  " Cycle through the line number mode
+  nnoremap <F2> :let [&nu, &rnu] = [!&rnu, &nu+&rnu==1]<cr>
 " }}}
 
 " {{{ Commands
@@ -767,7 +770,7 @@
   " Apply AutoFix to problem on the current line.
   nmap <leader>qf  <Plug>(coc-fix-current)
   " Format file
-  nmap <silent> <leader>gf :CocCommand prettier.formatFile<cr>
+  nmap <silent> <leader>gf :Prettier<cr>
 
   " Map function and class text objects
   " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -792,7 +795,8 @@
   " Add `:Fold` command to fold current buffer.
   command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-  " command! -nargs=0 Prettier :CocCommand prettier.formatFile
+  " Add `:Prettier` command to format using linter
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
   " Add `:OR` command for organize imports of the current buffer.
   command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
@@ -898,4 +902,6 @@
     \ }
     nnoremap <F3> :CtrlSF <space>
   "}}}"
+  " :Gedit! !~3:%
+  " :Gdiff  !~5
 " vim:foldmethod=marker:foldlevel=0
