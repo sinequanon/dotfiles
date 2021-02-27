@@ -902,6 +902,4 @@
     \ }
     nnoremap <F3> :CtrlSF <space>
   "}}}"
-  " :Gedit! !~3:%
-  " :Gdiff  !~5
 " vim:foldmethod=marker:foldlevel=0
