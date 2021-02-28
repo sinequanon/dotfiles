@@ -602,7 +602,8 @@
     " turn off vim diff and delete diff buffer
     " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
     " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
-    nnoremap <silent> <leader>gD <c-W><c-O> :Gedit<cr>
+    " Assuming focus was in the current non-git buffer, otherwise append a :Gedit before the <cr>
+    nnoremap <silent> <leader>gD <c-W><c-O><cr>
     " git status
     nnoremap <silent> <leader>gs :Gstatus<cr>
     " git blame
@@ -611,6 +612,26 @@
     nnoremap <silent> <leader>gl :0Glog<cr><cr>
     " git edit
     nnoremap <silent> <leader>ge :Gedit<cr>
+    " function! XZY(...)
+    "   let n = get(a:, 1, 0)
+    "   echo "a:0". a:0
+    "   echo "n: '".n."'"
+    "   if 'n' == ""
+    "     echo "nada"
+    "   endif
+
+    "   if exists('n')
+    "     echo "you pressed " .n
+    "   else
+    "     echo "you pressed nothing"
+    "   endif
+    " endfunction
+    " Git edit current file 3 previous versions ago
+    " :Gedit! !~3:%
+    nnoremap <silent> <leader>gx :exe join(["Gedit !~",nr2char(getchar()),":%"], "")<cr>
+    " Git diff current file 5 versions ago
+    " :Gdiff  !~5
+    nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
   " }}}
 
   " {{{ plugin : ctrlp.vim
