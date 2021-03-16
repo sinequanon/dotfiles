@@ -975,4 +975,10 @@
     \ }
     nnoremap <F3> :CtrlSF <space>
   "}}}"
+  "{{{ Bbye (Buffer Bye)
+    " Remove buffer from buffer list
+    nnoremap <silent> <leader>bd :Bdelete<cr>
+    " Remove buffer from buffer list and clear buffer from jumplist
+    nnoremap <silent> <leader>bw :Bwipeout<cr>
+  "}}}
 " vim:foldmethod=marker:foldlevel=0
