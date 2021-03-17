@@ -545,10 +545,10 @@
   nnoremap <silent><space>h :wincmd h<cr>
   nnoremap <silent><space>j :wincmd j<cr>
   nnoremap <silent><space>k :wincmd k<cr>
-  nnoremap <leader>wl <c-w>l
-  nnoremap <leader>wh <c-w>h
-  nnoremap <leader>wj <c-w>j
-  nnoremap <leader>wk <c-w>k
+  " nnoremap <leader>wl <c-w>l
+  " nnoremap <leader>wh <c-w>h
+  " nnoremap <leader>wj <c-w>j
+  " nnoremap <leader>wk <c-w>k
 
   " Easy pane resizing
   nnoremap <silent> <S-Left> 5<C-w>>
@@ -851,16 +851,12 @@
     let javascript_enable_domhtmlcss  = 1
   " }}}
 
-  " {{{ plugin : vim-hybrid
-      let g:hybrid_custom_term_colors = 1
-  " }}}
-
   " {{{ plugin : nerdcomment
     let g:NERDSpaceDelims = 1
   " }}}
 
   " {{{ plugin : airline-theme
-    let g:airline_theme='solarized'
+    let g:airline_theme='base16_railscasts'
   " }}}
 
   " {{{ plugin : netrw
@@ -886,6 +882,8 @@
     function! StartifyEntryFormat()
       return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
     endfunction
+
+    nnoremap <leader>wh :Startify<cr>
   "}}}
 
   "{{{ devicons
@@ -910,7 +908,7 @@
     xmap ia <Plug>SidewaysArgumentTextobjI
   "}}}
 
-  "{{{
+  "{{{ Mundo
     nnoremap <leader>u :MundoToggle<cr>
   "}}}
 
