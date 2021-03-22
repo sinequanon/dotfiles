@@ -204,7 +204,7 @@
   nmap Q gqap
 
   " Quickly close the current window
-  nnoremap <leader>w :q<CR>
+  nnoremap <silent> <leader>w :q<CR>
 
   " Complete whole filenames/lines with a quicker shortcut key in insert mode
   " imap <C-f> <C-x><C-f>
@@ -411,114 +411,114 @@
 
     " Return cursor to previous location on load
     " autocmd BufReadPost * normal `"
-  augroup end
+    augroup end
 
-  augroup LastEditMarker
-    autocmd!
-    autocmd InsertLeave * normal mZ
-  augroup END
-  " }}}
+    augroup LastEditMarker
+      autocmd!
+      autocmd InsertLeave * normal mZ
+    augroup END
+" }}}
 
 " {{{ Color schemes
 
-  if (has("termguicolors"))
-    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors
-  endif
-  set background=dark
-  " colorscheme base16-railscasts
-  " colorscheme jellybeans
-  "let g:hybrid_custom_term_colors = 1
-  " colorscheme hybrid_material
-  " colorscheme base16-material
-  " let g:palenight_terminal_italics=1
-  " colorscheme palenight
-  let g:gruvbox_italic=1
-  let g:gruvbox_italicize_strings=1
-  let g:gruvbox_improved_strings=0
-  colorscheme gruvbox
-
-  "highlight clear SignColumn
-  "highlight VertSplit    ctermbg=236
-  "highlight ColorColumn  ctermbg=237
-  "highlight LineNr       ctermbg=236 ctermfg=240
-  "highlight CursorLineNr ctermbg=236 ctermfg=240
-  "highlight CursorLine   ctermbg=236
-  "highlight StatusLineNC ctermbg=238 ctermfg=0
-  "highlight StatusLine   ctermbg=240 ctermfg=12
-  "highlight IncSearch    ctermbg=3   ctermfg=1
-  "highlight Search       ctermbg=1   ctermfg=3
-  "highlight Visual       ctermbg=3   ctermfg=0
-  "highlight Pmenu        ctermbg=240 ctermfg=12
-  "highlight PmenuSel     ctermbg=3   ctermfg=1
-  "highlight SpellBad     ctermbg=0   ctermfg=1
-
-  " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
-  " to get this working on new setups
-  hi Comment gui=italic cterm=italic
-  " hi Label gui=italic cterm=italic
-  " hi Statement gui=italic cterm=italic
-  " hi Type gui=italic cterm=italic
-  " hi htmlArg gui=italic cterm=italic
-  " hi javaScriptReserved gui=italic cterm=italic
-  " hi javascriptImport guifg=NONE guibg=NONE ctermbg=NONE ctermfg=NONE gui=italic cterm=italic
-  " hi jsClassKeyword gui=italic cterm=italic
-  " hi jsConditional gui=italic cterm=italic
-  " hi jsDocTags gui=italic cterm=italic
-  " hi jsExport gui=italic cterm=italic
-  " hi jsExportDefault gui=italic cterm=italic
-  " hi jsExtendsKeyword gui=italic cterm=italic
-  " hi jsFrom gui=italic cterm=italic
-  " hi jsModuleAs gui=italic cterm=italic
-  " hi jsStorageClass gui=italic cterm=italic
-  " hi Keyword gui=italic cterm=italic
-
-  " Setup from MacVim
-  let s:uname = system("uname")
-  if s:uname == "Darwin\n"
-    if has("gui_running")
-      set macligatures
-      set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
-      set linespace=10
-      " Remove all scrollbars
-      set guioptions=
+    if (has("termguicolors"))
+      let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+      set termguicolors
     endif
-  elseif s:uname == "Linux\n"
-    " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
-    " For VTE terminals
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
-    set guicursor+=a:blinkon0
-    if has("gui_running")
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 16
-      set linespace=10
-      " Turn off cursor blinking
-      " Remove right-hand scrollbar
-      " set guioptions-=r
-      " Remove left-hand scrollbar
-      " set guioptions-=L
-      " Remove menu bar
-      " set guioptions-=m
-      " Remove tool bar
-      " set guioptions-=T
-      " Do not source the menu options at all. This removes the weird gaps
-      " in the chrome
-      " set guioptions-=M
-      " Remove all scrollbars
-      set guioptions=
-      set linespace=6
-      " Support ligatures from a special build
-      " See https://github.com/gasparch/vim8-ligatures-package
-      let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
-    endif
-  endif
+    set background=dark
+    " colorscheme base16-railscasts
+    " colorscheme jellybeans
+    "let g:hybrid_custom_term_colors = 1
+    " colorscheme hybrid_material
+    " colorscheme base16-material
+    " let g:palenight_terminal_italics=1
+    " colorscheme palenight
+    let g:gruvbox_italic=1
+    let g:gruvbox_italicize_strings=1
+    let g:gruvbox_improved_strings=0
+    colorscheme gruvbox
 
-  " Configure colorcolumn
-  "highlight ColorColumn ctermbg=235 guibg=#2f1111
-  " Highlight column 80 and everything past column 120
-  let &colorcolumn="100,".join(range(120,999),",")
+    "highlight clear SignColumn
+    "highlight VertSplit    ctermbg=236
+    "highlight ColorColumn  ctermbg=237
+    "highlight LineNr       ctermbg=236 ctermfg=240
+    "highlight CursorLineNr ctermbg=236 ctermfg=240
+    "highlight CursorLine   ctermbg=236
+    "highlight StatusLineNC ctermbg=238 ctermfg=0
+    "highlight StatusLine   ctermbg=240 ctermfg=12
+    "highlight IncSearch    ctermbg=3   ctermfg=1
+    "highlight Search       ctermbg=1   ctermfg=3
+    "highlight Visual       ctermbg=3   ctermfg=0
+    "highlight Pmenu        ctermbg=240 ctermfg=12
+    "highlight PmenuSel     ctermbg=3   ctermfg=1
+    "highlight SpellBad     ctermbg=0   ctermfg=1
+
+    " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
+    " to get this working on new setups
+    hi Comment gui=italic cterm=italic
+    " hi Label gui=italic cterm=italic
+    " hi Statement gui=italic cterm=italic
+    " hi Type gui=italic cterm=italic
+    " hi htmlArg gui=italic cterm=italic
+    " hi javaScriptReserved gui=italic cterm=italic
+    " hi javascriptImport guifg=NONE guibg=NONE ctermbg=NONE ctermfg=NONE gui=italic cterm=italic
+    " hi jsClassKeyword gui=italic cterm=italic
+    " hi jsConditional gui=italic cterm=italic
+    " hi jsDocTags gui=italic cterm=italic
+    " hi jsExport gui=italic cterm=italic
+    " hi jsExportDefault gui=italic cterm=italic
+    " hi jsExtendsKeyword gui=italic cterm=italic
+    " hi jsFrom gui=italic cterm=italic
+    " hi jsModuleAs gui=italic cterm=italic
+    " hi jsStorageClass gui=italic cterm=italic
+    " hi Keyword gui=italic cterm=italic
+
+    " Setup from MacVim
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"
+      if has("gui_running")
+        set macligatures
+        set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
+        set linespace=10
+        " Remove all scrollbars
+        set guioptions=
+      endif
+    elseif s:uname == "Linux\n"
+      " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
+      " For VTE terminals
+      let &t_SI = "\<Esc>[6 q"
+      let &t_SR = "\<Esc>[4 q"
+      let &t_EI = "\<Esc>[2 q"
+      set guicursor+=a:blinkon0
+      if has("gui_running")
+        set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 16
+        set linespace=10
+        " Turn off cursor blinking
+        " Remove right-hand scrollbar
+        " set guioptions-=r
+        " Remove left-hand scrollbar
+        " set guioptions-=L
+        " Remove menu bar
+        " set guioptions-=m
+        " Remove tool bar
+        " set guioptions-=T
+        " Do not source the menu options at all. This removes the weird gaps
+        " in the chrome
+        " set guioptions-=M
+        " Remove all scrollbars
+        set guioptions=
+        set linespace=6
+        " Support ligatures from a special build
+        " See https://github.com/gasparch/vim8-ligatures-package
+        let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
+      endif
+    endif
+
+    " Configure colorcolumn
+    "highlight ColorColumn ctermbg=235 guibg=#2f1111
+    " Highlight column 80 and everything past column 120
+    let &colorcolumn="100,".join(range(120,999),",")
 " }}}
 
 " {{{ Windows
@@ -534,27 +534,27 @@
       augroup END
   " }}}
 
-  " Easy window navigation
-  nnoremap <silent> <leader><enter> :vsplit<cr>
-  nnoremap <silent> <leader>- :split<cr>
-  " nnoremap <C-l> <c-w>l
-  " nnoremap <C-h> <c-w>h
-  " nnoremap <C-j> <c-w>j
-  " nnoremap <C-k> <c-w>k
-  nnoremap <silent><space>l :wincmd l<cr>
-  nnoremap <silent><space>h :wincmd h<cr>
-  nnoremap <silent><space>j :wincmd j<cr>
-  nnoremap <silent><space>k :wincmd k<cr>
-  " nnoremap <leader>wl <c-w>l
-  " nnoremap <leader>wh <c-w>h
-  " nnoremap <leader>wj <c-w>j
-  " nnoremap <leader>wk <c-w>k
+    " Easy window navigation
+    nnoremap <silent> <leader><enter> :vsplit<cr>
+    nnoremap <silent> <leader>- :split<cr>
+    " nnoremap <C-l> <c-w>l
+    " nnoremap <C-h> <c-w>h
+    " nnoremap <C-j> <c-w>j
+    " nnoremap <C-k> <c-w>k
+    nnoremap <silent><space>l :wincmd l<cr>
+    nnoremap <silent><space>h :wincmd h<cr>
+    nnoremap <silent><space>j :wincmd j<cr>
+    nnoremap <silent><space>k :wincmd k<cr>
+    " nnoremap <leader>wl <c-w>l
+    " nnoremap <leader>wh <c-w>h
+    " nnoremap <leader>wj <c-w>j
+    " nnoremap <leader>wk <c-w>k
 
-  " Easy pane resizing
-  nnoremap <silent> <S-Left> 5<C-w>>
-  nnoremap <silent> <S-Right> 5<C-w><
-  nnoremap <silent> <S-Down> 5<C-W>-
-  nnoremap <silent> <S-Up> 3<C-W>+
+    " Easy pane resizing
+    nnoremap <silent> <S-Left> 5<C-w>>
+    nnoremap <silent> <S-Right> 5<C-w><
+    nnoremap <silent> <S-Down> 5<C-W>-
+    nnoremap <silent> <S-Up> 3<C-W>+
 " }}}
 
 " {{{ Functions
@@ -866,7 +866,7 @@
   " }}}
 
   "{{{ Javascript libraries syntax
-    let g:used_javascript_libs = 'lo-dash,react '
+    let g:used_javascript_libs = 'react'
   " }}}
 
   "{{{ Javascript plugin
@@ -876,6 +876,7 @@
 
   "{{{ Rainbow parens
     let g:rainbow_active = 1
+    nnoremap <silent> <leader>rt :RainbowToggle<cr>
   "}}}
 
   "{{{ Startify enable devicons
@@ -913,7 +914,8 @@
   "}}}
 
   "{{{ which-key
-    let g:maplocalleader="\<space>"               " local leader
+    " local leader
+    let g:maplocalleader="\<space>"
     call which_key#register('<Space>', "g:which_key_space_map")
     call which_key#register(',', "g:which_key_comma_map")
     nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
@@ -973,6 +975,7 @@
     \ }
     nnoremap <F3> :CtrlSF <space>
   "}}}"
+
   "{{{ Bbye (Buffer Bye)
     " Remove buffer from buffer list
     nnoremap <silent> <leader>bd :Bdelete<cr>
