@@ -154,3 +154,6 @@
 	path = vim/bundle/vim-which-key
 	url = https://github.com/liuchengxu/vim-which-key.git
 	ignore = dirty
+[submodule "vim/bundle/vim-jsonc"]
+	path = vim/bundle/vim-jsonc
+	url = https://github.com/kevinoid/vim-jsonc.git

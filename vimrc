@@ -353,6 +353,10 @@
     autocmd BufNewFile,BufRead *.scss set filetype=scss
     autocmd BufNewFile,BufRead *.less set filetype=less
 
+    " Typescript
+    autocmd BufNewFile,BufRead *.ts set filetype=typescript
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+
     " reloads changed buffers outside of the editor
     autocmd BufNewFile,BufRead * :checktime
   augroup end

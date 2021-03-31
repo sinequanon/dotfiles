@@ -13,7 +13,8 @@
     diff =
 [user]
     name = Rowell Sotto
-    email = github@sotto.org
+	email = 276030+sinequanon@users.noreply.github.com
+    ; email = github@sotto.org
 [merge]
     keepBackup = false;
     conflictstyle = diff3
