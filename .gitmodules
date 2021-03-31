@@ -150,3 +150,7 @@
 	path = vim/bundle/vim-bbye
 	url = https://github.com/moll/vim-bbye.git
 	ignore = dirty
+[submodule "vim/bundle/vim-which-key"]
+	path = vim/bundle/vim-which-key
+	url = https://github.com/liuchengxu/vim-which-key.git
+	ignore = dirty
