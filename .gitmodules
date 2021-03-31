@@ -157,3 +157,12 @@
 [submodule "vim/bundle/vim-jsonc"]
 	path = vim/bundle/vim-jsonc
 	url = https://github.com/kevinoid/vim-jsonc.git
+	ignore = dirty
+[submodule "vim/bundle/yats.vim"]
+	path = vim/bundle/yats.vim
+	url = https://github.com/HerringtonDarkholme/yats.vim.git
+	ignore = dirty
+[submodule "vim/bundle/yajs.vim"]
+	path = vim/bundle/yajs.vim
+	url = https://github.com/othree/yajs.vim.git
+	ignore = dirty

@@ -95,6 +95,7 @@
   set bufhidden=unload                 " Unload buffer when hidden
   set ttyfast
   set path+=**                         " Set recursive file finding
+  set re=0                             " Turn off old regexp engine explicitly
 " }}}
 
 " {{{ Remappings
@@ -986,4 +987,8 @@
     " Remove buffer from buffer list and clear buffer from jumplist
     nnoremap <silent> <leader>bw :Bwipeout<cr>
   "}}}
+
+  "{{{ YATS
+    let g:yats_host_keyword = 1
+  "}}}"
 " vim:foldmethod=marker:foldlevel=0
