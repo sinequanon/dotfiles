@@ -142,10 +142,6 @@
 	path = vim/bundle/coc.nvim
 	url = https://github.com/neoclide/coc.nvim.git
 	ignore = dirty
-[submodule "vim/vim-which-key"]
-	path = vim/bundle/vim-which-key
-	url = https://github.com/liuchengxu/vim-which-key.git
-	ignore = dirty
 [submodule "vim/bundle/ctrlsf.vim"]
 	path = vim/bundle/ctrlsf.vim
 	url = https://github.com/dyng/ctrlsf.vim.git
