@@ -596,17 +596,6 @@
     " endif
   " }}}
 
-  " {{{ RipGrep
-    if executable('rg')
-      set grepprg=rg\ --vimgrep
-      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-      let g:ctrlp_use_caching = 0
-      let g:ctrlp_working_path_mode = 'ra'
-      let g:ctrlp_switch_buffer = 'et'
-      let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-    endif
-  " }}}
-
   " {{{ plugin : Fugitive.vim
     " git diff current file vs HEAD
     nnoremap <silent> <leader>gd :Gvdiffsplit!<cr>
@@ -645,11 +634,24 @@
     nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
   " }}}
 
+  " {{{ RipGrep
+    if executable('rg')
+      set grepprg=rg\ --vimgrep
+      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+      let g:ctrlp_use_caching = 0
+      let g:ctrlp_working_path_mode = 'ra'
+      let g:ctrlp_switch_buffer = 'et'
+      let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+    endif
+  " }}}
+
   " {{{ plugin : ctrlp.vim
     let g:ctrlp_working_path_mode = 'ra'
     let g:ctrlp_root_markers = ['.git', '.vscode']
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_show_hidden = 1
+    " Turn off caching"
+    let g:ctrlp_use_caching = 1
     nnoremap <leader>f :CtrlP<cr>
     nnoremap <leader>b :CtrlPBuffer<cr>
     nnoremap <leader>m :CtrlPMRUFiles<cr>
@@ -660,6 +662,8 @@
     set signcolumn=yes
     " Ignore whitespace
     let g:gitgutter_diff_args= '-w'
+    let g:gitgutter_close_preview_on_escape = 1
+    let g:gitgutter_preview_win_floating = 1
   " }}}
 
   " {{{ plugin : Airline
@@ -935,6 +939,7 @@
     \ }
 
     let g:which_key_comma_map = {
+    \ 'name': 'Leader Map',
     \ ',y': ["g'Z", 'Go to last edit marker'],
     \ '-': [':split', 'Horizontal split buffer'],
     \ '/': [':Ggr -i --untracked<space>', 'Git grep search'],
@@ -946,8 +951,12 @@
     \ 'dd': ['"_dd', 'Delete without adding to yanked stack'],
     \ 'gp': ["'`[' . strpart(getregtype(), 0, 1) . '`]'",'Select previously pasted text'],
     \ 'n': [':let [&nu, &rnu] = [!&rnu, &nu+&rnu==1]<cr>', 'Toggle line number modes'],
+    \ 'ig': [':IndentGuidesToggle', 'Indent Guides Toggle'],
+    \ 'oi': [':OR', 'Organize Imports'],
     \ 'p': ["y'>p", 'Duplicate visual selection'],
     \ 'qf': ['<Plug>(coc-fix-current)', 'CoC Quick Fix'],
+    \ 'rn': ['<Plug><coc-rename>', 'CoC Rename'],
+    \ 'rt': [':RainbowToggle', 'Toggle Rainbow Parentheses'],
     \ 's': [':update', 'Save Buffer'],
     \ 'w': [':q', 'Close buffer'],
     \ 'z': [':%s#\<<c-r>=expand("<cword>")<CR>\>#', 'Search and replace word under cursor'],
@@ -968,6 +977,32 @@
     let g:which_key_comma_map.a = {
     \ 'name': 'CoC Codeaction'
     \ }
+
+    let g:which_key_comma_map[','] = {
+    \ 'name': 'EasyMotion',
+    \ 'f{char}': ['<Plug>(easymotion-f)', 'Find {char} to the right.'],
+    \ 'F{char}': ['<Plug>(easymotion-F)','Find {char} to the left.'],
+    \ 't{char}': ['<Plug>(easymotion-t)','Till before the {char} to the right.'],
+    \ 'T{char}': ['<Plug>(easymotion-T)','Till after the {char} to the left.'],
+    \ 'w': ['<Plug>(easymotion-w)','Beginning of word forward.'],
+    \ 'W': ['<Plug>(easymotion-W)','Beginning of WORD forward.'],
+    \ 'b': ['<Plug>(easymotion-b)','Beginning of word backward.'],
+    \ 'B': ['<Plug>(easymotion-B)','Beginning of WORD backward.'],
+    \ 'e': ['<Plug>(easymotion-e)','End of word forward.'],
+    \ 'E': ['<Plug>(easymotion-E)','End of WORD forward.'],
+    \ 'ge': ['<Plug>(easymotion-ge)','End of word backward.'],
+    \ 'gE': ['<Plug>(easymotion-gE)','End of WORD backward.'],
+    \ 'j': ['<Plug>(easymotion-j)','Line downward.'],
+    \ 'k': ['<Plug>(easymotion-k)','Line upward.'],
+    \ 'n': ['<Plug>(easymotion-n)','Jump to latest "/" or "?" forward.'],
+    \ 'N': ['<Plug>(easymotion-N)','Jump to latest "/" or "?" backward.'],
+    \ 's': ['<Plug>(easymotion-s)','Find(Search) {char} forward and backward.']
+    \ }
+
+    let g:which_key_comma_map.i = { 'name': 'which_key_ignore' }
+    let g:which_key_comma_map.o = { 'name': 'which_key_ignore' }
+    let g:which_key_comma_map.r = { 'name': 'which_key_ignore' }
+    let g:which_key_comma_map.y = { 'name': 'which_key_ignore' }
   "}}}
 
   "{{{ CtrlSF

@@ -1,3 +1,17 @@
+if grep -qE "(Microsoft|WS)" /proc/version &> /dev/null ; then
+  WSL=true
+else
+  WSL=false
+fi
+
+if [[ $WSL == true ]]; then
+  # Prevent zsh in WSL from complaining
+  # https://github.com/wting/autojump/issues/474#issuecomment-294300096
+  unsetopt BG_NICE
+  export DISPLAY=:0
+  export LIBGL_ALWAYS_INDIRECT=1
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -62,7 +76,7 @@ setopt share_history
 setopt extended_glob
 setopt auto_cd
 
-export PATH=$PATH:$HOME/bin:/usr/local/bin
+export PATH=$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
