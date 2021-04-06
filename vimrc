@@ -303,7 +303,7 @@
   " easily return to text you were last working on, even if you have moved to a
   " different buffer!  I tend to need this after I have been navigating around
   " files to do some research.  This saves us from hitting Ctrl-O repeatedly!
-  nmap <leader><leader>y g'Z
+  noremap <leader>e g'Z
 
   nnoremap <silent> <f7> :SortCssBraceContents<cr>
 
@@ -940,7 +940,7 @@
 
     let g:which_key_comma_map = {
     \ 'name': 'Leader Map',
-    \ ',y': ["g'Z", 'Go to last edit marker'],
+    \ ',e': ["g'Z", 'Go to last edit marker'],
     \ '-': [':split', 'Horizontal split buffer'],
     \ '/': [':Ggr -i --untracked<space>', 'Git grep search'],
     \ '<CR>': [':vsplit', 'Vertical split buffer'],
@@ -990,8 +990,11 @@
     \ 'B': ['<Plug>(easymotion-B)','Beginning of WORD backward.'],
     \ 'e': ['<Plug>(easymotion-e)','End of word forward.'],
     \ 'E': ['<Plug>(easymotion-E)','End of WORD forward.'],
-    \ 'ge': ['<Plug>(easymotion-ge)','End of word backward.'],
-    \ 'gE': ['<Plug>(easymotion-gE)','End of WORD backward.'],
+    \ 'g': {
+        \ 'name': '+Backwards',
+        \ 'e': ['<Plug>(easymotion-ge)','End of word backward.'],
+        \ 'E': ['<Plug>(easymotion-gE)','End of WORD backward.'],
+    \ },
     \ 'j': ['<Plug>(easymotion-j)','Line downward.'],
     \ 'k': ['<Plug>(easymotion-k)','Line upward.'],
     \ 'n': ['<Plug>(easymotion-n)','Jump to latest "/" or "?" forward.'],
@@ -1026,4 +1029,10 @@
   "{{{ YATS
     let g:yats_host_keyword = 1
   "}}}"
+
+  "{{{ Easy Motion
+    " Disengage default do mapping for in order for vim-which-key <leader><leader> configuration to
+    " work
+    let g:EasyMotion_do_mapping = 0
+  "}}}
 " vim:foldmethod=marker:foldlevel=0
