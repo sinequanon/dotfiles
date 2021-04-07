@@ -940,7 +940,6 @@
 
     let g:which_key_comma_map = {
     \ 'name': 'Leader Map',
-    \ ',e': ["g'Z", 'Go to last edit marker'],
     \ '-': [':split', 'Horizontal split buffer'],
     \ '/': [':Ggr -i --untracked<space>', 'Git grep search'],
     \ '<CR>': [':vsplit', 'Vertical split buffer'],
@@ -949,9 +948,10 @@
     \ 'S': [':wa', 'Save All Buffers'],
     \ 'd': ['"_d', 'Delete without adding to yanked stack'],
     \ 'dd': ['"_dd', 'Delete without adding to yanked stack'],
+    \ 'e': ["g'Z", 'Go to last edit marker'],
     \ 'gp': ["'`[' . strpart(getregtype(), 0, 1) . '`]'",'Select previously pasted text'],
-    \ 'n': [':let [&nu, &rnu] = [!&rnu, &nu+&rnu==1]<cr>', 'Toggle line number modes'],
     \ 'ig': [':IndentGuidesToggle', 'Indent Guides Toggle'],
+    \ 'n': [':let [&nu, &rnu] = [!&rnu, &nu+&rnu==1]<cr>', 'Toggle line number modes'],
     \ 'oi': [':OR', 'Organize Imports'],
     \ 'p': ["y'>p", 'Duplicate visual selection'],
     \ 'qf': ['<Plug>(coc-fix-current)', 'CoC Quick Fix'],
