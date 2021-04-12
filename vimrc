@@ -205,7 +205,7 @@
   nmap Q gqap
 
   " Quickly close the current window
-  nnoremap <silent> <leader>w :q<CR>
+  nnoremap <silent> <leader>wc :q<CR>
 
   " Complete whole filenames/lines with a quicker shortcut key in insert mode
   " imap <C-f> <C-x><C-f>
@@ -958,7 +958,11 @@
     \ 'rn': ['<Plug><coc-rename>', 'CoC Rename'],
     \ 'rt': [':RainbowToggle', 'Toggle Rainbow Parentheses'],
     \ 's': [':update', 'Save Buffer'],
-    \ 'w': [':q', 'Close buffer'],
+    \ 'w': {
+        \ 'name': '+Windows',
+        \'c': [':q', 'Close buffer'],
+        \'h': [':Startify', 'Startify Home'],
+    \ },
     \ 'z': [':%s#\<<c-r>=expand("<cword>")<CR>\>#', 'Search and replace word under cursor'],
     \ }
 
