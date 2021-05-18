@@ -205,7 +205,7 @@
   nmap Q gqap
 
   " Quickly close the current window
-  nnoremap <silent> <leader>wc :q<CR>
+  nnoremap <silent> gq :q<CR>
 
   " Complete whole filenames/lines with a quicker shortcut key in insert mode
   " imap <C-f> <C-x><C-f>
@@ -612,6 +612,8 @@
     nnoremap <silent> <leader>gl :0Glog<cr><cr>
     " git edit
     nnoremap <silent> <leader>ge :Gedit<cr>
+    " git add
+    nnoremap <silent> <leader>gw :Gwrite<cr>
     " function! XZY(...)
     "   let n = get(a:, 1, 0)
     "   echo "a:0". a:0
@@ -893,7 +895,7 @@
       return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
     endfunction
 
-    nnoremap <leader>wh :Startify<cr>
+    nnoremap gh :Startify<cr>
   "}}}
 
   "{{{ devicons
