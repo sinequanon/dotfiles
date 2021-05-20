@@ -428,6 +428,7 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
