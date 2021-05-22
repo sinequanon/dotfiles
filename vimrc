@@ -605,7 +605,7 @@
     " Assuming focus was in the current non-git buffer, otherwise append a :Gedit before the <cr>
     nnoremap <silent> <leader>gD <c-W><c-O><cr>
     " git status
-    nnoremap <silent> <leader>gs :Gstatus<cr>
+    nnoremap <silent> <leader>gs :Git<cr>
     " git blame
     nnoremap <silent> <leader>gb :Git blame<cr>
     " git log
