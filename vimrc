@@ -442,6 +442,9 @@
     let g:gruvbox_italic=1
     let g:gruvbox_italicize_strings=1
     let g:gruvbox_improved_strings=0
+    " Changes vim background in wezterm to same in vim. Otherwise you get a different color
+    "background
+    let g:gruvbox_contrast_dark="hard"
     colorscheme gruvbox
 
     "highlight clear SignColumn
