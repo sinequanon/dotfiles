@@ -158,3 +158,15 @@
 	path = vim/bundle/yajs.vim
 	url = https://github.com/othree/yajs.vim.git
 	ignore = dirty
+[submodule "vim/bundle/limelight.vim"]
+	path = vim/bundle/limelight.vim
+	url = git@github.com:junegunn/limelight.vim.git
+[submodule "vim/bundle/goyo.vim"]
+	path = vim/bundle/goyo.vim
+	url = git@github.com:junegunn/goyo.vim.git
+[submodule "vim/bundle/vim-markdown"]
+	path = vim/bundle/vim-markdown
+	url = git@github.com:plasticboy/vim-markdown.git
+[submodule "vim/bundle/markdown-preview.nvim"]
+	path = vim/bundle/markdown-preview.nvim
+	url = git@github.com:iamcco/markdown-preview.nvim.git

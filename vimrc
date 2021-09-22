@@ -422,6 +422,11 @@
       autocmd!
       autocmd InsertLeave * normal mZ
     augroup END
+
+    " augroup PluginCommands
+    "   autocmd! User GoyoEnter Limelight
+    "   autocmd! User GoyoLeave nested Limelight! | syntax on
+    " augroup END
 " }}}
 
 " {{{ Color schemes
@@ -444,7 +449,7 @@
     let g:gruvbox_improved_strings=0
     " Changes vim background in wezterm to same in vim. Otherwise you get a different color
     "background
-    let g:gruvbox_contrast_dark="hard"
+    let g:gruvbox_contrast_dark="soft"
     colorscheme gruvbox
 
     "highlight clear SignColumn
@@ -1044,4 +1049,21 @@
     " work
     let g:EasyMotion_do_mapping = 0
   "}}}
+
+  "{{{ Markdown Preview
+    " let g:mkdp_filetypes = ['markdown']
+    let g:mkdp_browser = 'Firefox'
+  "}}}"
+
+  "{{{ Vim Markdown
+    let g:vim_markdown_conceal = 3
+    let g:vim_markdown_conceal_code_blocks = 0
+    let g:vim_markdown_math = 1
+    let g:vim_markdown_toml_frontmatter = 1
+    let g:vim_markdown_frontmatter = 1
+    let g:vim_markdown_strikethrough = 1
+    let g:vim_markdown_autowrite = 1
+    let g:vim_markdown_edit_url_in = 'tab'
+    let g:vim_markdown_follow_anchor = 1
+  "}}}"
 " vim:foldmethod=marker:foldlevel=0
