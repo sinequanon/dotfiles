@@ -81,9 +81,11 @@
   set sidescroll=5                     " Number of columns to scroll when margin is reached
   set encoding=UTF-8                   " UTF-8 encoding when displayed
   set fileencoding=UTF-8               " UTF-8 encoding when written to file
-  " set diffopt=iwhite                          " Ignore whitespace during vimdiffs
   "set t_Co=256                                " Sets terminal colors to 256
-  set diffopt+=iwhite                  " Tells vimdiff to ignore whitespace
+  if &diff
+    set diffopt+=iwhite                  " Tells vimdiff to ignore whitespace
+  " set diffopt=iwhite                          " Ignore whitespace during vimdiffs
+  endif
   set diffexpr=""                      " Tells vimdiff to ignore ALL whitespace changes
   set nocursorline                       " Turn off cursor line highlighting. This speeds up rendering
   set autoread                         " Auto reads if file has been changed outside of vim. Use in conjunction with checktime
