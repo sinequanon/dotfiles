@@ -432,5 +432,13 @@ alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
+# Fix homebrew node upgrade
+ulimit -Sf unlimited
+
+# Change tab or window name in kitty
+precmd () {print -Pn "\e]0;%~\a"}
+
+export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
