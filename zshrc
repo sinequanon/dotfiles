@@ -428,6 +428,7 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+alias fullbruno="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; yarn cache clean && yarn clean && yarn install && gulp build && gulp;"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
@@ -439,6 +440,8 @@ ulimit -Sf unlimited
 precmd () {print -Pn "\e]0;%~\a"}
 
 export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+
+export NEWT_SKIP_VPNCHECK=1
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
