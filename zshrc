@@ -429,7 +429,9 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-alias fullbruno="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; yarn cache clean && yarn clean && yarn install && gulp build && gulp;"
+alias installshakti="npm install --prefer-offline --no-audit"
+alias nukeshakti="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; "
+alias fullbruno="nukeshakti; install && npm run build && npx gulp workspaces:build && npx gulp start"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
