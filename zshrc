@@ -429,9 +429,18 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+alias python="python3"
+alias denetflixify='sudo rm -rf /Library/LaunchDaemons/td-agent.plist; rm  -rf /etc/td-agent; rm -rf /opt/td-agent; rm -rf /var/log/td-agent;rm -rf /Library/LaunchAgents/com.jamf.management.agent.plist;rm -rf /usr/local/jamf;rm -rf /Library/LaunchAgents/net.netflix.abmetrix.plist;rm -rf  /usr/local/bin/abmetrix'
 alias installshakti="npm install --prefer-offline --no-audit"
 alias nukeshakti="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; "
 alias fullbruno="nukeshakti; install && npm run build && npx gulp workspaces:build && npx gulp start"
+alias m1-nuke="git clean -xfd"
+alias m1-nginx="newt exec gulp nginx"
+alias m1-install="newt exec npm install && cd test/functional && newt exec npm install"
+alias m1-build="newt exec npx gulp build"
+alias m1-start="newt exec gulp"
+alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
+alias m1-fullbruno="m1-nuke && m1-install && m1-fullstart"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
