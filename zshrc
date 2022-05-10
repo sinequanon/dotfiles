@@ -175,6 +175,7 @@ nftotals() {
   unset runningTotal
   pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  echo "$payload"
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   # data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
   data=$(jq -r ".data[].customAttributes.location" <<< $payload)
@@ -444,6 +445,11 @@ alias m1-fullbruno="m1-nuke && m1-install && m1-fullstart"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
+export SAUCE_USERNAME=sso-netflix-cue-rsotto
+export SAUCE_ACCESS_KEY=48184589-4635-4d4d-9211-9957a5c5f067
+alias sauceProxy='/usr/local/bin/sc -k $SAUCE_ACCESS_KEY -i rsotto_sauce_proxy'
+
+export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 # Fix homebrew node upgrade
@@ -455,6 +461,7 @@ precmd () {print -Pn "\e]0;%~\a"}
 export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 export NEWT_SKIP_VPNCHECK=1
+export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
