@@ -79,6 +79,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export MCFLY_KEY_SCHEME=vim
+export MCFLY_FUZZY=2
+export MCFLY_RESULTS=50
+export MCFLY_INTERFACE_VIEW=BOTTOM
+eval "$(mcfly init zsh)"
+
 source $ZSH/oh-my-zsh.sh
 
 GRUVBOX_SHELL="$HOME/github/dotfiles/vim/bundle/gruvbox/gruvbox_256pallette_osx.sh"
@@ -418,9 +424,6 @@ BROWSER="w3m"
 
 ulimit -n 65536 65536
 
-export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
-export PATH="/usr/local/opt/python@2/bin:$PATH"
-
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
@@ -435,19 +438,17 @@ alias denetflixify='sudo rm -rf /Library/LaunchDaemons/td-agent.plist; rm  -rf /
 alias installshakti="npm install --prefer-offline --no-audit"
 alias nukeshakti="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; "
 alias fullbruno="nukeshakti; install && npm run build && npx gulp workspaces:build && npx gulp start"
+alias m1-clean="newt exec npx gulp clean"
 alias m1-nuke="git clean -xfd"
 alias m1-nginx="newt exec gulp nginx"
-alias m1-install="newt exec npm install && cd test/functional && newt exec npm install"
-alias m1-build="newt exec npx gulp build"
+alias m1-install="cd ~/github/shakti && newt exec npm install && cd test/functional && newt exec npm install"
+alias m1-build="cd ~/github/shakti && newt exec npx gulp build"
 alias m1-start="newt exec gulp"
 alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
 alias m1-fullbruno="m1-nuke && m1-install && m1-fullstart"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
-export SAUCE_USERNAME=sso-netflix-cue-rsotto
-export SAUCE_ACCESS_KEY=48184589-4635-4d4d-9211-9957a5c5f067
-alias sauceProxy='/usr/local/bin/sc -k $SAUCE_ACCESS_KEY -i rsotto_sauce_proxy'
 
 export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
