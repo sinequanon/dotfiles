@@ -179,7 +179,6 @@ nftotals() {
   unset nextPageToken
   unset data
   unset runningTotal
-  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   echo "$payload"
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
@@ -218,7 +217,6 @@ nftitles() {
   unset nextPageToken
   unset data
   unset runningTotal
-  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   data=$(jq -r ".data[].customAttributes.jobLevelDescription" <<< $payload)
@@ -254,7 +252,6 @@ nfdata() {
   unset nextPageToken
   unset data
   unset runningTotal
-  pandoraURL="https://api.pandora.prod.netflix.net:7004/REST/v1/users/netflix.com/?size=500"
   payload=$(metatron curl -a pandora $pandoraURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   echo "{ \"data\": [" > stuff.json
