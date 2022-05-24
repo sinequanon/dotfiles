@@ -991,16 +991,33 @@
     \ 'z': [':%s#\<<c-r>=expand("<cword>")<CR>\>#', 'Search and replace word under cursor'],
     \ }
 
+    " Need to add this under 'f' in order for the labels to appear for Copy Filename
     let g:which_key_comma_map.c = {
-    \ 'name': 'NERDCommenter'
+    \ 'name': '+NERDCommenter',
+    \ 'f': {
+        \ 'name': '+Copy Filename',
+        \ 'r': [':let @+=expand("%")','Copy relative filename'],
+        \ 'a': [':let @+=expand("%:p")','Copy absolute filename'],
+        \ 'f': [':let @+=expand("%:t")','Copy filename'],
+        \ 'd': [':let @+=expand("%:p:h")','Copy directory'],
+        \ },
+    \ }
+
+    " Need to repeat this in order for the labels to appear if you press <leader>cf
+    let g:which_key_comma_map['cf'] = {
+        \ 'name': '+Copy Filename',
+        \ 'r': [':let @+=expand("%")','Copy relative filename'],
+        \ 'a': [':let @+=expand("%:p")','Copy absolute filename'],
+        \ 'f': [':let @+=expand("%:t")','Copy filename'],
+        \ 'd': [':let @+=expand("%:p:h")','Copy directory'],
     \ }
 
     let g:which_key_comma_map.g = {
-    \ 'name': 'Fugitive'
+    \ 'name': '+Fugitive'
     \ }
 
     let g:which_key_comma_map.h = {
-    \ 'name': 'GitGutter'
+    \ 'name': '+GitGutter'
     \ }
 
     let g:which_key_comma_map.a = {
