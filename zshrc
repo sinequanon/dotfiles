@@ -72,13 +72,6 @@ setopt auto_cd
 export PATH=$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 export MCFLY_KEY_SCHEME=vim
 export MCFLY_FUZZY=2
 export MCFLY_RESULTS=50
@@ -86,6 +79,14 @@ export MCFLY_INTERFACE_VIEW=BOTTOM
 eval "$(mcfly init zsh)"
 
 source $ZSH/oh-my-zsh.sh
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+fi
 
 GRUVBOX_SHELL="$HOME/github/dotfiles/vim/bundle/gruvbox/gruvbox_256pallette_osx.sh"
 [[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
@@ -179,7 +180,7 @@ nftotals() {
   unset nextPageToken
   unset data
   unset runningTotal
-  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  payload=$(metatron curl -a pandora $pandoraUsersURL | jq ".")
   echo "$payload"
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   # data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
@@ -192,7 +193,7 @@ nftotals() {
   echo "========= Running Total ========="
   cat <<< "$runningTotal"
   until [[ $nextPageToken == "null" ]]; do
-    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    payload=$(metatron curl -a pandora "$pandoraUsersURL&nextPageToken=$nextPageToken" | jq ".")
     nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
     # data=$(jq -r ".data[].addresses[]?.city" <<< $payload)
     data=$(jq -r ".data[].customAttributes.location" <<< $payload)
@@ -217,7 +218,7 @@ nftitles() {
   unset nextPageToken
   unset data
   unset runningTotal
-  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  payload=$(metatron curl -a pandora $pandoraUsersURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   data=$(jq -r ".data[].customAttributes.jobLevelDescription" <<< $payload)
 
@@ -228,7 +229,7 @@ nftitles() {
   echo "========= Running Total ========="
   cat <<< "$runningTotal"
   until [[ $nextPageToken == "null" ]]; do
-    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    payload=$(metatron curl -a pandora "$pandoraUsersURL&nextPageToken=$nextPageToken" | jq ".")
     nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
     data=$(jq -r ".data[].customAttributes.jobLevelDescription" <<< $payload)
     # If data exists
@@ -252,7 +253,7 @@ nfdata() {
   unset nextPageToken
   unset data
   unset runningTotal
-  payload=$(metatron curl -a pandora $pandoraURL | jq ".")
+  payload=$(metatron curl -a pandora $pandoraUsersURL | jq ".")
   nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
   echo "{ \"data\": [" > stuff.json
   data=$(jq ".data|join(\",\")" <<< $payload)
@@ -266,7 +267,7 @@ nfdata() {
   # cat <<< "$runningTotal"
   until [[ $nextPageToken == "null" ]]; do
     echo "looping..."
-    payload=$(metatron curl -a pandora "$pandoraURL&nextPageToken=$nextPageToken" | jq ".")
+    payload=$(metatron curl -a pandora "$pandoraUsersURL&nextPageToken=$nextPageToken" | jq ".")
     nextPageToken=$(jq -r ".nextPageToken" <<< $payload)
     echo $nextPageToken
     data=$(jq -r ".data|join(\",\")" <<< $payload)
@@ -304,7 +305,8 @@ bindkey '^N' down-history
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
+# Remove the binding key so mcfly can work
+# bindkey '^r' history-incremental-search-backward
 
 # Reduce the default 0.4 second lag when pressing the ESC key to .1
 export KEYTIMEOUT=1
@@ -443,6 +445,8 @@ alias m1-build="cd ~/github/shakti && newt exec npx gulp build"
 alias m1-start="newt exec gulp"
 alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
 alias m1-fullbruno="m1-nuke && m1-install && m1-fullstart"
+alias m1-reinstall="m1-install && m1-build && m1-start"
+alias m1-restart="m1-build && m1-start"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
