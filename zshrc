@@ -432,6 +432,10 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+alias plexifysubs="find ./Movies -depth -mindepth 3 -maxdepth 4 -type f \
+  -ipath '*/subs*' \( -iname '*[Ee]ng*.srt' -o -iname '*[Ee]ng*.sub' -o -iname '*[Ee]ng*.idx' \) \
+  -execdir cp -vn "{}" ./.. \;"
+
 alias python="python3"
 alias denetflixify='sudo rm -rf /Library/LaunchDaemons/td-agent.plist; rm  -rf /etc/td-agent; rm -rf /opt/td-agent; rm -rf /var/log/td-agent;rm -rf /Library/LaunchAgents/com.jamf.management.agent.plist;rm -rf /usr/local/jamf;rm -rf /Library/LaunchAgents/net.netflix.abmetrix.plist;rm -rf  /usr/local/bin/abmetrix'
 alias installshakti="npm install --prefer-offline --no-audit"
