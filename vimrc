@@ -334,6 +334,10 @@
 
   " directory name (/something/src)
   nnoremap <leader>cfd :let @+=expand("%:p:h")<CR>
+
+  " Allow saving of files as sudo when I forgot to start vim using sudo.
+  cmap w! w !sudo tee > /dev/null %
+
 " }}}
 
 " {{{ Commands
@@ -952,10 +956,13 @@
     let g:maplocalleader="\<space>"
     call which_key#register('<Space>', "g:which_key_space_map")
     call which_key#register(',', "g:which_key_comma_map")
+    " call which_key#register('m', "g:which_key_m_map")
     nnoremap <silent> <leader> :<c-u>WhichKey ','<CR>
     xnoremap <silent> <leader> :<c-u>WhichKeyVisual ','<CR>
     nnoremap <silent> <localleader> :<c-u>WhichKey '<space>'<CR>
     xnoremap <silent> <localleader> :<c-u>WhichKeyVisual '<space>'<CR>
+    " nnoremap <silent> m :<c-u>WhichKey 'm'<CR>
+    " xnoremap <silent> m :<c-u>WhichKeyVisual 'm'<CR>
     let g:which_key_space_map = {
     \ 'h': [':wincmd h', 'Window left'],
     \ 'l': [':wincmd l', 'Window right'],
@@ -1047,6 +1054,17 @@
     \ 'N': ['<Plug>(easymotion-N)','Jump to latest "/" or "?" backward.'],
     \ 's': ['<Plug>(easymotion-s)','Find(Search) {char} forward and backward.']
     \ }
+
+  "   let g:which_key_m_map = {
+  "   \ 'name': 'Signature',
+  "   \ ',': ['<Plug>,','Place the next available mark'],
+  "   \ '-': ['<Plug>-','Delete all marks from the current line'],
+  "   \ '.': ['<Plug>.','If no mark on line, place the next available mark. Otherwise, remove (first)
+  "   \ existing mark'],
+  "   \ '/': ['<Plug>/','Open location list and display marks from current buffer'],
+  "   \ '?': ['<Plug>?','Open location list and display marks from current buffer'],
+  " \ '<BS>': ['<Plug><BS>','Remove all markers'],
+  "   \ }
 
     let g:which_key_comma_map.i = { 'name': 'which_key_ignore' }
     let g:which_key_comma_map.o = { 'name': 'which_key_ignore' }

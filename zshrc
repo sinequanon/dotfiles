@@ -440,7 +440,7 @@ alias fullbruno="nukeshakti; install && npm run build && npx gulp workspaces:bui
 alias m1-clean="newt exec npx gulp clean"
 alias m1-nuke="git clean -xfd"
 alias m1-nginx="newt exec gulp nginx"
-alias m1-install="cd ~/github/shakti && newt exec npm install && cd test/functional && newt exec npm install"
+alias m1-install="cd ~/github/shakti && newt exec npm ci --no-audit --prefer-offline && cd test/functional && newt exec npm install"
 alias m1-build="cd ~/github/shakti && newt exec npx gulp build"
 alias m1-start="newt exec gulp"
 alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
@@ -449,10 +449,16 @@ alias m1-reinstall="m1-install && m1-build && m1-start"
 alias m1-restart="m1-build && m1-start"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
+alias fixvpn="sudo route delete pcs.flxvpn.net; sudo kill -SEGV $(ps auwx | grep dsAccessService | grep Ss | awk '{print $2}')"
+
+# PERSONAL
+alias addEnglishSubs="find ./Movies -depth -mindepth 3 -maxdepth 4 -type f \
+-ipath '*/subs*' \( -iname '*[Ee]ng*.srt' -o -iname '*[Ee]ng*.sub' -o -iname '*[Ee]ng*.idx' \) \
+-execdir cp -vn "{}" ./.. \;"
+
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 
 export PATH="/usr/local/opt/curl/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 # Fix homebrew node upgrade
 ulimit -Sf unlimited
