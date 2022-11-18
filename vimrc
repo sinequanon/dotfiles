@@ -442,6 +442,18 @@
       autocmd InsertLeave * normal mZ
     augroup END
 
+    augroup tmux
+      autocmd!
+      if exists('$TMUX')
+      " Rename tmux window to vim filename
+      autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window '" . expand("%:t") . "'")
+      " Reset from above command
+      autocmd VimLeave * call system("tmux set-window-option automatic-rename")
+      " autocmd VimLeave * call system("tmux rename-window 'tmux'")
+      "   autocmd BufReadPost,FileReadPost,BufNewFile,FocusGained * call system("tmux rename-window '" . expand("%:t") . "''")
+      "   autocmd VimLeave,FocusLost * call system("tmux set-window-option automatic-rename")
+      endif
+    augroup END
     " augroup PluginCommands
     "   autocmd! User GoyoEnter Limelight
     "   autocmd! User GoyoLeave nested Limelight! | syntax on
@@ -671,6 +683,7 @@
       let g:ctrlp_working_path_mode = 'ra'
       let g:ctrlp_switch_buffer = 'et'
       let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+      let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:250'
     endif
   " }}}
 
