@@ -97,7 +97,7 @@ export LANG=en_US.UTF-8
 if [[ `uname` == 'Darwin' ]]; then
   alias ctags='`brew --prefix`/bin/ctags'
   . `brew --prefix`/etc/profile.d/z.sh
-  export EDITOR='/usr/local/bin/vim'
+  export EDITOR='/opt/homebrew/bin/vim'
 elif [[ `uname` == 'Linux' ]]; then
   # Start Z https://github.com/rupa/z
   export EDITOR='/usr/bin/vim'
@@ -441,10 +441,13 @@ alias denetflixify='sudo rm -rf /Library/LaunchDaemons/td-agent.plist; rm  -rf /
 alias installshakti="npm install --prefer-offline --no-audit"
 alias nukeshakti="cd ~/github/shakti;find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -rf tmp generated ; "
 alias fullbruno="nukeshakti; install && npm run build && npx gulp workspaces:build && npx gulp start"
+alias m1-rm-nodemodules="cd ~/github/shakti && rm -rf node_modules {./packages,./apps,./test}/*/node_modules"
 alias m1-clean="newt exec npx gulp clean"
 alias m1-nuke="git clean -xfd"
 alias m1-nginx="newt exec gulp nginx"
-alias m1-install="cd ~/github/shakti && newt exec npm ci --no-audit --prefer-offline && cd test/functional && newt exec npm install"
+alias m1-install="cd ~/github/shakti && newt exec npm install && cd test/functional && newt exec npm install"
+alias m1-fast-install="cd ~/github/shakti && newt exec npm ci --no-audit --prefer-offline && cd test/functional && newt exec npm install"
+alias m1-force-install="cd ~/github/shakti && newt exec npm install --force && cd test/functional && newt exec npm install"
 alias m1-build="cd ~/github/shakti && newt exec npx gulp build"
 alias m1-start="newt exec gulp"
 alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
