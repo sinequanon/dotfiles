@@ -330,7 +330,10 @@
   nnoremap <leader>cfa :let @+=expand("%:p")<CR>
 
   " filename (foo.txt)
-  nnoremap <leader>cff :let @+=expand("%:t")<CR>
+  nnoremap <leader>cff :let @+=expand("%:r")<CR>
+
+  " filename (foo.txt)
+  nnoremap <leader>cfe :let @+=expand("%:t")<CR>
 
   " directory name (/something/src)
   nnoremap <leader>cfd :let @+=expand("%:p:h")<CR>
@@ -448,7 +451,7 @@
       " Rename tmux window to vim filename
       autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window '" . expand("%:t") . "'")
       " Reset from above command
-      autocmd VimLeave * call system("tmux set-window-option automatic-rename")
+        autocmd VimLeave call system("tmux set-window-option automatic-rename")
       " autocmd VimLeave * call system("tmux rename-window 'tmux'")
       "   autocmd BufReadPost,FileReadPost,BufNewFile,FocusGained * call system("tmux rename-window '" . expand("%:t") . "''")
       "   autocmd VimLeave,FocusLost * call system("tmux set-window-option automatic-rename")
@@ -1093,6 +1096,10 @@
     \ "at": "done",
     \ "duration_less_than": 1000
     \ }
+    let g:ctrlsf_auto_preview = 1
+    let g:ctrlsf_mapping = {
+          \ 'openb': { 'key': 'O', 'suffix': '<C-w>p' }
+          \ }
     nnoremap <F3> :CtrlSF <space>
   "}}}"
 

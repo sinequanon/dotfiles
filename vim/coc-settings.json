@@ -10,5 +10,6 @@
     "graphql"
   ],
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "tsserver.npm": "/Users/rsotto/.nvm/versions/node/v12.16.2/bin/npm"
+  "tsserver.npm": "/Users/rsotto/.nvm/versions/node/v12.16.2/bin/npm",
+  "snippets.ultisnips.pythonPrompt": false
 }
