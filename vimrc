@@ -814,13 +814,18 @@
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
     function! s:show_documentation()
-      if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-      elseif (coc#rpc#ready())
+      if CocAction('hasProvider', 'hover')
         call CocActionAsync('doHover')
       else
-        execute '!' . &keywordprg . " " . expand('<cword>')
+        call feedkeys('K', 'in')
       endif
+      " if (index(['vim','help'], &filetype) >= 0)
+      "   execute 'h '.expand('<cword>')
+      " elseif (coc#rpc#ready())
+      "   call CocActionAsync('doHover')
+      " else
+      "   execute '!' . &keywordprg . " " . expand('<cword>')
+      " endif
     endfunction
 
     " Highlight the symbol and its references when holding the cursor.
@@ -853,6 +858,14 @@
     " Format file
     nmap <silent> <leader>pf :Prettier<cr>
 
+    " Remap keys for applying refactor code actions
+    nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+    xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+    nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+
+    " Run the Code Lens action on the current line
+    nmap <leader>kd  <Plug>(coc-codelens-action)
+
     " Map function and class text objects
     " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
     xmap if <Plug>(coc-funcobj-i)
@@ -863,6 +876,16 @@
     omap ic <Plug>(coc-classobj-i)
     xmap ac <Plug>(coc-classobj-a)
     omap ac <Plug>(coc-classobj-a)
+
+    " Remap <C-f> and <C-b> to scroll float windows/popups
+    if has('nvim-0.4.0') || has('patch-8.2.0750')
+      nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+      nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+      inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+      inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+      vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+      vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    endif
 
     " Use TAB for selections ranges.
     " Requires 'textDocument/selectionRange' support of language server.
@@ -999,10 +1022,13 @@
     \ 'e': ["g'Z", 'Go to last edit marker'],
     \ 'gp': ["'`[' . strpart(getregtype(), 0, 1) . '`]'",'Select previously pasted text'],
     \ 'ig': [':IndentGuidesToggle', 'Indent Guides Toggle'],
+    \ 'kd': ['<Plug>(coc-codelens-action)', 'CoC Code Lens Action'],
     \ 'n': [':let [&nu, &rnu] = [!&rnu, &nu+&rnu==1]<cr>', 'Toggle line number modes'],
     \ 'oi': [':OR', 'Organize Imports'],
     \ 'p': ["y'>p", 'Duplicate visual selection'],
     \ 'qf': ['<Plug>(coc-fix-current)', 'CoC Quick Fix'],
+    \ 'r': ['<Plug><coc-codeaction-refactor-selected>', 'CoC Refactor Selected'],
+    \ 're': ['<Plug><coc-codeaction-refactor>', 'CoC Refactor'],
     \ 'rn': ['<Plug><coc-rename>', 'CoC Rename'],
     \ 'rt': [':RainbowToggle', 'Toggle Rainbow Parentheses'],
     \ 's': [':update', 'Save Buffer'],
@@ -1084,7 +1110,7 @@
 
     let g:which_key_comma_map.i = { 'name': 'which_key_ignore' }
     let g:which_key_comma_map.o = { 'name': 'which_key_ignore' }
-    let g:which_key_comma_map.r = { 'name': 'which_key_ignore' }
+    " let g:which_key_comma_map.r = { 'name': 'which_key_ignore' }
     let g:which_key_comma_map.y = { 'name': 'which_key_ignore' }
   "}}}
 
