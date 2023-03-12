@@ -1162,4 +1162,9 @@
     let g:vim_markdown_edit_url_in = 'tab'
     let g:vim_markdown_follow_anchor = 1
   "}}}"
+
+  "{{{ Vim Expand Region
+    vmap v <Plug>(expand_region_expand)
+    vmap <C-v> <Plug>(expand_region_shrink)
+  "}}}
 " vim:foldmethod=marker:foldlevel=0
