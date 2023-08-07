@@ -72,7 +72,7 @@
   if has("gui_running")
     set noesckeys                      " Turn off escape keys
   endif
-  set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h15 " Set font size
+  set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h16 " Set font size
   set autochdir                        " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%          " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
@@ -341,6 +341,9 @@
   " Allow saving of files as sudo when I forgot to start vim using sudo.
   cmap w! w !sudo tee > /dev/null %
 
+  " Allow sync scrolling for different vim buffers
+  nnoremap <F5> :set scrollbind!<CR>
+
 " }}}
 
 " {{{ Commands
@@ -526,7 +529,7 @@
     if s:uname == "Darwin\n"
       if has("gui_running")
         set macligatures
-        set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h15 " Set font size
+      set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h16 " Set font size
         set linespace=10
         " Remove all scrollbars
         set guioptions=
@@ -887,11 +890,12 @@
       vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
     endif
 
+    " Comment this section to make <ctr-i> work again"
     " Use TAB for selections ranges.
     " Requires 'textDocument/selectionRange' support of language server.
-    nmap <silent> <Tab> <Plug>(coc-range-select)
-    xmap <silent> <Tab> <Plug>(coc-range-select)
-    xmap <silent> <S-Tab> <Plug>(coc-range-select-backward)
+    " nmap <silent> <Tab> <Plug>(coc-range-select)
+    " xmap <silent> <Tab> <Plug>(coc-range-select)
+    " xmap <silent> <S-Tab> <Plug>(coc-range-select-backward)
 
     " Add `:Format` command to format current buffer.
     command! -nargs=0 Format :call CocAction('format')
