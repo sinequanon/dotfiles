@@ -72,7 +72,7 @@
   if has("gui_running")
     set noesckeys                      " Turn off escape keys
   endif
-  set guifont=Operator\ Mono\ SSm\ Lig\ Medium\ Nerd\ Font\ Complete:h16 " Set font size
+  set guifont=OperatorMonoSSmLig\ Nerd\ Font:h16 " Set font size
   set autochdir                        " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%          " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
@@ -412,7 +412,8 @@
     " Automatically source vimrc on save.
     " use nested to allow other events to cascade
     " Better to use *vimrc instead of $MYVIMRC here since vimrc is usually a symlink to vimrc
-    autocmd! BufWritePost *vimrc nested source %
+    " Reenable syntax highlighting after source
+    autocmd! BufWritePost *vimrc nested source % | syn on
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
@@ -486,7 +487,7 @@
     let g:gruvbox_improved_strings=0
     " Changes vim background in wezterm to same in vim. Otherwise you get a different color
     "background
-    let g:gruvbox_contrast_dark="soft"
+  let g:gruvbox_contrast_dark="hard"
     colorscheme gruvbox
 
     "highlight clear SignColumn
@@ -529,7 +530,7 @@
     if s:uname == "Darwin\n"
       if has("gui_running")
         set macligatures
-      set guifont=Operator\ Mono\ SSm\ Lig\ Book\ Nerd\ Font\ Complete:h16 " Set font size
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font:h16 " Set font size
         set linespace=10
         " Remove all scrollbars
         set guioptions=
