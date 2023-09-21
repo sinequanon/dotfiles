@@ -179,3 +179,6 @@
 [submodule "vim/bundle/gitignore"]
 	path = vim/bundle/gitignore
 	url = https://github.com/vim-scripts/gitignore.git
+[submodule "vim-symlink"]
+	path = vim-symlink
+	url = https://github.com/aymericbeaumet/vim-symlink.git
