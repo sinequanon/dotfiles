@@ -52,3 +52,5 @@
 [push]
 	default = simple
 	autoSetupRemote = true
+[rebase]
+	updateRefs = true

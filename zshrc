@@ -80,13 +80,14 @@ eval "$(mcfly init zsh)"
 
 source $ZSH/oh-my-zsh.sh
 
+eval "$(starship init zsh)"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#   source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+# fi
 
 GRUVBOX_SHELL="$HOME/github/dotfiles/vim/bundle/gruvbox/gruvbox_256pallette_osx.sh"
 [[ -s $GRUVBOX_SHELL ]] && source $GRUVBOX_SHELL
@@ -454,14 +455,17 @@ alias m1-install="cd ~/github/shakti && npm install && cd test/functional && npm
 alias m1-fast-install="cd ~/github/shakti && npm ci --no-audit --prefer-offline && cd test/functional && npm install"
 alias m1-force-install="cd ~/github/shakti && npm install --force && cd test/functional && npm install"
 alias m1-build="cd ~/github/shakti && newt exec npx gulp build"
-alias m1-start="newt exec gulp"
+alias m1-start="npm run dev"
 alias m1-fullstart="m1-build && m1-nginx && newt exec gulp"
 alias m1-fullbruno="m1-nuke && m1-install && m1-fullstart"
 alias m1-reinstall="m1-install && m1-build && m1-start"
 alias m1-restart="m1-build && m1-start"
 alias dslp="pmset sleepnow"
 alias gsubmodupdate='git submodule update --remote --merge'
-alias fixvpn="sudo route delete pcs.flxvpn.net; sudo kill -SEGV $(ps auwx | grep dsAccessService | grep Ss | awk '{print $2}')"
+alias fixvpn="sudo route delete pcs.flxvpn.net; sudo route delete sjc006.pcs.flxvpn.net; sudo kill -SEGV $(ps auwx | grep dsAccessService | grep Ss | awk '{print $2}')"
+alias buildryujinx="./distribution/macos/create_macos_build.sh ./ ./distribution/macos/temp ./distribution/macos/output ./distribution/macos/entitlements.xml 1.1.1 0 Release """
+alias startNqAuiEndpoint="newt develop --port=8002 --debug-port=5860 --stack=test"
+alias startNqIos="newt develop --stack=test"
 
 # PERSONAL
 alias addEnglishSubs="find ./Movies -depth -mindepth 3 -maxdepth 4 -type f \
@@ -484,4 +488,4 @@ export NEWT_SKIP_VPNCHECK=1
 export AUI_UPDATE_LOCAL_OBELIX_BUNDLE=1
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
