@@ -182,3 +182,12 @@
 [submodule "vim-symlink"]
 	path = vim-symlink
 	url = https://github.com/aymericbeaumet/vim-symlink.git
+[submodule "vim/bundle/clang_complete"]
+	path = vim/bundle/clang_complete
+	url = https://github.com/xavierd/clang_complete.git
+[submodule "vim/bundle/vim-ios"]
+	path = vim/bundle/vim-ios
+	url = https://github.com/eraserhd/vim-ios.git
+[submodule "vim/bundle/swift.vim"]
+	path = vim/bundle/swift.vim
+	url = https://github.com/keith/swift.vim.git
