@@ -170,6 +170,7 @@ alias apiWslStart='sudo service postgresql start && sudo service elasticsearch s
 alias m3uget='f() { ffmpeg -user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:82.0) Gecko/20100101 Firefox/82.0" -i $1 -c copy $2; };f'
 alias example='f() { echo Your arg was $1. $2; };f'
 alias glb='git lb'
+alias gcpb='f() { git cherry-pick $(git merge-base $1 ${2})..$2; };f'
 alias rebaser='git rebase -i "$(git merge-base origin/develop HEAD)"'
 alias install='npm install --prefer-offline --no-audit'
 # Find lines of code
