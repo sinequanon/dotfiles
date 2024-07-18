@@ -191,3 +191,6 @@
 [submodule "vim/bundle/swift.vim"]
 	path = vim/bundle/swift.vim
 	url = https://github.com/keith/swift.vim.git
+[submodule "vim/bundle/context.vim"]
+	path = vim/bundle/context.vim
+	url = https://github.com/wellle/context.vim.git
