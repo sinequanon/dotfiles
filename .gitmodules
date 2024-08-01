@@ -194,3 +194,6 @@
 [submodule "vim/bundle/context.vim"]
 	path = vim/bundle/context.vim
 	url = https://github.com/wellle/context.vim.git
+[submodule "vim/bundle/vim-graphql"]
+	path = vim/bundle/vim-graphql
+	url = https://github.com/jparise/vim-graphql.git
