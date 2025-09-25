@@ -467,6 +467,10 @@ alias fixvpn="sudo route delete pcs.flxvpn.net; sudo route delete sjc006.pcs.flx
 alias buildryujinx="./distribution/macos/create_macos_build.sh ./ ./distribution/macos/temp ./distribution/macos/output ./distribution/macos/entitlements.xml 1.1.1 0 Release """
 alias startNqAuiEndpoint="newt develop --port=8002 --debug-port=5860 --stack=test"
 alias startNqIos="newt develop --stack=test"
+# List printers
+listprn() {
+  for printer in $(lpstat -p|awk '{print $2}'); do; case "$printer" in TPAC*) echo "$printer"; esac;done;
+}
 
 # PERSONAL
 alias addEnglishSubs="find ./Movies -depth -mindepth 3 -maxdepth 4 -type f \
