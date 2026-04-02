@@ -76,11 +76,11 @@ export MCFLY_KEY_SCHEME=vim
 export MCFLY_FUZZY=2
 export MCFLY_RESULTS=50
 export MCFLY_INTERFACE_VIEW=BOTTOM
-eval "$(mcfly init zsh)"
+command -v mcfly &>/dev/null && eval "$(mcfly init zsh)"
 
 source $ZSH/oh-my-zsh.sh
 
-eval "$(starship init zsh)"
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.

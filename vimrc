@@ -1,3 +1,7 @@
+  "{{{
+  let g:polyglot_disabled = ['graphql']
+  "}}}"
+
 "{{{ Preamble
   set nocompatible                                  " Disable vi compatability. This must be first, because it changes other options as side effect.
 
