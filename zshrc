@@ -173,6 +173,7 @@ alias glb='git lb'
 alias gcpb='f() { git cherry-pick $(git merge-base $1 ${2})..$2; };f'
 alias rebaser='git rebase -i "$(git merge-base origin/develop HEAD)"'
 alias install='npm install --prefer-offline --no-audit'
+alias photosrestorestat='log stream --predicate '\''process == "cloudd" or process == "cloudphotod" or process == "photolibraryd"'\'''
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
@@ -467,6 +468,10 @@ alias fixvpn="sudo route delete pcs.flxvpn.net; sudo route delete sjc006.pcs.flx
 alias buildryujinx="./distribution/macos/create_macos_build.sh ./ ./distribution/macos/temp ./distribution/macos/output ./distribution/macos/entitlements.xml 1.1.1 0 Release """
 alias startNqAuiEndpoint="newt develop --port=8002 --debug-port=5860 --stack=test"
 alias startNqIos="newt develop --stack=test"
+# List printers
+listprn() {
+  for printer in $(lpstat -p|awk '{print $2}'); do; case "$printer" in TPAC*) echo "$printer"; esac;done;
+}
 
 # PERSONAL
 alias addEnglishSubs="find ./Movies -depth -mindepth 3 -maxdepth 4 -type f \
