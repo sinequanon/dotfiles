@@ -87,16 +87,6 @@ alias photosrestorestat='log stream --predicate '\''process == "cloudd" or proce
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
-# DO NOT PUBLISH TO GITHUB
-smsMasq () {
-# echo \
-metatron curl -a gate \
-  -X POST \
-  'https://api.spinnaker.mgmt.netflix.net:7004/fastproperties/upsert' \
-  -H 'content-type: application/json;charset=UTF-8' \
-  -d "{\"env\":\"test\",\"key\":\"mhu.sms.overrideNationalPhoneNumberFor.$1\",\"value\":\"+16504508691\", \"appId\":\"easel\"}"
-}
-
 # Unify all langs
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
@@ -160,8 +150,6 @@ export PATH="$PATH:$HOME/.rvm/bin"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 alias python="python3"
 

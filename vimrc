@@ -656,6 +656,11 @@
   nnoremap <silent> <leader>gD <c-W><c-O><cr>
   " git status
   nnoremap <silent> <leader>gs :Git<cr>
+  augroup FugitiveToggle
+    autocmd!
+    autocmd Filetype fugitive nnoremap <buffer> <silent> <leader>gs <C-w>q
+  augroup END
+
   " git blame
   nnoremap <silent> <leader>gb :Git blame<cr>
   " git log
