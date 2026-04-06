@@ -162,8 +162,8 @@
   vnoremap > >gv
   vnoremap < <gv
   nmap <C-right> >>
-  nmap <C-left> <<
-  vnoremap <C-right> >gv
+    nmap <C-left> <<
+    vnoremap <C-right> >gv
   vnoremap <C-left> <gv
   vnoremap = =gv
 
@@ -348,33 +348,33 @@
   " Allow sync scrolling for different vim buffers
   nnoremap <F5> :set scrollbind!<CR>
 
-" }}}
+  " }}}
 
-" {{{ Commands
+  " {{{ Commands
   command! SortCssBraceContents :g#\({\n\)\@<=#.,/\.*[{}]\@=/-1 sort
 
   " Create a custom command for silently opening a quick fix window after
   " git grep
   command! -nargs=+ Ggr pclose | execute 'silent Ggrep!' <q-args> | cw | redraw!
-" }}}
+  " }}}
 
-" {{{ Autogroups
+  " {{{ Autogroups
   augroup configgroup
     autocmd!
 
     " Autocomplete most file types
     autocmd FileType javascript
-      \ set omnifunc=javascriptcomplete#CompleteJS |
-      " \ set formatprg=prettier-eslint\ --parser\ babylon\ --print-width\ 100\ --stdin
+          \ set omnifunc=javascriptcomplete#CompleteJS |
+    " \ set formatprg=prettier-eslint\ --parser\ babylon\ --print-width\ 100\ --stdin
     autocmd FileType python
-      \ set omnifunc=pythoncomplete#Complete |
-      \ set expandtab
+          \ set omnifunc=pythoncomplete#Complete |
+          \ set expandtab
     autocmd FileType html
-      \ set omnifunc=htmlcomplete#CompleteTags |
-      \ set listchars-=tab:>.
+          \ set omnifunc=htmlcomplete#CompleteTags |
+          \ set listchars-=tab:>.
     autocmd FileType xml
-      \ set omnifunc=xmlcomplete#CompleteTags |
-      \ set listchars-=tab:>.
+          \ set omnifunc=xmlcomplete#CompleteTags |
+          \ set listchars-=tab:>.
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c set omnifunc=ccomplete#Complete
@@ -446,173 +446,173 @@
 
     " Return cursor to previous location on load
     " autocmd BufReadPost * normal `"
-    augroup end
+  augroup end
 
-    augroup LastEditMarker
-      autocmd!
-      autocmd InsertLeave * normal mZ
-    augroup END
+  augroup LastEditMarker
+    autocmd!
+    autocmd InsertLeave * normal mZ
+  augroup END
 
-    augroup tmux
-      autocmd!
-      if exists('$TMUX')
+  augroup tmux
+    autocmd!
+    if exists('$TMUX')
       " Rename tmux window to vim filename
       autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window '" . expand("%:t") . "'")
       " Reset from above command
-        autocmd VimLeave call system("tmux set-window-option automatic-rename")
+      autocmd VimLeave call system("tmux set-window-option automatic-rename")
       " autocmd VimLeave * call system("tmux rename-window 'tmux'")
       "   autocmd BufReadPost,FileReadPost,BufNewFile,FocusGained * call system("tmux rename-window '" . expand("%:t") . "''")
       "   autocmd VimLeave,FocusLost * call system("tmux set-window-option automatic-rename")
-      endif
-    augroup END
-    " augroup PluginCommands
-    "   autocmd! User GoyoEnter Limelight
-    "   autocmd! User GoyoLeave nested Limelight! | syntax on
-    " augroup END
-" }}}
-
-" {{{ Color schemes
-
-    if (has("termguicolors"))
-      let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-      let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-      set termguicolors
     endif
-    set background=dark
-    " colorscheme base16-railscasts
-    " colorscheme jellybeans
-    "let g:hybrid_custom_term_colors = 1
-    " colorscheme hybrid_material
-    " colorscheme base16-material
-    " let g:palenight_terminal_italics=1
-    " colorscheme palenight
-    let g:gruvbox_italic=1
-    let g:gruvbox_italicize_strings=1
-    let g:gruvbox_improved_strings=0
-    " Changes vim background in wezterm to same in vim. Otherwise you get a different color
-    "background
-  let g:gruvbox_contrast_dark="hard"
-    colorscheme gruvbox
-
-    "highlight clear SignColumn
-    "highlight VertSplit    ctermbg=236
-    "highlight ColorColumn  ctermbg=237
-    "highlight LineNr       ctermbg=236 ctermfg=240
-    "highlight CursorLineNr ctermbg=236 ctermfg=240
-    "highlight CursorLine   ctermbg=236
-    "highlight StatusLineNC ctermbg=238 ctermfg=0
-    "highlight StatusLine   ctermbg=240 ctermfg=12
-    "highlight IncSearch    ctermbg=3   ctermfg=1
-    "highlight Search       ctermbg=1   ctermfg=3
-    "highlight Visual       ctermbg=3   ctermfg=0
-    "highlight Pmenu        ctermbg=240 ctermfg=12
-    "highlight PmenuSel     ctermbg=3   ctermfg=1
-    "highlight SpellBad     ctermbg=0   ctermfg=1
-
-    " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
-    " to get this working on new setups
-    hi Comment gui=italic cterm=italic
-    " hi Label gui=italic cterm=italic
-    " hi Statement gui=italic cterm=italic
-    " hi Type gui=italic cterm=italic
-    " hi htmlArg gui=italic cterm=italic
-    " hi javaScriptReserved gui=italic cterm=italic
-    " hi javascriptImport guifg=NONE guibg=NONE ctermbg=NONE ctermfg=NONE gui=italic cterm=italic
-    " hi jsClassKeyword gui=italic cterm=italic
-    " hi jsConditional gui=italic cterm=italic
-    " hi jsDocTags gui=italic cterm=italic
-    " hi jsExport gui=italic cterm=italic
-    " hi jsExportDefault gui=italic cterm=italic
-    " hi jsExtendsKeyword gui=italic cterm=italic
-    " hi jsFrom gui=italic cterm=italic
-    " hi jsModuleAs gui=italic cterm=italic
-    " hi jsStorageClass gui=italic cterm=italic
-    " hi Keyword gui=italic cterm=italic
-
-    " Setup from MacVim
-    let s:uname = system("uname")
-    if s:uname == "Darwin\n"
-      if has("gui_running")
-        set macligatures
-      set guifont=OperatorMonoSSmLig\ Nerd\ Font:h16 " Set font size
-        set linespace=10
-        " Remove all scrollbars
-        set guioptions=
-      endif
-    elseif s:uname == "Linux\n"
-      " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
-      " For VTE terminals
-      let &t_SI = "\<Esc>[6 q"
-      let &t_SR = "\<Esc>[4 q"
-      let &t_EI = "\<Esc>[2 q"
-      set guicursor+=a:blinkon0
-      if has("gui_running")
-        set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 16
-        set linespace=10
-        " Turn off cursor blinking
-        " Remove right-hand scrollbar
-        " set guioptions-=r
-        " Remove left-hand scrollbar
-        " set guioptions-=L
-        " Remove menu bar
-        " set guioptions-=m
-        " Remove tool bar
-        " set guioptions-=T
-        " Do not source the menu options at all. This removes the weird gaps
-        " in the chrome
-        " set guioptions-=M
-        " Remove all scrollbars
-        set guioptions=
-        set linespace=6
-        " Support ligatures from a special build
-        " See https://github.com/gasparch/vim8-ligatures-package
-        let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
-      endif
-    endif
-
-    " Configure colorcolumn
-    "highlight ColorColumn ctermbg=235 guibg=#2f1111
-    " Highlight column 80 and everything past column 120
-    let &colorcolumn="100,".join(range(120,999),",")
-" }}}
-
-" {{{ Windows
-  "{{{ Splits
-      set equalalways                 " Automatically size splits equally
-      set splitbelow                  " Create vsplits below current split
-      set splitright                  " Create splits right of current split
-
-      " Resize splits when window is resized
-      augroup resized
-          autocmd!
-          au VimResized * exe "normal! \<c-w>="
-      augroup END
+  augroup END
+  " augroup PluginCommands
+  "   autocmd! User GoyoEnter Limelight
+  "   autocmd! User GoyoLeave nested Limelight! | syntax on
+  " augroup END
   " }}}
 
-    " Easy window navigation
-    nnoremap <silent> <leader><enter> :vsplit<cr>
-    nnoremap <silent> <leader>- :split<cr>
-    " nnoremap <C-l> <c-w>l
-    " nnoremap <C-h> <c-w>h
-    " nnoremap <C-j> <c-w>j
-    " nnoremap <C-k> <c-w>k
-    nnoremap <silent><space>l :wincmd l<cr>
-    nnoremap <silent><space>h :wincmd h<cr>
-    nnoremap <silent><space>j :wincmd j<cr>
-    nnoremap <silent><space>k :wincmd k<cr>
-    " nnoremap <leader>wl <c-w>l
-    " nnoremap <leader>wh <c-w>h
-    " nnoremap <leader>wj <c-w>j
-    " nnoremap <leader>wk <c-w>k
+  " {{{ Color schemes
 
-    " Easy pane resizing
-    nnoremap <silent> <S-Left> 5<C-w>>
-    nnoremap <silent> <S-Right> 5<C-w><
-    nnoremap <silent> <S-Down> 5<C-W>-
-    nnoremap <silent> <S-Up> 3<C-W>+
-" }}}
+  if (has("termguicolors"))
+    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
+  set background=dark
+  " colorscheme base16-railscasts
+  " colorscheme jellybeans
+  "let g:hybrid_custom_term_colors = 1
+  " colorscheme hybrid_material
+  " colorscheme base16-material
+  " let g:palenight_terminal_italics=1
+  " colorscheme palenight
+  let g:gruvbox_italic=1
+  let g:gruvbox_italicize_strings=1
+  let g:gruvbox_improved_strings=0
+  " Changes vim background in wezterm to same in vim. Otherwise you get a different color
+  "background
+  let g:gruvbox_contrast_dark="hard"
+  colorscheme gruvbox
 
-" {{{ Functions
+  "highlight clear SignColumn
+  "highlight VertSplit    ctermbg=236
+  "highlight ColorColumn  ctermbg=237
+  "highlight LineNr       ctermbg=236 ctermfg=240
+  "highlight CursorLineNr ctermbg=236 ctermfg=240
+  "highlight CursorLine   ctermbg=236
+  "highlight StatusLineNC ctermbg=238 ctermfg=0
+  "highlight StatusLine   ctermbg=240 ctermfg=12
+  "highlight IncSearch    ctermbg=3   ctermfg=1
+  "highlight Search       ctermbg=1   ctermfg=3
+  "highlight Visual       ctermbg=3   ctermfg=0
+  "highlight Pmenu        ctermbg=240 ctermfg=12
+  "highlight PmenuSel     ctermbg=3   ctermfg=1
+  "highlight SpellBad     ctermbg=0   ctermfg=1
+
+  " See https://gist.github.com/hew/4356975264a2ac3334272e71c6938535
+  " to get this working on new setups
+  hi Comment gui=italic cterm=italic
+  " hi Label gui=italic cterm=italic
+  " hi Statement gui=italic cterm=italic
+  " hi Type gui=italic cterm=italic
+  " hi htmlArg gui=italic cterm=italic
+  " hi javaScriptReserved gui=italic cterm=italic
+  " hi javascriptImport guifg=NONE guibg=NONE ctermbg=NONE ctermfg=NONE gui=italic cterm=italic
+  " hi jsClassKeyword gui=italic cterm=italic
+  " hi jsConditional gui=italic cterm=italic
+  " hi jsDocTags gui=italic cterm=italic
+  " hi jsExport gui=italic cterm=italic
+  " hi jsExportDefault gui=italic cterm=italic
+  " hi jsExtendsKeyword gui=italic cterm=italic
+  " hi jsFrom gui=italic cterm=italic
+  " hi jsModuleAs gui=italic cterm=italic
+  " hi jsStorageClass gui=italic cterm=italic
+  " hi Keyword gui=italic cterm=italic
+
+  " Setup from MacVim
+  let s:uname = system("uname")
+  if s:uname == "Darwin\n"
+    if has("gui_running")
+      set macligatures
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font:h16 " Set font size
+      set linespace=10
+      " Remove all scrollbars
+      set guioptions=
+    endif
+  elseif s:uname == "Linux\n"
+    " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
+    " For VTE terminals
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+    set guicursor+=a:blinkon0
+    if has("gui_running")
+      set guifont=OperatorMonoSSmLig\ Nerd\ Font\ 16
+      set linespace=10
+      " Turn off cursor blinking
+      " Remove right-hand scrollbar
+      " set guioptions-=r
+      " Remove left-hand scrollbar
+      " set guioptions-=L
+      " Remove menu bar
+      " set guioptions-=m
+      " Remove tool bar
+      " set guioptions-=T
+      " Do not source the menu options at all. This removes the weird gaps
+      " in the chrome
+      " set guioptions-=M
+      " Remove all scrollbars
+      set guioptions=
+      set linespace=6
+      " Support ligatures from a special build
+      " See https://github.com/gasparch/vim8-ligatures-package
+      let g:gtk_nocache=[0x00000000, 0xfc00ffff, 0xf8000001, 0x78000001]
+    endif
+  endif
+
+  " Configure colorcolumn
+  "highlight ColorColumn ctermbg=235 guibg=#2f1111
+  " Highlight column 80 and everything past column 120
+  let &colorcolumn="100,".join(range(120,999),",")
+  " }}}
+
+  " {{{ Windows
+  "{{{ Splits
+  set equalalways                 " Automatically size splits equally
+  set splitbelow                  " Create vsplits below current split
+  set splitright                  " Create splits right of current split
+
+  " Resize splits when window is resized
+  augroup resized
+    autocmd!
+    au VimResized * exe "normal! \<c-w>="
+  augroup END
+  " }}}
+
+  " Easy window navigation
+  nnoremap <silent> <leader><enter> :vsplit<cr>
+  nnoremap <silent> <leader>- :split<cr>
+  " nnoremap <C-l> <c-w>l
+  " nnoremap <C-h> <c-w>h
+  " nnoremap <C-j> <c-w>j
+  " nnoremap <C-k> <c-w>k
+  nnoremap <silent><space>l :wincmd l<cr>
+  nnoremap <silent><space>h :wincmd h<cr>
+  nnoremap <silent><space>j :wincmd j<cr>
+  nnoremap <silent><space>k :wincmd k<cr>
+  " nnoremap <leader>wl <c-w>l
+  " nnoremap <leader>wh <c-w>h
+  " nnoremap <leader>wj <c-w>j
+  " nnoremap <leader>wk <c-w>k
+
+  " Easy pane resizing
+  nnoremap <silent> <S-Left> 5<C-w>>
+  nnoremap <silent> <S-Right> 5<C-w><
+  nnoremap <silent> <S-Down> 5<C-W>-
+  nnoremap <silent> <S-Up> 3<C-W>+
+  " }}}
+
+  " {{{ Functions
   " Extract variable
   " function! ExtractVariable()
   "   try
@@ -626,146 +626,146 @@
   "   endtry
   " endfunction
   " xnoremap <Leader>e <ESC>:call ExtractVariable()<CR>
-" }}}
+  " }}}
 
-" Plugins {{{
+  " Plugins {{{
   " {{{ Silver Searcher
-    " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-    " if executable('ag')
-    "     let g:ackprg = 'ag --nogroup --column'
+  " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+  " if executable('ag')
+  "     let g:ackprg = 'ag --nogroup --column'
 
-    "     " Use Ag over Grep
-    "     set grepprg=ag\ --nogroup\ --nocolor
+  "     " Use Ag over Grep
+  "     set grepprg=ag\ --nogroup\ --nocolor
 
-    "     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    "     let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
-    "     " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-    "     let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-    "     let g:ctrlp_use_caching = 0
-    "     " let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:20'
-    " endif
+  "     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  "     let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
+  "     " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+  "     let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+  "     let g:ctrlp_use_caching = 0
+  "     " let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:20'
+  " endif
   " }}}
 
   " {{{ plugin : Fugitive.vim
-    " git diff current file vs HEAD
-    nnoremap <silent> <leader>gd :Gvdiffsplit!<cr>
-    " turn off vim diff and delete diff buffer
-    " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
-    " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
-    " Assuming focus was in the current non-git buffer, otherwise append a :Gedit before the <cr>
-    nnoremap <silent> <leader>gD <c-W><c-O><cr>
-    " git status
-    nnoremap <silent> <leader>gs :Git<cr>
-    " git blame
-    nnoremap <silent> <leader>gb :Git blame<cr>
-    " git log
-    nnoremap <silent> <leader>gl :0Glog<cr><cr>
-    " git edit
-    nnoremap <silent> <leader>ge :Gedit<cr>
-    " git add
-    nnoremap <silent> <leader>gw :Gwrite<cr>
-    " function! XZY(...)
-    "   let n = get(a:, 1, 0)
-    "   echo "a:0". a:0
-    "   echo "n: '".n."'"
-    "   if 'n' == ""
-    "     echo "nada"
-    "   endif
+  " git diff current file vs HEAD
+  nnoremap <silent> <leader>gd :Gvdiffsplit!<cr>
+  " turn off vim diff and delete diff buffer
+  " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
+  " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
+  " Assuming focus was in the current non-git buffer, otherwise append a :Gedit before the <cr>
+  nnoremap <silent> <leader>gD <c-W><c-O><cr>
+  " git status
+  nnoremap <silent> <leader>gs :Git<cr>
+  " git blame
+  nnoremap <silent> <leader>gb :Git blame<cr>
+  " git log
+  nnoremap <silent> <leader>gl :0Glog<cr><cr>
+  " git edit
+  nnoremap <silent> <leader>ge :Gedit<cr>
+  " git add
+  nnoremap <silent> <leader>gw :Gwrite<cr>
+  " function! XZY(...)
+  "   let n = get(a:, 1, 0)
+  "   echo "a:0". a:0
+  "   echo "n: '".n."'"
+  "   if 'n' == ""
+  "     echo "nada"
+  "   endif
 
-    "   if exists('n')
-    "     echo "you pressed " .n
-    "   else
-    "     echo "you pressed nothing"
-    "   endif
-    " endfunction
-    " Git edit current file 3 previous versions ago
-    " :Gedit! !~3:%
-    nnoremap <silent> <leader>gx :exe join(["Gedit !~",nr2char(getchar()),":%"], "")<cr>
-    " Git diff current file 5 versions ago
-    " :Gdiff  !~5
-    nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
+  "   if exists('n')
+  "     echo "you pressed " .n
+  "   else
+  "     echo "you pressed nothing"
+  "   endif
+  " endfunction
+  " Git edit current file 3 previous versions ago
+  " :Gedit! !~3:%
+  nnoremap <silent> <leader>gx :exe join(["Gedit !~",nr2char(getchar()),":%"], "")<cr>
+  " Git diff current file 5 versions ago
+  " :Gdiff  !~5
+  nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
   " }}}
 
   " {{{ RipGrep
-    if executable('rg')
-      set grepprg=rg\ --vimgrep
-      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-      let g:ctrlp_use_caching = 0
-      let g:ctrlp_working_path_mode = 'ra'
-      let g:ctrlp_switch_buffer = 'et'
-      let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-      let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:250'
-    endif
+  if executable('rg')
+    set grepprg=rg\ --vimgrep
+    let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_switch_buffer = 'et'
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+    let g:ctrlp_match_window='bottom,order:btt,min:1,max:20,results:250'
+  endif
   " }}}
 
   " {{{ plugin : ctrlp.vim
-    let g:ctrlp_working_path_mode = 'ra'
-    let g:ctrlp_root_markers = ['.git', '.vscode']
-    let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
-    let g:ctrlp_show_hidden = 1
-    " Turn off caching"
-    let g:ctrlp_use_caching = 1
-    nnoremap <leader>f :CtrlP<cr>
-    nnoremap <leader>b :CtrlPBuffer<cr>
-    nnoremap <leader>m :CtrlPMRUFiles<cr>
+  let g:ctrlp_working_path_mode = 'ra'
+  let g:ctrlp_root_markers = ['.git', '.vscode']
+  let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
+  let g:ctrlp_show_hidden = 1
+  " Turn off caching"
+  let g:ctrlp_use_caching = 1
+  nnoremap <leader>f :CtrlP<cr>
+  nnoremap <leader>b :CtrlPBuffer<cr>
+  nnoremap <leader>m :CtrlPMRUFiles<cr>
   " }}}
 
   " {{{ plugin : GitGutter
-    au VimEnter * highlight clear SignColumn
-    set signcolumn=yes
-    " Ignore whitespace
-    let g:gitgutter_diff_args= '-w'
-    let g:gitgutter_close_preview_on_escape = 1
-    let g:gitgutter_preview_win_floating = 1
+  au VimEnter * highlight clear SignColumn
+  set signcolumn=yes
+  " Ignore whitespace
+  let g:gitgutter_diff_args= '-w'
+  let g:gitgutter_close_preview_on_escape = 1
+  let g:gitgutter_preview_win_floating = 1
   " }}}
 
   " {{{ plugin : Airline
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
 
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#branch#enabled = 1
-    let g:airline#extensions#hunks#enabled = 1
-    let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-    let g:airline#extensions#whitespace#enabled = 0
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#branch#enabled = 1
+  let g:airline#extensions#hunks#enabled = 1
+  let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
+  let g:airline#extensions#whitespace#enabled = 0
 
-    " powerline symbols
-    " let g:airline_left_sep = ''
-    " let g:airline_left_alt_sep = ''
-    " let g:airline_right_sep = ''
-    " let g:airline_right_alt_sep = ''
-    " let g:airline_symbols.branch = ''
-    " let g:airline_symbols.readonly = ''
-    " let g:airline_symbols.linenr = ''
+  " powerline symbols
+  " let g:airline_left_sep = ''
+  " let g:airline_left_alt_sep = ''
+  " let g:airline_right_sep = ''
+  " let g:airline_right_alt_sep = ''
+  " let g:airline_symbols.branch = ''
+  " let g:airline_symbols.readonly = ''
+  " let g:airline_symbols.linenr = ''
   " }}}
 
   " {{{ plugin : vim-indent-guides
-    " Set guide size to be narrower than default shift width
-    let g:indent_guides_guide_size = 1
-    nnoremap <silent> <leader>ig :IndentGuidesToggle<cr>
+  " Set guide size to be narrower than default shift width
+  let g:indent_guides_guide_size = 1
+  nnoremap <silent> <leader>ig :IndentGuidesToggle<cr>
   " }}}
 
   " {{{ plugin : ListToggle
-    "let g:lt_height = 10
+  "let g:lt_height = 10
   " }}}
 
   " {{{ plugin: CoC
 
-    " coc config
-    let g:coc_global_extensions = [
-      \ 'coc-snippets',
-      \ 'coc-pairs',
-      \ 'coc-tsserver',
-      \ 'coc-eslint',
-      \ 'coc-prettier',
-      \ 'coc-json',
-      \ ]
+  " coc config
+  let g:coc_global_extensions = [
+        \ 'coc-snippets',
+        \ 'coc-pairs',
+        \ 'coc-tsserver',
+        \ 'coc-eslint',
+        \ 'coc-prettier',
+        \ 'coc-json',
+        \ ]
 
-    " Use <C-l> for trigger snippet expand.
-    imap <C-l> <Plug>(coc-snippets-expand)
+  " Use <C-l> for trigger snippet expand.
+  imap <C-l> <Plug>(coc-snippets-expand)
 
-    " Use <C-j> for select text for visual placeholder of snippet.
+  " Use <C-j> for select text for visual placeholder of snippet.
     vmap <C-j> <Plug>(coc-snippets-select)
 
     " Use <C-j> for jump to next placeholder, it's default of coc.nvim
