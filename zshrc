@@ -137,9 +137,6 @@ export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
-  autoload -Uz compinit
-  compinit
 fi
 
 ulimit -n 65536 65536
