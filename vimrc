@@ -7,6 +7,10 @@
 
   runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
+  if v:version < 900
+    let g:pathogen_blacklist = ['coc.nvim']
+  endif
+
   call pathogen#infect()                            " Execute pathogen to easily modify the runtime path to include all  plugins under the ~/.vim/bundle directory
   call pathogen#helptags()                          " Run :HelpTags from /doc in bundle directory
 
@@ -656,11 +660,6 @@
   nnoremap <silent> <leader>gD <c-W><c-O><cr>
   " git status
   nnoremap <silent> <leader>gs :Git<cr>
-  augroup FugitiveToggle
-    autocmd!
-    autocmd Filetype fugitive nnoremap <buffer> <silent> <leader>gs <C-w>q
-  augroup END
-
   " git blame
   nnoremap <silent> <leader>gb :Git blame<cr>
   " git log
@@ -689,6 +688,64 @@
   " Git diff current file 5 versions ago
   " :Gdiff  !~5
   nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
+
+  " Fugitive auto-refresh: reload the :Git summary pane on file changes
+  let g:fugitive_auto_refresh = 0
+
+  function! s:FugitiveBufExists() abort
+    for l:buf in getbufinfo({'buflisted': 0, 'bufloaded': 1})
+      if get(l:buf, 'name', '') =~# '^fugitive://' || getbufvar(l:buf.bufnr, '&filetype') ==# 'fugitive'
+        return l:buf.bufnr
+      endif
+    endfor
+    return 0
+  endfunction
+
+  function! s:RefreshFugitive() abort
+    if !g:fugitive_auto_refresh
+      return
+    endif
+    let l:fbuf = s:FugitiveBufExists()
+    if !l:fbuf || bufwinid(l:fbuf) == -1
+      return
+    endif
+    if exists('*FugitiveDidChange')
+      call FugitiveDidChange()
+    else
+      let l:curwin = win_getid()
+      call win_gotoid(bufwinid(l:fbuf))
+      Git
+      call win_gotoid(l:curwin)
+    endif
+  endfunction
+
+  function! s:ToggleFugitiveAutoRefresh() abort
+    let g:fugitive_auto_refresh = !g:fugitive_auto_refresh
+    if g:fugitive_auto_refresh
+      augroup FugitiveAutoRefresh
+        autocmd!
+        autocmd BufWritePost,FocusGained,CursorHold * call <SID>RefreshFugitive()
+      augroup END
+      echo "Fugitive auto-refresh: ON"
+    else
+      augroup FugitiveAutoRefresh
+        autocmd!
+      augroup END
+      echo "Fugitive auto-refresh: OFF"
+    endif
+  endfunction
+
+  function! s:OpenGitWithAutoRefresh() abort
+    Git
+    if !g:fugitive_auto_refresh
+      call s:ToggleFugitiveAutoRefresh()
+    endif
+  endfunction
+
+  " Toggle auto-refresh with <leader>gr
+  nnoremap <silent> <leader>gr :call <SID>ToggleFugitiveAutoRefresh()<cr>
+  " Open git status with auto-refresh enabled
+  nnoremap <silent> <leader>gs :call <SID>OpenGitWithAutoRefresh()<cr>
   " }}}
 
   " {{{ RipGrep
@@ -756,6 +813,7 @@
   " }}}
 
   " {{{ plugin: CoC
+  if v:version >= 900
 
   " coc config
   let g:coc_global_extensions = [
@@ -936,6 +994,7 @@
     nnoremap <silent><nowait> <space>p  :<C-u>CocPrev<CR>
     " Resume latest coc list.
     nnoremap <silent><nowait> <space>r  :<C-u>CocListResume<CR>
+  endif
   "}}}
 
   " {{{ plugin : javascript
