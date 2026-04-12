@@ -5,6 +5,9 @@
 "{{{ Preamble
   set nocompatible                                  " Disable vi compatability. This must be first, because it changes other options as side effect.
 
+  " Disable alternate screen buffer so external TUIs (e.g. Claude Code) retain their display
+  set t_ti= t_te=
+
   runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
   if v:version < 900
@@ -742,10 +745,25 @@
     endif
   endfunction
 
+  function! s:ToggleFugitiveWindow() abort
+    let l:fbuf = s:FugitiveBufExists()
+    if l:fbuf && bufwinid(l:fbuf) != -1
+      " Fugitive window is open — close it and disable auto-refresh
+      execute bufwinid(l:fbuf)->win_gotoid()
+      close
+      if g:fugitive_auto_refresh
+        call s:ToggleFugitiveAutoRefresh()
+      endif
+    else
+      " Fugitive window is not open — open it with auto-refresh
+      call s:OpenGitWithAutoRefresh()
+    endif
+  endfunction
+
   " Toggle auto-refresh with <leader>gr
   nnoremap <silent> <leader>gr :call <SID>ToggleFugitiveAutoRefresh()<cr>
-  " Open git status with auto-refresh enabled
-  nnoremap <silent> <leader>gs :call <SID>OpenGitWithAutoRefresh()<cr>
+  " Toggle fugitive window on/off
+  nnoremap <silent> <leader>gs :call <SID>ToggleFugitiveWindow()<cr>
   " }}}
 
   " {{{ RipGrep
