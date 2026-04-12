@@ -460,6 +460,12 @@
     autocmd InsertLeave * normal mZ
   augroup END
 
+  " Resolve symlinks so fugitive finds the git repo for symlinked dotfiles
+  augroup ResolveSymlinks
+    autocmd!
+    autocmd BufReadPost * if getbufvar('%', '&buftype') ==# '' && expand('%:p') !~# '^fugitive://' | let s:fname = resolve(expand('%:p')) | if s:fname !=# expand('%:p') | silent execute 'file ' . fnameescape(s:fname) | lcd %:p:h | endif | endif
+  augroup END
+
   augroup tmux
     autocmd!
     if exists('$TMUX')
