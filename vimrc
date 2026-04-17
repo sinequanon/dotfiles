@@ -425,7 +425,11 @@
     " use nested to allow other events to cascade
     " Better to use *vimrc instead of $MYVIMRC here since vimrc is usually a symlink to vimrc
     " Reenable syntax highlighting after source
-    autocmd! BufWritePost *vimrc nested source % | syn on
+    autocmd! BufWritePost *vimrc nested
+          \ let b:vimrc_view = winsaveview() |
+          \ source % |
+          \ syn on |
+          \ call winrestview(b:vimrc_view)
     " Auto reload vimrc
     " au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 
