@@ -395,7 +395,8 @@
     autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
     " reloads changed buffers outside of the editor
-    autocmd BufNewFile,BufRead * :checktime
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+          \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
   augroup end
 
   augroup otherstuff
