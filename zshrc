@@ -87,6 +87,13 @@ alias photosrestorestat='log stream --predicate '\''process == "cloudd" or proce
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
+# Port-forward a :work workspace. Defaults: rsotto/nq-aui-dgs, 1445:445
+wpf() {
+  local workspace="${1:-rsotto/nq-aui-dgs}"
+  local ports="${2:-1445:445}"
+  work port-forward --verbose "$workspace" --tcp "$ports"
+}
+
 # Unify all langs
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
