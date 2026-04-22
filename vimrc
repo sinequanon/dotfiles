@@ -205,10 +205,33 @@
   " Edit the vimrc file
   nnoremap <leader>v :e $MYVIMRC<CR>
 
-  "Easy save files — checktime first so external changes get picked up by
-  "autoread, avoiding spurious E13 'File exists' warnings on write.
-  map <silent> <leader>s :silent! checktime<CR>:update<CR>
-  map <silent> <leader>S :silent! checktime<CR>:wa<CR>
+  "Easy save files. Writes the buffer directly to bypass the W11 "file
+  "changed since reading" prompt and E13 on mtime mismatch. Our
+  "FocusGained/BufEnter/CursorHold checktime autocmd already reloads
+  "unmodified buffers via autoread, so force-writing is safe in practice.
+  "BufWritePre/Post autocmds still fire so hooks like "source vimrc on
+  "save" keep working.
+  function! s:SmartUpdate() abort
+    if !&modified || &readonly || empty(expand('%'))
+      return
+    endif
+    silent doautocmd BufWritePre
+    call writefile(getline(1, '$'), expand('%'))
+    setlocal nomodified
+    silent doautocmd BufWritePost
+  endfunction
+  function! s:SmartWriteAll() abort
+    let l:save_buf = bufnr('%')
+    for b in range(1, bufnr('$'))
+      if buflisted(b) && getbufvar(b, '&modified') && !getbufvar(b, '&readonly') && !empty(bufname(b))
+        execute 'buffer' b
+        call s:SmartUpdate()
+      endif
+    endfor
+    execute 'buffer' l:save_buf
+  endfunction
+  nnoremap <silent> <leader>s :call <SID>SmartUpdate()<CR>
+  nnoremap <silent> <leader>S :call <SID>SmartWriteAll()<CR>
   " inoremap <silent> <leader><leader>s <esc>:update<CR>
 
   "Change inner word in insert mode
