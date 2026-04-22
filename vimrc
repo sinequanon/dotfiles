@@ -205,9 +205,10 @@
   " Edit the vimrc file
   nnoremap <leader>v :e $MYVIMRC<CR>
 
-  "Easy save files
-  map <silent> <leader>s :update<CR>
-  map <silent> <leader>S :wa<CR>
+  "Easy save files — checktime first so external changes get picked up by
+  "autoread, avoiding spurious E13 'File exists' warnings on write.
+  map <silent> <leader>s :silent! checktime<CR>:update<CR>
+  map <silent> <leader>S :silent! checktime<CR>:wa<CR>
   " inoremap <silent> <leader><leader>s <esc>:update<CR>
 
   "Change inner word in insert mode
