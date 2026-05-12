@@ -495,6 +495,25 @@
     autocmd BufReadPost * if getbufvar('%', '&buftype') ==# '' && expand('%:p') !~# '^fugitive://' | let s:fname = resolve(expand('%:p')) | if s:fname !=# expand('%:p') | silent execute 'file ' . fnameescape(s:fname) | lcd %:p:h | endif | endif
   augroup END
 
+  " When vim opens a non-existent file in /tmp (BufNewFile) and the file gets
+  " created externally before we save (Claude Code Ctrl+G), :w fails with E13
+  " because vim marks the buffer as "notedited". Fix: force-write for these
+  " buffers, and override ZZ to use SmartUpdate which bypasses the check.
+  function! s:ForceWriteTmp(cmd) abort
+    if getcmdtype() ==# ':' && getcmdline() ==# a:cmd && get(b:, 'tmp_newfile', 0)
+      return a:cmd . '!'
+    endif
+    return a:cmd
+  endfunction
+  augroup TmpNewFileWrite
+    autocmd!
+    autocmd BufNewFile /tmp/* let b:tmp_newfile = 1
+    autocmd BufNewFile /tmp/* nnoremap <buffer> ZZ :call <SID>SmartUpdate()<CR>:q<CR>
+  augroup END
+  cnoreabbrev <expr> w  <SID>ForceWriteTmp('w')
+  cnoreabbrev <expr> wq <SID>ForceWriteTmp('wq')
+  cnoreabbrev <expr> x  <SID>ForceWriteTmp('x')
+
   augroup tmux
     autocmd!
     if exists('$TMUX')
