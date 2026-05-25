@@ -489,30 +489,20 @@
     autocmd InsertLeave * normal mZ
   augroup END
 
-  " Resolve symlinks so fugitive finds the git repo for symlinked dotfiles
+  " Resolve symlinks so fugitive finds the git repo for symlinked dotfiles.
+  " After :file, re-read with :edit! to clear BF_NOTEDITED — otherwise :w
+  " raises E13 because Vim thinks the buffer was never loaded from this file.
+  " (Triggered by macOS /var → /private/var symlink on $TMPDIR paths, e.g.
+  " Pi Ctrl+G external editor temp files.)
   augroup ResolveSymlinks
     autocmd!
-    autocmd BufReadPost * if getbufvar('%', '&buftype') ==# '' && expand('%:p') !~# '^fugitive://' | let s:fname = resolve(expand('%:p')) | if s:fname !=# expand('%:p') | silent execute 'file ' . fnameescape(s:fname) | lcd %:p:h | endif | endif
+    autocmd BufReadPost * if getbufvar('%', '&buftype') ==# '' && expand('%:p') !~# '^fugitive://' | let s:fname = resolve(expand('%:p')) | if s:fname !=# expand('%:p') | let s:save_pos = getpos('.') | silent execute 'file ' . fnameescape(s:fname) | lcd %:p:h | silent noautocmd edit! | call setpos('.', s:save_pos) | endif | endif
   augroup END
 
-  " When vim opens a non-existent file in /tmp (BufNewFile) and the file gets
-  " created externally before we save (Claude Code Ctrl+G), :w fails with E13
-  " because vim marks the buffer as "notedited". Fix: force-write for these
-  " buffers, and override ZZ to use SmartUpdate which bypasses the check.
-  function! s:ForceWriteTmp(cmd) abort
-    if getcmdtype() ==# ':' && getcmdline() ==# a:cmd && get(b:, 'tmp_newfile', 0)
-      return a:cmd . '!'
-    endif
-    return a:cmd
-  endfunction
-  augroup TmpNewFileWrite
-    autocmd!
-    autocmd BufNewFile /tmp/* let b:tmp_newfile = 1
-    autocmd BufNewFile /tmp/* nnoremap <buffer> ZZ :call <SID>SmartUpdate()<CR>:q<CR>
-  augroup END
-  cnoreabbrev <expr> w  <SID>ForceWriteTmp('w')
-  cnoreabbrev <expr> wq <SID>ForceWriteTmp('wq')
-  cnoreabbrev <expr> x  <SID>ForceWriteTmp('x')
+  " NOTE: The old TmpNewFileWrite / ForceWriteTmp workaround for E13 on
+  " Ctrl+G temp files has been removed.  The root cause was ResolveSymlinks
+  " running :file on macOS /var→/private/var paths, which set BF_NOTEDITED.
+  " That is now fixed above with `silent noautocmd edit!` after :file.
 
   augroup tmux
     autocmd!
