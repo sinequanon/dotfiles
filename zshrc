@@ -29,12 +29,6 @@ setopt auto_cd
 
 export PATH=$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin
 
-export MCFLY_KEY_SCHEME=vim
-export MCFLY_FUZZY=2
-export MCFLY_RESULTS=50
-export MCFLY_INTERFACE_VIEW=BOTTOM
-command -v mcfly &>/dev/null && eval "$(mcfly init zsh)"
-
 source $ZSH/oh-my-zsh.sh
 
 command -v starship &>/dev/null && eval "$(starship init zsh)"
@@ -89,7 +83,7 @@ loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_mo
 
 # Port-forward a :work workspace. Defaults: rsotto/nq-aui-dgs, 1445:445
 wpf() {
-  local workspace="${1:-rsotto/nq-aui-dgs}"
+  local workspace="${1:-rsotto/proteus}"
   local ports="${2:-1445:445}"
   work port-forward --verbose "$workspace" --tcp "$ports"
 }
@@ -116,6 +110,12 @@ bindkey '^w' backward-kill-word
 
 # Reduce the default 0.4 second lag when pressing the ESC key to .1
 export KEYTIMEOUT=1
+
+export MCFLY_KEY_SCHEME=vim
+export MCFLY_FUZZY=2
+export MCFLY_RESULTS=50
+export MCFLY_INTERFACE_VIEW=BOTTOM
+command -v mcfly &>/dev/null && eval "$(mcfly init zsh)"
 
 # Fix neovims handling of ctrl-h
 # infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
@@ -171,3 +171,6 @@ ulimit -Sf unlimited
 precmd () {print -Pn "\e]0;%~\a"}
 
 export NEWT_SKIP_VPNCHECK=1
+
+# user-local binaries
+export PATH="$HOME/.local/bin:$PATH"

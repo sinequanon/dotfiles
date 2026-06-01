@@ -11,3 +11,4 @@ if [[ $WSL == true ]]; then
   export DISPLAY=:0
   export LIBGL_ALWAYS_INDIRECT=1
 fi
+export AGENT_BEACH_BIN="$HOME/.local/bin/agent-beach"
