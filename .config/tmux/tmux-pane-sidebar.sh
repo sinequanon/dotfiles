@@ -2,17 +2,17 @@
 # Interactive, event-driven pinned pane sidebar for the CURRENT tmux window.
 #
 # A narrow, full-height pane pinned to the LEFT edge that lists this window's
-# panes and lets you navigate between them with the keyboard:
+# panes and lets you navigate between them with the keyboard. Each row leads
+# with a starship-style icon for the running process or, for editors/shells,
+# the project type detected from the directory (TS/Java/Rust/Go/Python/...):
 #
-#   ▌ panes                    (expanded)        ▌   (collapsed / "minimized")
-#   ─────────────                                ─
-#   ▸ 1 my label                                 1
-#       nvim · dotfiles                          2
-#   > 2 claude review <          <- selected     3
-#       claude · cmp-breakout
+#   🟦 1 web ui                (expanded)        1   (collapsed / "minimized")
+#       node · web                               2
+#   ☕ 2 api server                              3
+#       java · api
 #
 # Two visible states so it's always obvious the sidebar is on:
-#   • expanded  – full list with labels + command/path sublines
+#   • expanded  – per-pane icon + label, with a command/path subline
 #   • collapsed – a thin strip showing just pane indices (the "minimized" look)
 #
 # Refresh is EVENT-DRIVEN, not polled: the render loop blocks on a key read that
@@ -72,8 +72,10 @@ STAGE_ACTIVE_OPT="@stage_active"   # "1" while the window is in stage mode
 STAGE_HOLD_OPT="@stage_hold"       # window id of the holding window
 STAGE_CUR_OPT="@stage_current"     # pane id currently on the stage
 
-# Shared list-panes format: id, index, active, command, short path, label.
-GFMT="#{pane_id}${TAB}#{pane_index}${TAB}#{pane_active}${TAB}#{pane_current_command}${TAB}#{b:pane_current_path}${TAB}#{@pane_label}"
+# Shared list-panes format: id, index, active, command, FULL path, label.
+# (Full path so pane_icon can detect the project type; the basename is derived
+# for display in gather.)
+GFMT="#{pane_id}${TAB}#{pane_index}${TAB}#{pane_active}${TAB}#{pane_current_command}${TAB}#{pane_current_path}${TAB}#{@pane_label}"
 
 FULL_WIDTH="${PANE_SIDEBAR_WIDTH:-26}"
 THIN_WIDTH="${PANE_SIDEBAR_THIN:-4}"
@@ -324,11 +326,11 @@ cmd_stage_click() { # map a mini-sidebar click row to a pane and stage it
 # ---------------------------------------------------------------------------
 
 # Globals filled by gather():
-P_ID=(); P_IDX=(); P_ACT=(); P_CMD=(); P_PATH=(); P_LABEL=(); N=0; AIDX=-1; IN_STAGE=0
+P_ID=(); P_IDX=(); P_ACT=(); P_CMD=(); P_PATH=(); P_LABEL=(); P_ICON=(); N=0; AIDX=-1; IN_STAGE=0
 
 gather() {
-  local mywin="$1" id idx act cmd cpath label stage hold current
-  P_ID=(); P_IDX=(); P_ACT=(); P_CMD=(); P_PATH=(); P_LABEL=(); N=0; AIDX=-1
+  local mywin="$1" id idx act cmd cpath label stage hold current bn
+  P_ID=(); P_IDX=(); P_ACT=(); P_CMD=(); P_PATH=(); P_LABEL=(); P_ICON=(); N=0; AIDX=-1
   stage="$(tmux show-options -wqv -t "$mywin" "$STAGE_ACTIVE_OPT" 2>/dev/null || true)"
 
   if [ "$stage" = "1" ]; then
@@ -344,7 +346,9 @@ gather() {
       [ -z "$id" ] && continue
       P_ID+=("$id"); P_IDX+=("$((N + 1))")
       if [ "$id" = "$current" ]; then P_ACT+=("1"); AIDX="$N"; else P_ACT+=("0"); fi
-      P_CMD+=("$cmd"); P_PATH+=("$cpath"); P_LABEL+=("$label")
+      pane_icon "$cmd" "$cpath"; P_ICON+=("$ICON_RESULT")
+      bn="${cpath##*/}"; [ -z "$bn" ] && bn="/"
+      P_CMD+=("$cmd"); P_PATH+=("$bn"); P_LABEL+=("$label")
       N=$((N + 1))
     done < <(
       tmux list-panes -t "$mywin" -f "$FILTER" -F "$GFMT" 2>/dev/null
@@ -355,7 +359,9 @@ gather() {
     while IFS="$TAB" read -r id idx act cmd cpath label; do
       [ -z "$id" ] && continue
       P_ID+=("$id"); P_IDX+=("$idx"); P_ACT+=("$act")
-      P_CMD+=("$cmd"); P_PATH+=("$cpath"); P_LABEL+=("$label")
+      pane_icon "$cmd" "$cpath"; P_ICON+=("$ICON_RESULT")
+      bn="${cpath##*/}"; [ -z "$bn" ] && bn="/"
+      P_CMD+=("$cmd"); P_PATH+=("$bn"); P_LABEL+=("$label")
       [ "$act" = "1" ] && AIDX="$N"
       N=$((N + 1))
     done < <(tmux list-panes -t "$mywin" -f "$FILTER" -F "$GFMT" 2>/dev/null)
@@ -380,6 +386,15 @@ cmd_color() {
     *)                                                 printf '%s[38;5;109m' "$ESC" ;; # other: slate
   esac
 }
+
+# pane_icon / ICON_RESULT come from the shared classifier (also used by the
+# Tab switcher) so the icon rules live in exactly one place. Degrade to no icons
+# if the helper is somehow missing rather than crashing the render loop.
+if [ -f "$self_dir/tmux-pane-icon.sh" ]; then
+  source "$self_dir/tmux-pane-icon.sh"
+else
+  ICON_RESULT='  '; pane_icon() { ICON_RESULT='  '; }
+fi
 
 # render <width> <sel> -> prints the full frame (real ESC + newlines)
 render() {
@@ -416,23 +431,23 @@ render() {
     return 0
   fi
   for ((i = 0; i < N; i++)); do
-    local idx="${P_IDX[$i]}" disp cmd cpath mk lblw labelt plain pad ccmd cbud cmdt pbud patht
+    local idx="${P_IDX[$i]}" disp cmd cpath icon mk lblw labelt pad vis ccmd cbud cmdt pbud patht
     disp="${P_LABEL[$i]:-${P_CMD[$i]}}"
-    cmd="${P_CMD[$i]}"; cpath="${P_PATH[$i]}"
-    if [ "$i" = "$AIDX" ]; then mk="▸ "; else mk="  "; fi
+    cmd="${P_CMD[$i]}"; cpath="${P_PATH[$i]}"; icon="${P_ICON[$i]}"
+    if [ "$i" = "$AIDX" ]; then mk='▸ '; else mk='  '; fi
 
-    # title row: chevron + gold index + bright label (or a full blue bar if
-    # this is the selected/active row).
-    lblw=$((width - 3 - ${#idx})); [ "$lblw" -lt 1 ] && lblw=1
+    # title row: chevron + file/process icon + gold index + bright label (or a
+    # full blue bar if this is the selected/active row). The icon is 2 cells.
+    lblw=$((width - 6 - ${#idx})); [ "$lblw" -lt 1 ] && lblw=1
     labelt="$(trunc "$disp" "$lblw")"
     if [ "$i" = "$sel" ]; then
-      plain="${mk}${idx} ${labelt}"
-      pad=$((width - ${#plain})); [ "$pad" -lt 0 ] && pad=0
-      out+="${c_sel}${plain}$(printf '%*s' "$pad" '')${rst}${NL}"
+      # visible cells = mk(2) + icon(2) + space(1) + idx + space(1) + label
+      vis=$((6 + ${#idx} + ${#labelt})); pad=$((width - vis)); [ "$pad" -lt 0 ] && pad=0
+      out+="${c_sel}${mk}${icon} ${idx} ${labelt}$(printf '%*s' "$pad" '')${rst}${NL}"
     elif [ "$i" = "$AIDX" ]; then
-      out+="${c_act}▸ ${rst}${c_idx}${idx}${rst} ${c_lbl}${labelt}${rst}${NL}"
+      out+="${c_act}▸ ${rst}${icon} ${c_idx}${idx}${rst} ${c_lbl}${labelt}${rst}${NL}"
     else
-      out+="  ${c_idx}${idx}${rst} ${c_lbl}${labelt}${rst}${NL}"
+      out+="  ${icon} ${c_idx}${idx}${rst} ${c_lbl}${labelt}${rst}${NL}"
     fi
 
     # subline: command (category color) · path (dim)
@@ -589,5 +604,6 @@ case "$cmd" in
   stage)      cmd_stage "$win" ;;
   stage-to)   cmd_stage_to "$win" "${3-}" ;;
   stage-click) cmd_stage_click "$win" "${3-}" "${4-}" ;;
-  *) printf 'usage: %s {toggle|close|stage <window_id>|stage-to <win> <pane>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
+  icon)       pane_icon "$win" "${3-}"; printf '%s\n' "$ICON_RESULT" ;;  # icon <command> <path> (debug/tests)
+  *) printf 'usage: %s {toggle|close|stage <window_id>|stage-to <win> <pane>|icon <cmd> <path>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
 esac

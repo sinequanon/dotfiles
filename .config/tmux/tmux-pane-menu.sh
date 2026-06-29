@@ -3,12 +3,15 @@
 #
 # Pops up a tmux `display-menu` listing every pane in the CURRENT window:
 #
-#     * 1: my label        [nvim] dotfiles
-#       2: claude review …  [claude] cmp-breakout
-#       3: shell            [zsh] ~
+#     * 🟦 1: my label        [nvim] dotfiles
+#       🤖 2: claude review …  [claude] cmp-breakout
+#       🐚 3: shell            [zsh] ~
 #     ───────────────────
 #     ✗ Kill a pane…   x
 #     ✎ Label a pane…  r
+#
+# Each row leads with a starship-style icon (process type, or project type
+# detected from the directory) shared with the sidebar via tmux-pane-icon.sh.
 #
 # Selecting a pane (mouse click, arrow keys + Enter, or the number shortcut)
 # focuses it via `select-pane`. The two footer items open sub-menus to kill a
@@ -51,10 +54,19 @@ self_dir="$(cd "$(dirname "$0")" && pwd -P)"
 self="$self_dir/$(basename "$0")"
 label_helper="$self_dir/set-pane-label.sh"
 
+# Shared file/process icon classifier (pane_icon -> ICON_RESULT), also used by
+# the sidebar. Degrade to no icons if it is somehow missing.
+if [ -f "$self_dir/tmux-pane-icon.sh" ]; then
+  source "$self_dir/tmux-pane-icon.sh"
+else
+  ICON_RESULT='  '; pane_icon() { ICON_RESULT='  '; }
+fi
+
 TAB=$'\t'
 # Field separator is a literal TAB; @pane_label is read LAST so a label that
-# somehow contains a tab still leaves the fixed fields intact.
-fmt="#{pane_id}${TAB}#{pane_index}${TAB}#{pane_active}${TAB}#{pane_current_command}${TAB}#{b:pane_current_path}${TAB}#{@pane_label}"
+# somehow contains a tab still leaves the fixed fields intact. The path is the
+# FULL path (for project-type icon detection); the basename is derived below.
+fmt="#{pane_id}${TAB}#{pane_index}${TAB}#{pane_active}${TAB}#{pane_current_command}${TAB}#{pane_current_path}${TAB}#{@pane_label}"
 # Skip persistent-sidebar panes (see tmux-pane-sidebar.sh).
 filter='#{!=:#{@pane_overview_role},sidebar}'
 
@@ -69,12 +81,16 @@ while IFS=$'\t' read -r pid idx active cmd cpath label; do
   # Prefer the manual/auto @pane_label; fall back to the live command.
   disp="${label:-$cmd}"
 
+  # Icon (process type, or project type from the directory) + display basename.
+  pane_icon "$cmd" "$cpath"; icon="$ICON_RESULT"
+  cbn="${cpath##*/}"; [ -z "$cbn" ] && cbn="/"
+
   # In a display-menu the NAME (and confirm-before's -p prompt) is itself a tmux
   # format string, so a literal '#' in user data would be interpreted. Escape
   # '#' as '##'.
   disp=${disp//\#/\#\#}
   ecmd=${cmd//\#/\#\#}
-  epath=${cpath//\#/\#\#}
+  epath=${cbn//\#/\#\#}
 
   if [ "$active" = "1" ]; then
     mark='#[fg=colour39]*#[default]'
@@ -92,7 +108,7 @@ while IFS=$'\t' read -r pid idx active cmd cpath label; do
     key="0"
   fi
 
-  name="${mark} ${idx}: ${disp} #[fg=colour245][${ecmd}] ${epath}#[default]"
+  name="${mark} ${icon} ${idx}: ${disp} #[fg=colour245][${ecmd}] ${epath}#[default]"
 
   case "$mode" in
     kill)
