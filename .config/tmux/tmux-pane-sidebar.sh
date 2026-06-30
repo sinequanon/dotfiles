@@ -20,7 +20,12 @@
 # SIGWINCH (on resize). When idle and unfocused it consumes no CPU. The hooks
 # remove themselves once the last sidebar is closed.
 #
-# Keys (when the sidebar pane is focused — e.g. Alt+h into it, or click it):
+# Mouse: click any row to bring that pane front and center — it is swapped into
+# the biggest "center" pane's slot and focused (in stage mode, it is swapped onto
+# the stage instead) — no need to focus the sidebar first. See the MouseDown1Pane
+# binding in .tmux.conf, which routes sidebar clicks to `… sidebar.sh click`.
+#
+# Keys (when the sidebar pane is focused — Alt+h into it):
 #   j / ↓   move selection down        Enter   jump to the selected pane
 #   k / ↑   move selection up          c / Spc collapse ⇄ expand
 #   g / G   first / last               q       close the sidebar
@@ -44,7 +49,10 @@
 #   close  <win>          remove the sidebar from <win>
 #   stage  <win>          toggle stage mode (maximize one pane + mini nav)
 #   stage-to <win> <pane> put <pane> on the stage (used by Enter / mouse click)
-#   stage-click <win> <y> [<top>]  map a mini-nav click row to a pane and stage it
+#   click  <win> <mouse_y>  map a sidebar click (#{mouse_y}, pane-relative) to a
+#                         pane and act on it: promote it to the center/biggest
+#                         slot + focus (normal), or swap it onto the stage
+#   stage-click <win> <y> [<top>]  back-compat alias for `click`
 #   run                   (internal) the render/input loop in the sidebar pane
 #   hook                  (internal) fired by tmux hooks: refresh / self-clean
 #   signal                (internal) SIGUSR1 every sidebar render loop
@@ -314,12 +322,84 @@ cmd_stage_to() { # put <target> on the stage, park the current staged pane
   signal_all
 }
 
-cmd_stage_click() { # map a mini-sidebar click row to a pane and stage it
-  local w="$1" y="${2:-0}" top="${3:-0}" row target
-  row=$((y - top)); [ "$row" -lt 0 ] && return 0
-  target="$(stage_list_all "$w" | sed -n "$((row + 1))p")"
-  [ -n "$target" ] && cmd_stage_to "$w" "$target"
+# row_to_index <sb> <row>: 0-based index into the sidebar's pane list for a
+# click on pane-relative row <row>. tmux reports #{mouse_y} relative to the pane
+# (0 = the pane's first content line), so we use it directly — do NOT subtract
+# #{pane_top} (that is window-relative and would shift every click up by a line,
+# the classic "only the second line is tappable" bug). The expanded layout
+# renders TWO lines per pane (title + command/path subline) and the thin/mini
+# strip ONE, so the divisor depends on the live width. Echoes nothing for a
+# click above the first row.
+row_to_index() {
+  local sb="$1" row="${2:-0}" width
+  [ "$row" -lt 0 ] && return 0
+  width="$(tmux display-message -p -t "$sb" '#{pane_width}' 2>/dev/null || true)"
+  [ -z "$width" ] && width="$FULL_WIDTH"
+  [ "$width" -ge "$THRESHOLD" ] && row=$((row / 2))
+  printf '%s' "$row"
 }
+
+# pane_at_row <win> <idx>: echo the pane id at 0-based list position <idx> — the
+# stage list (staged pane + held panes) in stage mode, else the window's content
+# panes in list order. Mirrors gather()'s ordering so a click lands on the row
+# you see. Echoes nothing when <idx> is out of range.
+pane_at_row() {
+  local w="$1" idx="$2"
+  if [ "$(tmux show-options -wqv -t "$w" "$STAGE_ACTIVE_OPT" 2>/dev/null || true)" = "1" ]; then
+    stage_list_all "$w" | sed -n "$((idx + 1))p"
+  else
+    tmux list-panes -t "$w" -f "$FILTER" -F '#{pane_id}' 2>/dev/null | sed -n "$((idx + 1))p"
+  fi
+}
+
+# biggest_content_pane <win>: echo the pane id with the largest area (width x
+# height) among the window's content panes (role != sidebar). That is the big
+# "center" pane — the main work area. Ties keep the earliest in list order.
+biggest_content_pane() {
+  tmux list-panes -t "$1" -f "$FILTER" -F '#{pane_width} #{pane_height} #{pane_id}' 2>/dev/null \
+    | awk 'NF>=3 { a=$1*$2; if (a>max) { max=a; id=$3 } } END { if (id!="") print id }'
+}
+
+# promote_to_center <win> <target>: bring <target> front and center by swapping
+# it into the biggest content pane's slot, then focus it. A nav click doesn't
+# just focus a pane — it makes that pane the big center one (swapping whatever
+# was there out to the clicked pane's old slot). If <target> is already the
+# biggest pane, just focus it (the swap would be a no-op).
+promote_to_center() {
+  local w="$1" target="$2" center
+  center="$(biggest_content_pane "$w")"
+  if [ -n "$center" ] && [ "$center" != "$target" ]; then
+    tmux swap-pane -d -s "$target" -t "$center" 2>/dev/null || true
+  fi
+  tmux select-pane -t "$target" 2>/dev/null || true
+}
+
+# cmd_click <win> <row>: <row> is #{mouse_y} (pane-relative). Map it to the pane
+# on that row and act on it — promote it to the center/biggest slot and focus it
+# (normal mode), or swap it onto the stage (stage mode). This is what makes the
+# nav directly clickable: one click brings the pane front and center, no need to
+# focus the sidebar and press Enter. A stray 3rd argument (the old <top>) is
+# accepted and ignored for back-compat.
+cmd_click() {
+  local w="$1" row="${2:-0}" sb idx target
+  win="$w"
+  sb="$(find_sidebar || true)"
+  [ -z "$sb" ] && return 0
+  idx="$(row_to_index "$sb" "$row")"
+  [ -z "$idx" ] && return 0
+  target="$(pane_at_row "$w" "$idx")"
+  [ -z "$target" ] && return 0
+  if [ "$(tmux show-options -wqv -t "$w" "$STAGE_ACTIVE_OPT" 2>/dev/null || true)" = "1" ]; then
+    cmd_stage_to "$w" "$target"
+  else
+    promote_to_center "$w" "$target"
+  fi
+}
+
+# Back-compat alias: older bindings/callers used `stage-click`; route them
+# through the unified, width-aware click handler (which also fixes row mapping
+# if the mini nav was expanded in stage mode).
+cmd_stage_click() { cmd_click "$@"; }
 
 # ---------------------------------------------------------------------------
 # render loop (runs as the sidebar pane's command)
@@ -603,7 +683,8 @@ case "$cmd" in
   reload)     cmd_reload ;;
   stage)      cmd_stage "$win" ;;
   stage-to)   cmd_stage_to "$win" "${3-}" ;;
+  click)      cmd_click "$win" "${3-}" ;;
   stage-click) cmd_stage_click "$win" "${3-}" "${4-}" ;;
   icon)       pane_icon "$win" "${3-}"; printf '%s\n' "$ICON_RESULT" ;;  # icon <command> <path> (debug/tests)
-  *) printf 'usage: %s {toggle|close|stage <window_id>|stage-to <win> <pane>|icon <cmd> <path>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
+  *) printf 'usage: %s {toggle|close|stage <win>|stage-to <win> <pane>|click <win> <mouse_y>|icon <cmd> <path>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
 esac
