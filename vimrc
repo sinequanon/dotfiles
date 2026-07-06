@@ -112,6 +112,47 @@
 " }}}
 
 " {{{ Remappings
+  " Keybindings:
+  "   ;           Enter command-line mode (: without Shift)
+  "   <C-]>       Jump to tag; list all matches when ambiguous
+  "   ,/          Git-grep prompt (case-insensitive, incl. untracked)
+  "   ,?          Git-grep the word under the cursor
+  "   j  k        Move by screen line (step into wrapped lines)
+  "   H  L        Jump to first / last non-blank char of the line
+  "   >  <        Indent / dedent and keep the selection (visual)
+  "   <C-Right>   Indent line (normal) / indent + keep sel (visual)
+  "   <C-Left>    Dedent line (normal) / dedent + keep sel (visual)
+  "   =           Re-indent and keep the selection (visual)
+  "   <C-Up>      Move line up (normal) / move block up (visual)
+  "   <C-Down>    Move line down (normal) / move block down (visual)
+  "   /           Search using 'very magic' regex (\v prepended)
+  "   ,<space>    Clear search highlighting
+  "   ,v          Edit this vimrc ($MYVIMRC)
+  "   ,s          Save current buffer (bypasses the E13 prompt)
+  "   ,S          Save all modified buffers
+  "   Q           Format paragraph (normal) / selection (visual)
+  "   gq          Close the current window (:q)
+  "   ,d{motion}  Delete without yanking (black-hole register)
+  "   ,dd         Delete line without yanking; ,d also works in visual
+  "   x  X        Delete char at/before cursor without yanking
+  "   Y           Yank to end of line (mirrors D)
+  "   jj          Escape to normal mode (insert)
+  "   ,z          Start :s substitution for the word under cursor
+  "   gV          Reselect the last edited / pasted text
+  "   ,p  ,P      Paste after/before, reindent, then select (normal)
+  "   ,p  ,P      Duplicate the selection below/above (visual)
+  "   gp          Reselect the last pasted text
+  "   <CR><CR>    Insert a blank line without leaving normal mode
+  "   gQ          Disabled (no-op) so Ex mode is not hit by accident
+  "   ,e          Jump to the last insert-mode edit position
+  "   <F7>        Sort the contents of the CSS block under the cursor
+  "   ,n          Cycle line-number modes (none / abs / relative)
+  "   ,cfr  ,cfa  Copy file path to clipboard: relative / absolute
+  "   ,cff        Copy file path without extension to clipboard
+  "   ,cfe        Copy filename only (with extension) to clipboard
+  "   ,cfd        Copy the file's absolute directory to clipboard
+  "   :w!         Write the file via sudo (command-line)
+  "   <F5>        Toggle scrollbind (sync-scroll split windows)
   " Maps semicolon to colon key for easier command typing
   nnoremap ; :
 
@@ -628,6 +669,14 @@
   " }}}
 
   " {{{ Windows
+  " Keybindings:
+  "   ,<CR>           Split window vertically
+  "   ,-              Split window horizontally
+  "   <space>h/j/k/l  Move focus to the window left/down/up/right
+  "   <S-Left>        Widen the split (grow rightward)
+  "   <S-Right>       Shrink the split
+  "   <S-Down>        Shrink the split vertically
+  "   <S-Up>          Grow the split vertically
   "{{{ Splits
   set equalalways                 " Automatically size splits equally
   set splitbelow                  " Create vsplits below current split
@@ -698,43 +747,75 @@
   " }}}
 
   " {{{ plugin : Fugitive.vim
-  " git diff current file vs HEAD
-  nnoremap <silent> <leader>gd :Gvdiffsplit!<cr>
-  " turn off vim diff and delete diff buffer
-  " nnoremap <silent> <leader>gD :diffoff!<cr><c-w>h:bd<cr>
-  " nnoremap <silent> <leader>gD <c-w><c-o>":diffoff!<cr><c-w>h<c-w>c<cr>
-  " Assuming focus was in the current non-git buffer, otherwise append a :Gedit before the <cr>
-  nnoremap <silent> <leader>gD <c-W><c-O><cr>
-  " git status
-  nnoremap <silent> <leader>gs :Git<cr>
+  " Keybindings ([count] = how many commits back from HEAD):
+  "   ,gd         Vertical diff of the file vs HEAD     (N,gd = vs N back)
+  "   ,gv         Vertical diff N commits back (prompts if no [count])
+  "   ,gx         Open the file as of N commits back    (prompts, or N,gx)
+  "   ,gD         Close the diff (make this the only window)
+  "   ,gb         Git blame the current file
+  "   ,gl         Git log for the current file (:0Glog)
+  "   ,ge         Return to the work-tree version of the file (:Gedit)
+  "   ,gw         Stage the current file (git add / :Gwrite)
+  "   ,gs         Toggle the fugitive status window (:Git)
+  "   ,gr         Toggle auto-refresh of the status window
+  " Examples:  5,gd = diff vs 5 back;   ,gv then 12 = diff vs 12 back.
+
+  " Resolve N: use [count] when > 0, else prompt. Empty/Esc (returns -1) cancels.
+  function! s:GitCommitsBack(count, label) abort
+    if a:count > 0
+      return a:count
+    endif
+    " No pre-filled default: a default would append to typed text (e.g. '1'+'2'
+    " -> 12 becomes 112), defeating multi-digit entry. Empty input cancels.
+    let l:answer = input(a:label . ' commits back from HEAD: ')
+    redraw
+    return empty(l:answer) ? -1 : str2nr(l:answer)
+  endfunction
+
+  " Vertical diff of the current file against HEAD, or [count] commits back.
+  function! s:GitVDiffHead(count) abort
+    if a:count <= 0
+      Gvdiffsplit!
+    else
+      execute 'Gvdiffsplit! @~' . a:count
+    endif
+  endfunction
+
+  " Like GitVDiffHead but prompts for N when no [count] is given.
+  function! s:GitVDiffBack(count) abort
+    let l:n = s:GitCommitsBack(a:count, 'Vdiff')
+    if l:n < 0 | return | endif
+    execute 'Gvdiffsplit! @~' . l:n
+  endfunction
+
+  " Open the current file as it was [count]/N commits back in a new buffer.
+  function! s:GitEditBack(count) abort
+    let l:n = s:GitCommitsBack(a:count, 'Gedit')
+    if l:n < 0 | return | endif
+    execute 'Gedit @~' . l:n . ':%'
+  endfunction
+
+  " <Plug> targets carry the optional [count] into the functions above.
+  nnoremap <silent> <Plug>(GitVDiffHead) :<C-u>call <SID>GitVDiffHead(v:count)<CR>
+  nnoremap <Plug>(GitVDiffBack) :<C-u>call <SID>GitVDiffBack(v:count)<CR>
+  nnoremap <Plug>(GitEditBack)  :<C-u>call <SID>GitEditBack(v:count)<CR>
+
+  " git diff current file: vs HEAD, or [count] commits back (e.g. 5,gd)
+  nmap <silent> <leader>gd <Plug>(GitVDiffHead)
+  " git diff current file N commits back: prompts, or [count] (e.g. 12,gv)
+  nmap <leader>gv <Plug>(GitVDiffBack)
+  " git open current file N commits back: prompts, or [count] (e.g. 3,gx)
+  nmap <leader>gx <Plug>(GitEditBack)
+  " close diffs / make this the only window
+  nnoremap <silent> <leader>gD :only<cr>
   " git blame
   nnoremap <silent> <leader>gb :Git blame<cr>
-  " git log
+  " git log (current file)
   nnoremap <silent> <leader>gl :0Glog<cr><cr>
-  " git edit
+  " git edit (return to the work-tree version of the file)
   nnoremap <silent> <leader>ge :Gedit<cr>
-  " git add
+  " git add (stage current file)
   nnoremap <silent> <leader>gw :Gwrite<cr>
-  " function! XZY(...)
-  "   let n = get(a:, 1, 0)
-  "   echo "a:0". a:0
-  "   echo "n: '".n."'"
-  "   if 'n' == ""
-  "     echo "nada"
-  "   endif
-
-  "   if exists('n')
-  "     echo "you pressed " .n
-  "   else
-  "     echo "you pressed nothing"
-  "   endif
-  " endfunction
-  " Git edit current file 3 previous versions ago
-  " :Gedit! !~3:%
-  nnoremap <silent> <leader>gx :exe join(["Gedit !~",nr2char(getchar()),":%"], "")<cr>
-  " Git diff current file 5 versions ago
-  " :Gdiff  !~5
-  nnoremap <silent> <leader>gv :exe join(["Gvdiffsplit! !~",nr2char(getchar())], "")<cr>
 
   " Fugitive auto-refresh: reload the :Git summary pane on file changes
   let g:fugitive_auto_refresh = 0
@@ -804,10 +885,13 @@
     endif
   endfunction
 
-  " Toggle auto-refresh with <leader>gr
-  nnoremap <silent> <leader>gr :call <SID>ToggleFugitiveAutoRefresh()<cr>
-  " Toggle fugitive window on/off
-  nnoremap <silent> <leader>gs :call <SID>ToggleFugitiveWindow()<cr>
+  " <Plug> targets so which-key can label the status-window toggles.
+  nnoremap <silent> <Plug>(FugitiveToggleRefresh) :call <SID>ToggleFugitiveAutoRefresh()<cr>
+  nnoremap <silent> <Plug>(FugitiveToggleWin)     :call <SID>ToggleFugitiveWindow()<cr>
+  " toggle auto-refresh of the fugitive status window
+  nmap <silent> <leader>gr <Plug>(FugitiveToggleRefresh)
+  " toggle the fugitive status window (opens :Git with auto-refresh)
+  nmap <silent> <leader>gs <Plug>(FugitiveToggleWin)
   " }}}
 
   " {{{ RipGrep
@@ -823,6 +907,10 @@
   " }}}
 
   " {{{ plugin : ctrlp.vim
+  " Keybindings:
+  "   ,f  Fuzzy-find files by name (CtrlP)
+  "   ,b  Jump between open buffers (CtrlP)
+  "   ,m  Open a recently used file (CtrlP MRU)
   let g:ctrlp_working_path_mode = 'ra'
   let g:ctrlp_root_markers = ['.git', '.vscode']
   let g:ctrlp_custom_ignore = '\v[\/](node_modules|bower_components|target|dist|jsdoc|generated)|(\.(swp|ico|git|svn))$'
@@ -865,6 +953,8 @@
   " }}}
 
   " {{{ plugin : vim-indent-guides
+  " Keybindings:
+  "   ,ig  Toggle indent guides
   " Set guide size to be narrower than default shift width
   let g:indent_guides_guide_size = 1
   nnoremap <silent> <leader>ig :IndentGuidesToggle<cr>
@@ -875,6 +965,35 @@
   " }}}
 
   " {{{ plugin: CoC
+  " Keybindings:
+  "   gd          Go to definition
+  "   gy          Go to type definition
+  "   gi          Go to implementation
+  "   gr          List references
+  "   K           Show documentation / hover for symbol under cursor
+  "   [g  ]g      Jump to previous / next diagnostic
+  "   ,rn         Rename symbol under the cursor
+  "   ,qf         Quick-fix the problem on the current line
+  "   ,ac         Code action for the current buffer
+  "   ,a          Code action for the selection (visual/normal)
+  "   ,re         Refactor at the cursor
+  "   ,r          Refactor the selection (visual/normal)
+  "   ,kd         Run the code-lens action on the current line
+  "   ,f  ,af     Format the selection (visual / operator)
+  "   ,pf         Format the whole file with Prettier
+  "   ,oi         Organize imports
+  "   ,x          Convert the selection into a snippet (visual)
+  "   <C-l>       Expand snippet (insert)
+  "   <C-j>       Expand+jump snippet (insert) / select placeholder (vis)
+  "   if  af      Text object: inner / around function (visual/op)
+  "   ic  ac      Text object: inner / around class (visual/op)
+  "   <space>a    List all diagnostics (CocList)
+  "   <space>e    Manage extensions (CocList)
+  "   <space>c    List commands (CocList)
+  "   <space>o    Outline symbols of the current file (CocList)
+  "   <space>s    Search workspace symbols (CocList)
+  "   <space>n/p  Next / previous CocList item
+  "   <space>r    Resume the last CocList
   if v:version >= 900
 
   " coc config
@@ -1087,11 +1206,15 @@
   "}}}
 
   "{{{ Rainbow parens
+  " Keybindings:
+  "   ,rt  Toggle rainbow parentheses
     let g:rainbow_active = 1
     nnoremap <silent> <leader>rt :RainbowToggle<cr>
   "}}}
 
   "{{{ Startify enable devicons
+  " Keybindings:
+  "   gh  Open the Startify start screen
     function! StartifyEntryFormat()
       return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
     endfunction
@@ -1104,6 +1227,8 @@
   "}}}
 
   "{{{ Easy Align
+  " Keybindings:
+  "   ga  Interactive EasyAlign (visual, or with a motion e.g. gaip)
     " Start interactive EasyAlign in visual mode (e.g. vipga)
     xmap ga <Plug>(EasyAlign)
 
@@ -1112,6 +1237,10 @@
   "}}}
 
   "{{{ vim-sideways
+  " Keybindings:
+  "   ,(      Move the argument under the cursor left
+  "   ,)      Move the argument under the cursor right
+  "   aa  ia  Text object: around / inner function argument (visual/op)
     nnoremap <leader>( :SidewaysLeft<cr>
     nnoremap <leader>) :SidewaysRight<cr>
     " Create inner and outer function arguments you can perform things like cia daa et al.
@@ -1122,10 +1251,15 @@
   "}}}
 
   "{{{ Mundo
+  " Keybindings:
+  "   ,u  Toggle the Mundo undo-tree viewer
     nnoremap <leader>u :MundoToggle<cr>
   "}}}
 
   "{{{ which-key
+  " Keybindings:
+  "   ,        Open the leader (,) which-key menu; ,, = EasyMotion
+  "   <space>  Open the localleader (<space>) which-key menu
     " local leader
     let g:maplocalleader="\<space>"
     call which_key#register('<Space>', "g:which_key_space_map")
@@ -1197,7 +1331,17 @@
     \ }
 
     let g:which_key_comma_map.g = {
-    \ 'name': '+Fugitive'
+    \ 'name': '+Fugitive',
+    \ 'd': ['<Plug>(GitVDiffHead)', 'Vdiff vs HEAD ([count] = N back)'],
+    \ 'v': ['<Plug>(GitVDiffBack)', 'Vdiff N commits back (prompts)'],
+    \ 'x': ['<Plug>(GitEditBack)', 'Open file N commits back (prompts)'],
+    \ 'D': [':only', 'Close diffs (keep this window)'],
+    \ 'b': [':Git blame', 'Git blame'],
+    \ 'l': [':0Glog', 'Git log (this file)'],
+    \ 'e': [':Gedit', 'Return to work-tree file'],
+    \ 'w': [':Gwrite', 'Stage current file (git add)'],
+    \ 's': ['<Plug>(FugitiveToggleWin)', 'Toggle status window'],
+    \ 'r': ['<Plug>(FugitiveToggleRefresh)', 'Toggle status auto-refresh'],
     \ }
 
     let g:which_key_comma_map.h = {
@@ -1250,6 +1394,8 @@
   "}}}
 
   "{{{ CtrlSF
+  " Keybindings:
+  "   <F3>  Prompt for a project-wide search (CtrlSF)
     " Set working directory to project root where VCS (.git) file is located"
     let g:ctrlsf_default_root = 'project'
     " Auto focus to search results pane when complete
@@ -1265,6 +1411,9 @@
   "}}}"
 
   "{{{ Bbye (Buffer Bye)
+  " Keybindings:
+  "   ,bd  Delete the current buffer (keep the window)
+  "   ,bw  Wipe out the current buffer (also clears jumplist)
     " Remove buffer from buffer list
     nnoremap <silent> <leader>bd :Bdelete<cr>
     " Remove buffer from buffer list and clear buffer from jumplist
@@ -1276,6 +1425,8 @@
   "}}}"
 
   "{{{ Easy Motion
+  " Keybindings:
+  "   ,,{motion}  EasyMotion via which-key: ,,w ,,b ,,f{c} ,,s ,,j ,,k ...
     " Disengage default do mapping for in order for vim-which-key <leader><leader> configuration to
     " work
     let g:EasyMotion_do_mapping = 0
@@ -1299,6 +1450,9 @@
   "}}}"
 
   "{{{ Vim Expand Region
+  " Keybindings:
+  "   v      Expand the visual selection region (visual)
+  "   <C-v>  Shrink the visual selection region (visual)
     vmap v <Plug>(expand_region_expand)
     vmap <C-v> <Plug>(expand_region_shrink)
   "}}}
