@@ -49,6 +49,8 @@
 #   close  <win>          remove the sidebar from <win>
 #   stage  <win>          toggle stage mode (maximize one pane + mini nav)
 #   stage-to <win> <pane> put <pane> on the stage (used by Enter / mouse click)
+#   new-main <win>        open a fresh pane as the big center/main pane and
+#                         demote the current biggest pane into the right stack
 #   click  <win> <mouse_y>  map a sidebar click (#{mouse_y}, pane-relative) to a
 #                         pane and act on it: promote it to the center/biggest
 #                         slot + focus (normal), or swap it onto the stage
@@ -276,13 +278,14 @@ stage_restore() {
   tmux set-option -wu -t "$w" "$STAGE_CUR_OPT" 2>/dev/null || true
 
   # Restore layout: the previously-staged pane becomes the full-height "main"
-  # pane on the left; the other panes stack vertically (evenly) in the remaining
-  # space on the right (tmux main-vertical). Drop the sidebar first, lay out the
-  # content, make sure the staged pane is the main one, then recreate the sidebar
-  # on the far left (it splits the main pane, so the stack is untouched).
+  # pane on the left, sized to ~two-thirds of the window; the other panes stack
+  # vertically (evenly) in the remaining ~one-third on the right (tmux
+  # main-vertical). Drop the sidebar first, lay out the content, make sure the
+  # staged pane is the main one, then recreate the sidebar on the far left (it
+  # splits the main pane, so the stack is untouched).
   sb="$(find_sidebar || true)"
   [ -n "$sb" ] && tmux kill-pane -t "$sb" 2>/dev/null || true
-  tmux set-window-option -t "$w" main-pane-width 50% 2>/dev/null || true
+  tmux set-window-option -t "$w" main-pane-width 66% 2>/dev/null || true
   tmux select-layout -t "$w" main-vertical 2>/dev/null || true
   if [ -n "$staged" ]; then
     local main0
@@ -372,6 +375,38 @@ promote_to_center() {
     tmux swap-pane -d -s "$target" -t "$center" 2>/dev/null || true
   fi
   tmux select-pane -t "$target" 2>/dev/null || true
+}
+
+# new_main <win>: open a fresh pane as the big "center"/main pane and demote the
+# current biggest content pane into the right-hand vertical stack (its position
+# within the stack does not matter). The new pane inherits the demoted pane's
+# working directory. Mirrors stage_restore's layout dance: drop the sidebar, lay
+# the content out as main-vertical (~two-thirds main + stacked remainder), make
+# the new pane the main one, then recreate the sidebar (only if one was open) on
+# the far left so the stack is untouched. Finally focus the new pane.
+cmd_newmain() {
+  local w="$1" oldmain path sb new main0
+  win="$w"
+  oldmain="$(biggest_content_pane "$w")"
+  [ -z "$oldmain" ] && return 0
+  path="$(tmux display-message -p -t "$oldmain" '#{pane_current_path}' 2>/dev/null || true)"
+
+  # Create the new pane by splitting the current main; the main-vertical relayout
+  # below collapses this split so exactly one pane is the main and the rest stack.
+  new="$(tmux split-window -h -d -t "$oldmain" ${path:+-c "$path"} -P -F '#{pane_id}' 2>/dev/null || true)"
+  [ -z "$new" ] && return 0
+
+  sb="$(find_sidebar || true)"
+  [ -n "$sb" ] && tmux kill-pane -t "$sb" 2>/dev/null || true
+  tmux set-window-option -t "$w" main-pane-width 66% 2>/dev/null || true
+  tmux select-layout -t "$w" main-vertical 2>/dev/null || true
+  # main-vertical makes the first pane the main one; swap our new pane into that
+  # slot so the new pane is the big center pane and the old main joins the stack.
+  main0="$(tmux list-panes -t "$w" -F '#{pane_id}' | head -1)"
+  [ -n "$main0" ] && [ "$main0" != "$new" ] && tmux swap-pane -d -s "$new" -t "$main0" 2>/dev/null || true
+  [ -n "$sb" ] && create_expanded
+  tmux select-pane -t "$new" 2>/dev/null || true
+  signal_all
 }
 
 # cmd_click <win> <row>: <row> is #{mouse_y} (pane-relative). Map it to the pane
@@ -683,8 +718,9 @@ case "$cmd" in
   reload)     cmd_reload ;;
   stage)      cmd_stage "$win" ;;
   stage-to)   cmd_stage_to "$win" "${3-}" ;;
+  new-main)   cmd_newmain "$win" ;;
   click)      cmd_click "$win" "${3-}" ;;
   stage-click) cmd_stage_click "$win" "${3-}" "${4-}" ;;
   icon)       pane_icon "$win" "${3-}"; printf '%s\n' "$ICON_RESULT" ;;  # icon <command> <path> (debug/tests)
-  *) printf 'usage: %s {toggle|close|stage <win>|stage-to <win> <pane>|click <win> <mouse_y>|icon <cmd> <path>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
+  *) printf 'usage: %s {toggle|close|stage <win>|stage-to <win> <pane>|new-main <win>|click <win> <mouse_y>|icon <cmd> <path>|run|hook|signal|reload}\n' "$(basename "$0")" >&2; exit 2 ;;
 esac

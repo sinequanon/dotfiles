@@ -1,0 +1,5 @@
+command regex pooj 's/(.+)/expression -O -l objective-c -- [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:%1 options:1 error:nil] encoding:4]/'
+command regex posj 's/(.+)/expression print(NSString(string: String(data: try! JSONSerialization.data(withJSONObject: %1, options: .prettyPrinted), encoding: .utf8)!))/'
+
+# Netflix iOS development LLDB commands (added by setup_environment.sh)
+command source /Users/rsotto/.lldb/netflix_ios.lldbinit
