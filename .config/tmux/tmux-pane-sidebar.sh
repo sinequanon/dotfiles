@@ -66,6 +66,24 @@
 
 set -uo pipefail
 
+# The render loop below uses bash 4+ features (read -N, fractional read -t).
+# macOS still ships bash 3.2 as /bin/bash, so when this script is started under
+# an old bash — e.g. the sidebar pane spawned by a tmux server whose PATH lacks
+# Homebrew — those reads fail on the first keystroke, the loop exits, and the
+# pane (remain-on-exit off) closes instantly: the sidebar "won't open" and
+# leaves no logs. Re-exec under a newer bash if one exists; otherwise surface a
+# visible tmux message instead of dying silently. Re-exec is safe from looping:
+# we only exec a bash that already tested as >= 4, which then skips this block.
+if [ "${BASH_VERSINFO[0]:-0}" -lt 4 ]; then
+  for _newbash in /opt/homebrew/bin/bash /usr/local/bin/bash "$(command -v bash 2>/dev/null || true)"; do
+    if [ -n "$_newbash" ] && [ -x "$_newbash" ] && "$_newbash" -c '((BASH_VERSINFO[0] >= 4))' 2>/dev/null; then
+      exec "$_newbash" "$0" "$@"
+    fi
+  done
+  tmux display-message "pane-sidebar: needs bash >= 4 (found ${BASH_VERSION:-?}); run: brew install bash" 2>/dev/null || true
+  exit 127
+fi
+
 TAB=$'\t'
 ESC=$'\033'
 NL=$'\n'
