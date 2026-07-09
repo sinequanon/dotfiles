@@ -177,8 +177,10 @@ link_file "$DOTFILES_DIR/.config/tmux/tmux-pane-menu.sh"    "$HOME/.config/tmux/
 link_file "$DOTFILES_DIR/.config/tmux/tmux-pane-sidebar.sh" "$HOME/.config/tmux/tmux-pane-sidebar.sh" 0755
 link_file "$DOTFILES_DIR/.config/tmux/tmux-move-pane.sh"    "$HOME/.config/tmux/tmux-move-pane.sh"    0755
 link_file "$DOTFILES_DIR/.config/tmux/set-pane-label.sh"    "$HOME/.config/tmux/set-pane-label.sh"   0755
+link_file "$DOTFILES_DIR/.config/tmux/theme-switch.sh"     "$HOME/.config/tmux/theme-switch.sh"     0755
 if [ -d "$HOME/.oh-my-zsh" ]; then
   link_file "$DOTFILES_DIR/.config/tmux/tmux-agent-pane-label.zsh" "$HOME/.oh-my-zsh/custom/tmux-agent-pane-label.zsh" 0644
+  link_file "$DOTFILES_DIR/.config/tmux/theme.zsh"                 "$HOME/.oh-my-zsh/custom/theme.zsh"                 0644
 else
   warn "oh-my-zsh not found; skipping tmux-agent-pane-label.zsh hook"
 fi

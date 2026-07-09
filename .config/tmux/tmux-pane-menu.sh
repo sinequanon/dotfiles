@@ -54,6 +54,15 @@ self_dir="$(cd "$(dirname "$0")" && pwd -P)"
 self="$self_dir/$(basename "$0")"
 label_helper="$self_dir/set-pane-label.sh"
 
+# Theme colors: read from @thm_menu_* global tmux user options (set by
+# theme-switch.sh), falling back to the built-in gruvbox values so the menu
+# renders correctly even if the options are unset.
+_thm_opt() { local v; v="$(tmux show-option -gqv "$1" 2>/dev/null || true)"; [ -n "$v" ] && printf '%s' "$v" || printf '%s' "$2"; }
+M_ACTIVE="$(_thm_opt @thm_menu_active '#d65d0e')"
+M_DIM="$(_thm_opt @thm_menu_dim    '#928374')"
+M_KILL="$(_thm_opt @thm_menu_kill   '#fb4934')"
+M_LABEL="$(_thm_opt @thm_menu_label '#b8bb26')"
+
 # Shared file/process icon classifier (pane_icon -> ICON_RESULT), also used by
 # the sidebar. Degrade to no icons if it is somehow missing.
 if [ -f "$self_dir/tmux-pane-icon.sh" ]; then
@@ -93,7 +102,7 @@ while IFS=$'\t' read -r pid idx active cmd cpath label; do
   epath=${cbn//\#/\#\#}
 
   if [ "$active" = "1" ]; then
-    mark='#[fg=colour39]*#[default]'
+    mark="#[fg=${M_ACTIVE}]*#[default]"
   else
     mark=' '
   fi
@@ -108,7 +117,7 @@ while IFS=$'\t' read -r pid idx active cmd cpath label; do
     key="0"
   fi
 
-  name="${mark} ${icon} ${idx}: ${disp} #[fg=colour245][${ecmd}] ${epath}#[default]"
+  name="${mark} ${icon} ${idx}: ${disp} #[fg=${M_DIM}][${ecmd}] ${epath}#[default]"
 
   case "$mode" in
     kill)
@@ -138,18 +147,18 @@ fi
 case "$mode" in
   kill)
     args+=("")  # separator
-    args+=("#[fg=colour245]← back#[default]" "q" "run-shell \"$self '$win' '$client' jump\"")
-    title=" #[align=centre,fg=colour203]kill which pane? "
+    args+=("#[fg=${M_DIM}]← back#[default]" "q" "run-shell \"$self '$win' '$client' jump\"")
+    title=" #[align=centre,fg=${M_KILL}]kill which pane? "
     ;;
   label)
     args+=("")
-    args+=("#[fg=colour245]← back#[default]" "q" "run-shell \"$self '$win' '$client' jump\"")
-    title=" #[align=centre,fg=colour114]label which pane? "
+    args+=("#[fg=${M_DIM}]← back#[default]" "q" "run-shell \"$self '$win' '$client' jump\"")
+    title=" #[align=centre,fg=${M_LABEL}]label which pane? "
     ;;
   *)
     args+=("")
-    args+=("#[fg=colour203]✗ Kill a pane…#[default]" "x" "run-shell \"$self '$win' '$client' kill\"")
-    args+=("#[fg=colour114]✎ Label a pane…#[default]" "r" "run-shell \"$self '$win' '$client' label\"")
+    args+=("#[fg=${M_KILL}]✗ Kill a pane…#[default]" "x" "run-shell \"$self '$win' '$client' kill\"")
+    args+=("#[fg=${M_LABEL}]✎ Label a pane…#[default]" "r" "run-shell \"$self '$win' '$client' label\"")
     title=" #[align=centre]panes · #{window_name} "
     ;;
 esac

@@ -506,17 +506,42 @@ trunc() { # trunc <string> <max>
   if [ "${#s}" -gt "$m" ]; then printf '%s' "${s:0:m-1}…"; else printf '%s' "$s"; fi
 }
 
-# cmd_color <command> -> echoes a 256-color SGR for that command category, so
-# the command line is scannable at a glance (agents pop, shells recede).
+# _thm_opt <option> <fallback> -> the value of a global tmux user option, or
+# the fallback if it is unset. Used to source theme colors from tmux.
+_thm_opt() { local v; v="$(tmux show-option -gqv "$1" 2>/dev/null)"; [ -n "$v" ] && printf '%s' "$v" || printf '%s' "$2"; }
+
+# load_theme -> populate the SGR color bodies used by cmd_color/render from the
+# @thm_side_* tmux user options (set by theme-switch.sh). Falls back to the
+# built-in gruvbox values so the sidebar renders correctly even if the theme
+# options are unset. Re-run on SIGUSR1 so a live theme switch recolors instantly.
+load_theme() {
+  SIDE_AGENT="$(_thm_opt @thm_side_agent  '38;2;211;134;155')"
+  SIDE_EDITOR="$(_thm_opt @thm_side_editor '38;2;131;165;152')"
+  SIDE_VCS="$(_thm_opt @thm_side_vcs    '38;2;254;128;25')"
+  SIDE_REMOTE="$(_thm_opt @thm_side_remote '38;2;251;73;52')"
+  SIDE_REPL="$(_thm_opt @thm_side_repl   '38;2;142;192;124')"
+  SIDE_SHELL="$(_thm_opt @thm_side_shell  '38;2;146;131;116')"
+  SIDE_OTHER="$(_thm_opt @thm_side_other  '38;2;69;133;136')"
+  SIDE_IDX="$(_thm_opt @thm_side_idx    '1;38;2;250;189;47')"
+  SIDE_LBL="$(_thm_opt @thm_side_lbl    '38;2;235;219;178')"
+  SIDE_ACT="$(_thm_opt @thm_side_act    '38;2;214;93;14')"
+  SIDE_SEL="$(_thm_opt @thm_side_sel    '1;48;2;69;133;136;38;2;251;241;199')"
+  SIDE_DOT="$(_thm_opt @thm_side_dot    '38;2;102;92;84')"
+  SIDE_DIM="$(_thm_opt @thm_side_dim    '38;2;146;131;116')"
+}
+
+# cmd_color <command> -> echoes an SGR escape for that command category (colors
+# come from load_theme / the active theme), so the command line is scannable at
+# a glance (agents pop, shells recede).
 cmd_color() {
   case "$1" in
-    pi|codex|claude|aider|llm|ollama)                  printf '%s[38;5;170m' "$ESC" ;; # agents: magenta
-    vim|nvim|vi|view|nano|hx|helix|emacs|micro|code|kak) printf '%s[38;5;75m'  "$ESC" ;; # editors: blue
-    git|lazygit|gitui|tig|gh)                          printf '%s[38;5;215m' "$ESC" ;; # vcs: amber
-    ssh|mosh|et|kubectl|docker)                        printf '%s[38;5;204m' "$ESC" ;; # remote/infra: pink
-    python|python3|node|ruby|irb|psql|R|julia)         printf '%s[38;5;73m'  "$ESC" ;; # REPLs: teal
-    zsh|bash|sh|fish|dash|tmux)                        printf '%s[38;5;244m' "$ESC" ;; # shells: dim
-    *)                                                 printf '%s[38;5;109m' "$ESC" ;; # other: slate
+    pi|codex|claude|aider|llm|ollama)                  printf '%s[%sm' "$ESC" "${SIDE_AGENT}" ;; # agents: purple
+    vim|nvim|vi|view|nano|hx|helix|emacs|micro|code|kak) printf '%s[%sm' "$ESC" "${SIDE_EDITOR}" ;; # editors: blue
+    git|lazygit|gitui|tig|gh)                          printf '%s[%sm' "$ESC" "${SIDE_VCS}" ;; # vcs: orange
+    ssh|mosh|et|kubectl|docker)                        printf '%s[%sm' "$ESC" "${SIDE_REMOTE}" ;; # remote/infra: red
+    python|python3|node|ruby|irb|psql|R|julia)         printf '%s[%sm' "$ESC" "${SIDE_REPL}" ;; # REPLs: aqua
+    zsh|bash|sh|fish|dash|tmux)                        printf '%s[%sm' "$ESC" "${SIDE_SHELL}" ;; # shells: dim
+    *)                                                 printf '%s[%sm' "$ESC" "${SIDE_OTHER}" ;; # other: blue
   esac
 }
 
@@ -533,12 +558,12 @@ fi
 render() {
   local width="$1" sel="$2"
   local rst="${ESC}[0m"
-  local c_idx="${ESC}[1;38;5;220m"          # index: bold gold (scan anchor)
-  local c_lbl="${ESC}[38;5;252m"            # label: bright
-  local c_act="${ESC}[38;5;48m"             # active chevron: green
-  local c_sel="${ESC}[1;48;5;24;38;5;231m"  # selected row: blue bar, bright bold
-  local c_dot="${ESC}[38;5;240m"            # the · separator: faint
-  local c_dim="${ESC}[38;5;245m"            # path: dim
+  local c_idx="${ESC}[${SIDE_IDX}m"          # index: bold gold (scan anchor)
+  local c_lbl="${ESC}[${SIDE_LBL}m"            # label: bright
+  local c_act="${ESC}[${SIDE_ACT}m"             # active chevron: orange
+  local c_sel="${ESC}[${SIDE_SEL}m"  # selected row: blue bar (gruvbox), bright bold
+  local c_dot="${ESC}[${SIDE_DOT}m"            # the · separator: faint
+  local c_dim="${ESC}[${SIDE_DIM}m"            # path: dim
   local out="" i
 
   if [ "$width" -lt "$THRESHOLD" ]; then
@@ -652,8 +677,9 @@ run_loop() {
   # bash a trapped signal runs the handler but does NOT interrupt a blocking
   # `read`, so we repaint FROM the handler (it runs while read is parked). On
   # shells where a signal does interrupt read, the rc>128 branch below repaints.
-  trap repaint USR1 WINCH
+  trap 'load_theme; repaint' USR1 WINCH
 
+  load_theme
   repaint
   while [ "$running" = "1" ]; do
     IFS= read -rsN1 -t "$REFRESH_SAFETY" key; rc=$?
@@ -720,6 +746,7 @@ if [ "${SIDEBAR_RENDER_ONCE:-}" = "1" ]; then
   elif [ "$AIDX" -ge 0 ]; then sel="$AIDX"
   elif [ "$sel" -lt 0 ] || [ "$sel" -ge "$N" ]; then sel=0
   fi
+  load_theme
   render "${SIDEBAR_TEST_WIDTH:-26}" "$sel"
   exit 0
 fi
