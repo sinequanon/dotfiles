@@ -4,6 +4,11 @@
 # work dotfiles repo into THIS (personal) dotfiles repo, then (re)link the
 # helper scripts into their live locations so the change is immediately usable.
 #
+# On a machine WITHOUT the work repo (e.g. a personal laptop), run with
+# --link-only to skip the work-repo sync and just (re)link this repo's already
+# pulled tmux.conf + .config/tmux/* into $HOME. That is the one-step install
+# after `git pull` there:  bin/sync-tmux-from-work.sh --link-only
+#
 # The two repos use different filename conventions, so the tmux files need a
 # small name remap and the helper scripts need symlinking into place. This
 # script encodes all of that once so it never has to be done by hand again.
@@ -23,34 +28,40 @@
 #   .config/tmux/tmux-pane-icon.sh         -> ~/.config/tmux/                       (0644, sourced)
 #   .config/tmux/tmux-pane-menu.sh         -> ~/.config/tmux/                       (0755)
 #   .config/tmux/tmux-pane-sidebar.sh      -> ~/.config/tmux/                       (0755)
+#   .config/tmux/tmux-move-pane.sh         -> ~/.config/tmux/                       (0755)
 #   .config/tmux/set-pane-label.sh         -> ~/.config/tmux/                       (0755)
 #   .config/tmux/tmux-agent-pane-label.zsh -> ~/.oh-my-zsh/custom/                  (0644, if oh-my-zsh)
 #   ...and removes a stale ~/.config/tmux/tmux-pane-dashboard.sh if present.
 #
-# Usage: sync-tmux-from-work.sh [-n|--dry-run] [--pull] [--reload]
+# Usage: sync-tmux-from-work.sh [-n|--dry-run] [--link-only] [--pull] [--reload]
 #                               [--commit] [--push] [-h|--help]
-#   -n, --dry-run  print what would change; modify nothing
-#       --pull     `git pull --ff-only` the work repo first (needs network + creds)
-#       --reload   reload a running tmux server after syncing
-#       --commit   stage tmux.conf + .config/tmux/ and commit them in this repo
-#       --push     implies --commit, then `git push`
-#   -h, --help     show this help
+#   -n, --dry-run   print what would change; modify nothing
+#       --link-only skip the work-repo sync; only (re)link this repo's tmux.conf
+#                   + .config/tmux/* into $HOME (for machines without the work
+#                   repo). Ignores --pull/--commit/--push.
+#       --pull      `git pull --ff-only` the work repo first (needs network + creds)
+#       --reload    reload a running tmux server after syncing/linking
+#       --commit    stage tmux.conf + .config/tmux/ and commit them in this repo
+#       --push      implies --commit, then `git push`
+#   -h, --help      show this help
 #
 # Default (no flags): sync files + relink + validate + report. No git, no reload.
+# --link-only (no work repo needed): relink $HOME + validate + report.
 
 set -euo pipefail
 
 usage() { sed -n '2,/^set -euo/p' "$0" | sed '$d; s/^#\{0,1\} \{0,1\}//'; }
 
-DRY=0; DO_PULL=0; DO_RELOAD=0; DO_COMMIT=0; DO_PUSH=0
+DRY=0; DO_PULL=0; DO_RELOAD=0; DO_COMMIT=0; DO_PUSH=0; LINK_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    -n|--dry-run) DRY=1 ;;
-    --pull)       DO_PULL=1 ;;
-    --reload)     DO_RELOAD=1 ;;
-    --commit)     DO_COMMIT=1 ;;
-    --push)       DO_COMMIT=1; DO_PUSH=1 ;;
-    -h|--help)    usage; exit 0 ;;
+    -n|--dry-run)  DRY=1 ;;
+    --link-only)   LINK_ONLY=1 ;;
+    --pull)        DO_PULL=1 ;;
+    --reload)      DO_RELOAD=1 ;;
+    --commit)      DO_COMMIT=1 ;;
+    --push)        DO_COMMIT=1; DO_PUSH=1 ;;
+    -h|--help)     usage; exit 0 ;;
     *) printf 'unknown option: %s (try --help)\n' "$1" >&2; exit 2 ;;
   esac
   shift
@@ -61,15 +72,26 @@ info() { printf '  %s\n' "$*"; }
 warn() { printf 'warning: %s\n' "$*" >&2; }
 die()  { printf 'error: %s\n' "$*" >&2; exit 1; }
 
+# --link-only makes no repo changes and never touches the work repo, so pull/
+# commit/push are meaningless with it — drop them with a heads-up rather than
+# fail, so a habitual `--push` doesn't abort the link.
+if [ "$LINK_ONLY" = 1 ] && { [ "$DO_PULL" = 1 ] || [ "$DO_COMMIT" = 1 ] || [ "$DO_PUSH" = 1 ]; }; then
+  warn "--link-only only relinks \$HOME; ignoring --pull/--commit/--push"
+  DO_PULL=0; DO_COMMIT=0; DO_PUSH=0
+fi
+
 # Resolve repos. DOTFILES_DIR defaults to this script's git root; WORK_DOTFILES_DIR
 # defaults to ~/github/work.dotfiles. Both are overridable via the environment.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 DOTFILES_DIR="${DOTFILES_DIR:-$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || dirname "$SCRIPT_DIR")}"
 WORK_DIR="${WORK_DOTFILES_DIR:-$HOME/github/work.dotfiles}"
 
-[ -d "$WORK_DIR" ]            || die "work dotfiles repo not found: $WORK_DIR (set WORK_DOTFILES_DIR)"
-[ -f "$WORK_DIR/.tmux.conf" ] || die "no .tmux.conf in work repo: $WORK_DIR"
 [ -d "$DOTFILES_DIR" ]        || die "dotfiles repo not found: $DOTFILES_DIR (set DOTFILES_DIR)"
+# The work repo is only needed when actually syncing from it (not --link-only).
+if [ "$LINK_ONLY" = 0 ]; then
+  [ -d "$WORK_DIR" ]            || die "work dotfiles repo not found: $WORK_DIR (set WORK_DOTFILES_DIR)"
+  [ -f "$WORK_DIR/.tmux.conf" ] || die "no .tmux.conf in work repo: $WORK_DIR"
+fi
 
 CHANGED=0; LINKED=0
 
@@ -127,27 +149,33 @@ link_file() { # src dest mode
   fi
 }
 
-WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
+WORK_HEAD="?"
 LBL=""; [ "$DRY" = 1 ] && LBL=" (dry-run)"
-log "tmux sync${LBL}:  $WORK_DIR  ->  $DOTFILES_DIR"
-log "work HEAD: $WORK_HEAD"
+if [ "$LINK_ONLY" = 1 ]; then
+  log "tmux link${LBL}:  $DOTFILES_DIR  ->  \$HOME   (link-only; work repo not used)"
+else
+  WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
+  log "tmux sync${LBL}:  $WORK_DIR  ->  $DOTFILES_DIR"
+  log "work HEAD: $WORK_HEAD"
 
-if [ "$DO_PULL" = 1 ]; then
-  log ""; log "==> pull work repo"
-  if [ "$DRY" = 1 ]; then info "[dry-run] git -C $WORK_DIR pull --ff-only"
-  else git -C "$WORK_DIR" pull --ff-only; WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD)"; fi
+  if [ "$DO_PULL" = 1 ]; then
+    log ""; log "==> pull work repo"
+    if [ "$DRY" = 1 ]; then info "[dry-run] git -C $WORK_DIR pull --ff-only"
+    else git -C "$WORK_DIR" pull --ff-only; WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD)"; fi
+  fi
+
+  log ""; log "==> files"
+  sync_file "$WORK_DIR/.tmux.conf"   "$DOTFILES_DIR/tmux.conf"        "tmux.conf"
+  sync_dir  "$WORK_DIR/.config/tmux" "$DOTFILES_DIR/.config/tmux"     ".config/tmux"
+  [ "$CHANGED" = 0 ] && info "(no file changes)"
 fi
-
-log ""; log "==> files"
-sync_file "$WORK_DIR/.tmux.conf"   "$DOTFILES_DIR/tmux.conf"        "tmux.conf"
-sync_dir  "$WORK_DIR/.config/tmux" "$DOTFILES_DIR/.config/tmux"     ".config/tmux"
-[ "$CHANGED" = 0 ] && info "(no file changes)"
 
 log ""; log "==> live links"
 link_file "$DOTFILES_DIR/tmux.conf"                         "$HOME/.tmux.conf"                       0644
 link_file "$DOTFILES_DIR/.config/tmux/tmux-pane-icon.sh"    "$HOME/.config/tmux/tmux-pane-icon.sh"   0644
 link_file "$DOTFILES_DIR/.config/tmux/tmux-pane-menu.sh"    "$HOME/.config/tmux/tmux-pane-menu.sh"   0755
 link_file "$DOTFILES_DIR/.config/tmux/tmux-pane-sidebar.sh" "$HOME/.config/tmux/tmux-pane-sidebar.sh" 0755
+link_file "$DOTFILES_DIR/.config/tmux/tmux-move-pane.sh"    "$HOME/.config/tmux/tmux-move-pane.sh"    0755
 link_file "$DOTFILES_DIR/.config/tmux/set-pane-label.sh"    "$HOME/.config/tmux/set-pane-label.sh"   0755
 if [ -d "$HOME/.oh-my-zsh" ]; then
   link_file "$DOTFILES_DIR/.config/tmux/tmux-agent-pane-label.zsh" "$HOME/.oh-my-zsh/custom/tmux-agent-pane-label.zsh" 0644
@@ -214,6 +242,8 @@ fi
 log ""
 if [ "$DRY" = 1 ]; then
   log "Dry run only — nothing was changed."
+elif [ "$LINK_ONLY" = 1 ]; then
+  if [ "$LINKED" = 1 ]; then log "Linked tmux helpers into \$HOME."; else log "All links already current."; fi
 elif [ "$CHANGED" = 1 ] && [ "$DO_COMMIT" = 0 ]; then
   log "Synced. Review & commit in the dotfiles repo:"
   log "  git -C \"$DOTFILES_DIR\" add tmux.conf .config/tmux/ && git -C \"$DOTFILES_DIR\" commit && git -C \"$DOTFILES_DIR\" push"
