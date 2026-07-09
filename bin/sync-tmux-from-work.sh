@@ -207,6 +207,21 @@ if [ "$DRY" = 0 ]; then
     fi
     rm -f "$perr"
   fi
+  # The pane sidebar's render loop needs bash >= 4 (read -N + fractional read
+  # -t); macOS ships bash 3.2. The sidebar re-execs under Homebrew bash at
+  # runtime, so this is a warning, not a failure — everything else works under
+  # 3.2. Mirror the sidebar's own detection (PATH bash, then Homebrew paths).
+  bash4=""
+  for _b in bash /opt/homebrew/bin/bash /usr/local/bin/bash; do
+    if command -v "$_b" >/dev/null 2>&1 && "$_b" -c '((BASH_VERSINFO[0] >= 4))' 2>/dev/null; then
+      bash4="$_b"; break
+    fi
+  done
+  if [ -n "$bash4" ]; then
+    info "bash >= 4 available for the sidebar ($("$bash4" -c 'printf %s "$BASH_VERSION"'))"
+  else
+    warn "no bash >= 4 found; the pane sidebar (prefix e) will not open until you: brew install bash"
+  fi
   [ "$ok" = 1 ] || die "validation failed (see warnings above)"
   info "scripts pass bash -n"
 fi
