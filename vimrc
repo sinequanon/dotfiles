@@ -122,6 +122,19 @@
       autocmd TextYankPost * if get(v:event, 'operator', '') ==# 'y' | call s:Osc52Copy(join(v:event.regcontents, "\n")) | endif
     augroup END
   endif
+
+  " Force-enable bracketed paste in terminal vim. Without it, pasting multi-line
+  " text into insert mode re-triggers autoindent/smartindent/cindent on every
+  " line, giving the runaway 'staircase' indentation. Vim only auto-enables this
+  " when the terminfo entry advertises the BE/BD capabilities, which
+  " tmux-256color usually lacks, so we set the sequences explicitly. t_PS/t_PE
+  " mark pasted text so vim inserts it verbatim (no re-indent). Terminal vim only.
+  if !has('gui_running')
+    let &t_BE = "\<Esc>[?2004h"
+    let &t_BD = "\<Esc>[?2004l"
+    let &t_PS = "\<Esc>[200~"
+    let &t_PE = "\<Esc>[201~"
+  endif
   "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
   set sidescroll=5                     " Number of columns to scroll when margin is reached
   set encoding=UTF-8                   " UTF-8 encoding when displayed
