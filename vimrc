@@ -87,7 +87,41 @@
   set autochdir                        " Current directory is always matching the  content of the active window
   set viminfo='20,<50,s10,h,%          " Remember some stuff after quiting vim:  marks, registers, searches, buffer list
   set ofu=syntaxcomplete#Complete
-  set clipboard=unnamed                " Now all operations work with the OS clipboard. No need for "+, "*
+  " Clipboard integration is platform-specific:
+  "  - macOS terminal vim wires the pasteboard to the + register (not *), so
+  "    route every yank/delete to + (and * for X11 hosts that have it).
+  "  - On a remote/SSH box there is usually no display, so the +/* registers
+  "    reach nothing. We deliberately DON'T route yanks into those dead
+  "    registers there; the OSC 52 fallback below does the real copy instead.
+  if has('macunix') || has('gui_running') || !empty($DISPLAY) || !empty($WAYLAND_DISPLAY)
+    set clipboard=unnamed,unnamedplus
+  endif
+
+  " OSC 52 clipboard fallback for terminals without a local display (e.g. vim
+  " over SSH inside tmux inside kitty, where vim may even be built -clipboard).
+  " On yank, emit a plain OSC 52 escape sequence; tmux (set-clipboard on) catches
+  " it and forwards to the OUTER terminal (kitty), which puts the text on the
+  " local machine's clipboard. We deliberately do NOT tmux-DCS-wrap it: that path
+  " needs `allow-passthrough on` (tmux >= 3.3), but the Linux box runs 3.2a, so we
+  " rely on set-clipboard forwarding instead (tmux.conf also advertises the outer
+  " terminal's Ms clipboard capability so 3.2 will forward). Skipped on macOS,
+  " which already has a working native pasteboard. Uses echoraw() when available
+  " (vim >= 8.2.1978), else writes the sequence straight to /dev/tty.
+  if !has('macunix') && exists('##TextYankPost')
+    function! s:Osc52Copy(text) abort
+      let l:b64 = substitute(system('base64', a:text), '\n', '', 'g')
+      let l:seq = "\033]52;c;" . l:b64 . "\007"
+      if exists('*echoraw')
+        call echoraw(l:seq)
+      else
+        silent! call writefile([l:seq], '/dev/tty', 'b')
+      endif
+    endfunction
+    augroup Osc52Clipboard
+      autocmd!
+      autocmd TextYankPost * if get(v:event, 'operator', '') ==# 'y' | call s:Osc52Copy(join(v:event.regcontents, "\n")) | endif
+    augroup END
+  endif
   "set switchbuf=usetab,newtab                 " Control buffer switching behavior. Switching to the existing tab if the buffer is open, or creating a new one if not.
   set sidescroll=5                     " Number of columns to scroll when margin is reached
   set encoding=UTF-8                   " UTF-8 encoding when displayed
