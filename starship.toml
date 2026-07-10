@@ -9,6 +9,7 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:color_aqua bg:color_blue)\
+$bun\
 $c\
 $elixir\
 $elm\
@@ -19,6 +20,7 @@ $java\
 $julia\
 $nodejs\
 $nim\
+$php\
 $rust\
 $scala\
 [](fg:color_blue bg:color_bright_yellow)\
@@ -30,6 +32,8 @@ $docker_context\
 $time\
 [ ](fg:color_bg1)\
 """
+# []
+# []
 command_timeout = 15000
 
 palette = 'gruvbox_dark'
@@ -78,8 +82,14 @@ color_orange = '#9A348E'
 color_purple = '#b16286'
 color_red = '#cc241d'
 color_yellow = '#DA627D'
+color_bright_red = '#fb4934'
+color_bright_green = '#41FF00'
 color_bright_yellow = '#fabd2f'
+color_bright_blue = '#83a598'
+color_bright_purple = '#d3869b'
+color_bright_aqua = '#8ec07c'
 color_bright_orange = '#fe8019'
+color_light_grey = '#a89984'
 color_muddy_green = '#83a598'
 
 # Disable the blank line at the start of the prompt
@@ -104,7 +114,32 @@ disabled = false
 # represents the current operating system
 [os]
 style = "bg:color_orange"
-disabled = true # Disabled by default
+format = "[$symbol ]($style)"
+disabled = false # Disabled by default
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+#AOSC = ""
+Arch = "󰣇"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
 
 [directory]
 style = "bg:color_yellow"
@@ -124,6 +159,11 @@ truncation_symbol = "…/"
 # will not be replaced, because "Documents" was already substituted before.
 # So either put "Important Documents" before "Documents" or use the substituted version:
 # "Important 󰈙 " = " 󰈙 "
+
+[bun]
+symbol = ""
+style = "bg:color_blue fg:color_fg0"
+format = '[ $symbol ($version) ]($style)'
 
 [c]
 symbol = " "
@@ -188,6 +228,11 @@ symbol = "󰆥 "
 style = "bg:color_blue fg:color_fg0"
 format = '[ $symbol ($version) ]($style)'
 
+[php]
+symbol = ""
+style = "bg:color_blue fg:color_fg0"
+format = '[ $symbol ($version) ]($style)'
+
 [rust]
 symbol = ""
 style = "bg:color_blue fg:color_fg0"
@@ -202,4 +247,5 @@ format = '[ $symbol ($version) ]($style)'
 disabled = false
 time_format = "%R" # Hour:Minute Format
 style = "bg:color_bg1"
-format = '[ ♥ $time ]($style)'
+# ♥
+format = '[   $time ]($style)'
