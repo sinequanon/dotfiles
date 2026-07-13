@@ -10,8 +10,24 @@
 
   runtime bundle/vim-pathogen/autoload/pathogen.vim " Manually autoload pathogen from git submodule
 
-  if v:version < 900
-    let g:pathogen_blacklist = ['coc.nvim']
+  let s:coc_supported = has('nvim-0.8.0') || has('patch-9.0.0438')
+
+  " coc.nvim requires Vim >= 9.0.0438 or Neovim >= 0.8.0. Keep it off the
+  " runtimepath for older Vim builds so startup does not warn or break.
+  if !s:coc_supported
+    let g:pathogen_blacklist = get(g:, 'pathogen_blacklist', [])
+    if index(g:pathogen_blacklist, 'coc.nvim') < 0
+      call add(g:pathogen_blacklist, 'coc.nvim')
+    endif
+  endif
+
+  " CoC runs as a Node service. Point it at the nvm-managed Node installed in
+  " this workspace so it still works when Vim is launched with a minimal PATH.
+  if !exists('g:coc_node_path')
+    let s:coc_node = expand('~/.nvm/versions/node/v24.15.0/bin/node')
+    if executable(s:coc_node)
+      let g:coc_node_path = s:coc_node
+    endif
   endif
 
   call pathogen#infect()                            " Execute pathogen to easily modify the runtime path to include all  plugins under the ~/.vim/bundle directory
@@ -27,6 +43,7 @@
 "}}}
 
 " {{{ Sets
+  set shell=zsh                    " Use zsh interactively so aliases are available
   set hidden                           " Sets buffers to hidden when abandoned
   set modelines=1
   set nowrap                           " Don't wrap lines
@@ -293,6 +310,7 @@
   " Edit the vimrc file
   nnoremap <leader>v :e $MYVIMRC<CR>
 
+  "Easy save files
   "Easy save files. Writes the buffer directly to bypass the W11 "file
   "changed since reading" prompt and E13 on mtime mismatch. Our
   "FocusGained/BufEnter/CursorHold checktime autocmd already reloads
@@ -798,6 +816,7 @@
   "   ,gd         Vertical diff of the file vs HEAD     (N,gd = vs N back)
   "   ,gv         Vertical diff N commits back (prompts if no [count])
   "   ,gx         Open the file as of N commits back    (prompts, or N,gx)
+  "   ,gc         Show the whole commit (all files) vs HEAD (N,gc = N back)
   "   ,gD         Close the diff (make this the only window)
   "   ,gb         Git blame the current file
   "   ,gl         Git log for the current file (:0Glog)
@@ -842,10 +861,22 @@
     execute 'Gedit @~' . l:n . ':%'
   endfunction
 
+  " Show a whole commit (all files): HEAD, or [count] commits back.
+  " Opens a fugitive commit buffer with a navigable file list; <CR> jumps to a
+  " file, ( ) and [m ]m move between files, [c ]c between hunks, C re-expands.
+  function! s:GitShowCommit(count) abort
+    if a:count <= 0
+      Git show
+    else
+      execute 'Git show @~' . a:count
+    endif
+  endfunction
+
   " <Plug> targets carry the optional [count] into the functions above.
   nnoremap <silent> <Plug>(GitVDiffHead) :<C-u>call <SID>GitVDiffHead(v:count)<CR>
   nnoremap <Plug>(GitVDiffBack) :<C-u>call <SID>GitVDiffBack(v:count)<CR>
   nnoremap <Plug>(GitEditBack)  :<C-u>call <SID>GitEditBack(v:count)<CR>
+  nnoremap <silent> <Plug>(GitShowCommit) :<C-u>call <SID>GitShowCommit(v:count)<CR>
 
   " git diff current file: vs HEAD, or [count] commits back (e.g. 5,gd)
   nmap <silent> <leader>gd <Plug>(GitVDiffHead)
@@ -853,6 +884,8 @@
   nmap <leader>gv <Plug>(GitVDiffBack)
   " git open current file N commits back: prompts, or [count] (e.g. 3,gx)
   nmap <leader>gx <Plug>(GitEditBack)
+  " git show whole commit (all files): vs HEAD, or [count] back (e.g. 3,gc)
+  nmap <silent> <leader>gc <Plug>(GitShowCommit)
   " close diffs / make this the only window
   nnoremap <silent> <leader>gD :only<cr>
   " git blame
@@ -1041,7 +1074,7 @@
   "   <space>s    Search workspace symbols (CocList)
   "   <space>n/p  Next / previous CocList item
   "   <space>r    Resume the last CocList
-  if v:version >= 900
+  if s:coc_supported
 
   " coc config
   let g:coc_global_extensions = [
@@ -1076,8 +1109,8 @@
           \ <SID>check_back_space() ? "\<TAB>" :
           \ coc#refresh()
 
-    " Use <Tab> and <S-Tab> to navigate the completion list
-    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    " Use <S-Tab> to move backward through the completion list. <Tab> is mapped
+    " above to confirm/expand/jump/trigger completion, so don't remap it again.
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
     function! s:check_back_space() abort
@@ -1502,5 +1535,8 @@
   "   <C-v>  Shrink the visual selection region (visual)
     vmap v <Plug>(expand_region_expand)
     vmap <C-v> <Plug>(expand_region_shrink)
+  "}}}
+
+  "{{{ Github Copilot
   "}}}
 " vim:foldmethod=marker:foldlevel=0
