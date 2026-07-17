@@ -44,7 +44,7 @@
     clean = git-media-clean %f
     smudge = git-media-smudge %f
 [pull]
-	rebase = false
+	rebase = true
 [branch]
 	autosetuprebase = always
 [color]
