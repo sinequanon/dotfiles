@@ -1,0 +1,1 @@
+/Users/rsotto/github/dotfiles/.config/tmux/tmux-pane-sidebar.sh
