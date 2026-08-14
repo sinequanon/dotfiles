@@ -1,0 +1,1 @@
+/Users/rsotto/github/dotfiles/.config/tmux/set-pane-label.sh
