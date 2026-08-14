@@ -78,6 +78,40 @@ alias rebaser='git rebase -i "$(git merge-base origin/develop HEAD)"'
 alias install='npm install --prefer-offline --no-audit'
 alias photosrestorestat='log stream --predicate '\''process == "cloudd" or process == "cloudphotod" or process == "photolibraryd"'\'''
 
+# Show processes keeping an external volume busy before ejecting it.
+_volbusy() {
+  if [[ $# -eq 0 ]]; then
+    echo 'Usage: volbusy <volume-name-or-/Volumes/path>'
+    echo 'Example: volbusy "My Passport"'
+    return 2
+  fi
+
+  local volume="$*"
+  local mount_path="$volume"
+  [[ "$mount_path" == /* ]] || mount_path="/Volumes/$mount_path"
+
+  if [[ ! -e "$mount_path" ]]; then
+    echo "Volume not found: $mount_path"
+    echo 'Available volumes:'
+    command ls -1 /Volumes
+    return 1
+  fi
+
+  sudo lsof -nP | command grep -F -- "$mount_path"
+  local -a pipe_status=("${pipestatus[@]}")
+  local lsof_status=${pipe_status[1]}
+  local grep_status=${pipe_status[2]}
+  if [[ $lsof_status -ne 0 ]]; then
+    return $lsof_status
+  fi
+  if [[ $grep_status -eq 1 ]]; then
+    echo "No open files found under $mount_path"
+    return 0
+  fi
+  return $grep_status
+}
+alias volbusy='_volbusy'
+
 # Find lines of code
 loc() { find . -type f \( -name '*.js' -o -name '*.css' \) -not -path '.*node_modules*' | xargs wc -l }
 
