@@ -208,3 +208,108 @@ export NEWT_SKIP_VPNCHECK=1
 
 # user-local binaries
 export PATH="$HOME/.local/bin:$PATH"
+
+# pi-stall-guard: every normal interactive `pi` launch has an independent
+# supervisor. It warns and aborts silent tools, then recovers a frozen Pi or an
+# uncooperative tool by reopening the persisted session. `command pi` remains an
+# explicit opt-out for one-off commands.
+# The guard starts only when its managed diagnostic script is installed.
+pi() {
+  emulate -L zsh
+  # Propagate the persisted Agent Beach profile into Pi's environment so
+  # JSON-mode subagents inherit it instead of falling back to `rpc`.
+  local selected_agent_beach_profile="${AGENT_BEACH_PROFILE:-}"
+
+  if [[ -z "$selected_agent_beach_profile" ]]; then
+    local agent_beach_profile_file="${HOME}/.pi/agent/agent-beach/profile.json"
+
+    if [[ -r "$agent_beach_profile_file" ]]; then
+      selected_agent_beach_profile="$(
+        jq -er '
+          .profile
+          | select(
+              type == "string"
+              and test("^[A-Za-z0-9._-]+$")
+            )
+        ' "$agent_beach_profile_file" 2>/dev/null
+      )" || {
+        print -u2 \
+          "pi: invalid Agent Beach profile in ${agent_beach_profile_file}"
+        return 1
+      }
+    fi
+  fi
+
+  if [[ -n "$selected_agent_beach_profile" ]]; then
+    local -x AGENT_BEACH_PROFILE="$selected_agent_beach_profile"
+  fi
+
+  local guard="$HOME/.pi/diag/pi-stall-guard.mjs" heartbeat_ext="$HOME/.pi/agent/extensions/stall-guard/index.ts" arg next_mode=0 parsed_mode=""
+  if [[ ! -t 0 || ! -t 1 ]]; then
+    command pi "$@"
+    return
+  fi
+  for arg in "$@"; do
+    if (( next_mode )); then
+      next_mode=0
+      case "$arg" in
+        text|json|rpc) parsed_mode="$arg" ;;
+      esac
+      continue
+    fi
+    case "$arg" in
+      --mode) next_mode=1 ;;
+      -p|--print|-ne|--no-extensions|--no-session|--export|--list-models|-h|--help|-v|--version)
+        command pi "$@"
+        return
+        ;;
+    esac
+  done
+  if [[ "$parsed_mode" == "json" || "$parsed_mode" == "rpc" ]]; then
+    command pi "$@"
+    return
+  fi
+  case "${1:-}" in
+    auth|install|remove|uninstall|update|list|config)
+      command pi "$@"
+      return
+      ;;
+  esac
+  if [[ ! -r "$guard" || ! -r "$heartbeat_ext" ]]; then
+    command pi "$@"
+    return
+  fi
+  if (( ! $+commands[node] )); then
+    print -u2 "pi-stall-guard: node is unavailable; starting Pi without supervision."
+    command pi "$@"
+    return
+  fi
+  command node "$guard" "$@"
+}
+
+# pi-update: run `pi update` (forwarding all flags), then reapply the flicker fix.
+# The flicker fix is idempotent -- a no-op if pi wasn't reinstalled / already patched.
+#   pi-update               # update pi core, then reapply flicker fix
+#   pi-update --extensions  # update installed extensions/packages only
+#   pi-update --all         # update pi + extensions, then reapply
+#   pi-update --self        # update pi only
+#   pi-update npm:@foo/bar  # update a single package
+pi-update() {
+  local pi_bin c
+  # `pi` is normally the supervised shell function above; resolve the actual
+  # executable so this maintenance command does not recurse through the guard.
+  pi_bin="$(whence -p pi 2>/dev/null)"
+  if [[ -z "$pi_bin" ]]; then
+    # pi may be installed under an nvm node version that is not the active one on PATH
+    for c in "$HOME"/.nvm/versions/node/*/bin/pi(N) /usr/local/bin/pi /opt/homebrew/bin/pi; do
+      [[ -x "$c" ]] && pi_bin="$c" && break
+    done
+  fi
+  if [[ -z "$pi_bin" ]]; then
+    print -u2 "pi-update: could not find the pi binary (is pi installed?)."
+    return 1
+  fi
+  # Run with pi's own bin dir on PATH so the matching node/npm are available to the self-update.
+  PATH="${pi_bin:h}:$PATH" "$pi_bin" update "$@" || return $?
+  pi-flicker-fix
+}
