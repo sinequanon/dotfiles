@@ -1,0 +1,46 @@
+onboarding = false
+
+[ui.toast]
+delivery = "system"
+
+[theme]
+name = "gruvbox"
+auto_switch = false
+
+[terminal]
+# Match tmux split behavior: new panes inherit the source pane's directory.
+new_cwd = "follow"
+
+[keys]
+# Match the tmux prefix. Pressing Ctrl+A twice sends a literal Ctrl+A.
+prefix = "ctrl+a"
+
+# Reload and pane navigation.
+detach = "prefix+d"
+reload_config = "prefix+r"
+cycle_pane_next = "prefix+tab"
+
+# Use native split actions so the bindings are forwarded by `herdr --remote`.
+# Herdr does not forward local custom-command bindings to remote servers.
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+
+# Direct pane navigation.
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"
+
+# Herdr exposes only one built-in reload binding. Keep Prefix+R as a server-side
+# reload alias; Prefix+r above is the full client reload action.
+[[keys.command]]
+key = "prefix+shift+r"
+type = "shell"
+command = "\"$HERDR_BIN_PATH\" server reload-config"
+
+# Local/server-keybindings-only approximation of tmux new-main. Local custom
+# commands are intentionally not forwarded by `herdr --remote`.
+[[keys.command]]
+key = "alt+enter"
+type = "shell"
+command = "sh ~/.config/herdr/new-main.sh"
