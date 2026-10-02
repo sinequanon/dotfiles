@@ -1,3 +1,26 @@
+# Resolve the checkout from the installed ~/.zshrc symlink once so runtime
+# helpers work on both the Linux and macOS checkout locations (or any clone).
+if [[ -z "${DOTFILES_DIR:-}" ]]; then
+  typeset _dotfiles_source="$HOME/.zshrc" _dotfiles_target _dotfiles_dir
+  integer _dotfiles_link_hops=0
+  while [[ -L "$_dotfiles_source" && $_dotfiles_link_hops -lt 16 ]]; do
+    (( _dotfiles_link_hops += 1 ))
+    _dotfiles_dir="$(cd "${_dotfiles_source:h}" && pwd -P)" || break
+    _dotfiles_target="$(readlink "$_dotfiles_source")" || break
+    if [[ "$_dotfiles_target" = /* ]]; then
+      _dotfiles_source="$_dotfiles_target"
+    else
+      _dotfiles_source="$_dotfiles_dir/$_dotfiles_target"
+    fi
+  done
+  _dotfiles_dir="${_dotfiles_source:h}"
+  [[ -d "$_dotfiles_dir/scripts" && -d "$_dotfiles_dir/installers" ]] && export DOTFILES_DIR="$_dotfiles_dir"
+fi
+: "${DOTFILES_DIR:=$HOME/.config/work/dotfiles}"
+
+export term=xterm-256color
+export colorterm=TRUECOLOR
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -8,11 +31,39 @@ export ZSH=$HOME/.oh-my-zsh
 #ZSH_THEME="robbyrussell"
 ZSH_THEME="avit"
 
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -27,9 +78,12 @@ setopt share_history
 setopt extended_glob
 setopt auto_cd
 
-export PATH=$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin
+export PATH=$PATH:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin
 
-source $ZSH/oh-my-zsh.sh
+# Load oh-my-zsh only if it's actually installed, so a fresh workspace whose
+# installer hasn't finished (or failed to fetch it) still gets a working shell
+# instead of "no such file or directory: .../oh-my-zsh.sh" on every login.
+[[ -r "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
@@ -39,15 +93,43 @@ GRUVBOX_SHELL="$HOME/github/dotfiles/vim/bundle/gruvbox/gruvbox_256pallette_osx.
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
-if [[ `uname` == 'Darwin' ]]; then
-  alias ctags='`brew --prefix`/bin/ctags'
-  . `brew --prefix`/etc/profile.d/z.sh
-  export EDITOR='/opt/homebrew/bin/vim'
-elif [[ `uname` == 'Linux' ]]; then
+if [[ "$(uname)" == 'Darwin' ]]; then
+  if (( $+commands[brew] )); then
+    typeset _dotfiles_brew_prefix
+    _dotfiles_brew_prefix="$(brew --prefix)"
+    alias ctags="$_dotfiles_brew_prefix/bin/ctags"
+    [[ -r "$_dotfiles_brew_prefix/etc/profile.d/z.sh" ]] && source "$_dotfiles_brew_prefix/etc/profile.d/z.sh"
+  fi
+  export EDITOR="$(command -v vim 2>/dev/null || print /usr/bin/vim)"
+elif [[ "$(uname)" == 'Linux' ]]; then
   # Start Z https://github.com/rupa/z
   export EDITOR='/usr/bin/vim'
-  . ~/z.sh
+  [[ -s ~/.local/share/z/z.sh ]] && . ~/.local/share/z/z.sh
 fi
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+#export EDITOR='/usr/local/bin/mvim -v'
+
+if grep -qE "(Microsoft|WS)" /proc/version &> /dev/null ; then
+  WSL=true
+else
+  WSL=false
+fi
+if [[ $WSL == true ]]; then
+  # Prevent zsh in WSL from complaining
+  unsetopt BG_NICE
+fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -139,17 +221,24 @@ bindkey '^N' down-history
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
-# Remove the binding key so mcfly can work
-# bindkey '^r' history-incremental-search-backward
 
-# Reduce the default 0.4 second lag when pressing the ESC key to .1
-export KEYTIMEOUT=1
-
+# McFly - shell history search
+if command -v mcfly &>/dev/null; then
 export MCFLY_KEY_SCHEME=vim
 export MCFLY_FUZZY=2
 export MCFLY_RESULTS=50
 export MCFLY_INTERFACE_VIEW=BOTTOM
-command -v mcfly &>/dev/null && eval "$(mcfly init zsh)"
+  export MCFLY_DEBUG="${MCFLY_DEBUG:-}"
+  eval "$(mcfly init zsh)"
+  bindkey -M viins '^R' mcfly-history-widget
+  bindkey -M vicmd '^R' mcfly-history-widget
+  bindkey -M emacs '^R' mcfly-history-widget
+else
+  bindkey '^r' history-incremental-search-backward
+fi
+
+# Reduce the default 0.4 second lag when pressing the ESC key to .1
+export KEYTIMEOUT=1
 
 # Fix neovims handling of ctrl-h
 # infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
@@ -204,7 +293,6 @@ ulimit -Sf unlimited
 # Change tab or window name in kitty
 precmd () {print -Pn "\e]0;%~\a"}
 
-export NEWT_SKIP_VPNCHECK=1
 
 # user-local binaries
 export PATH="$HOME/.local/bin:$PATH"
