@@ -15,21 +15,29 @@ new_cwd = "follow"
 # Match the tmux prefix. Pressing Ctrl+A twice sends a literal Ctrl+A.
 prefix = "ctrl+a"
 
-# Reload and pane navigation.
+# Reload, workspace creation, and pane navigation.
 detach = "prefix+d"
 reload_config = "prefix+r"
+new_workspace = "prefix+enter"
 cycle_pane_next = "prefix+tab"
+
+# Prefix-free navigation using explicit modified chords that survive remote
+# terminals without depending on Option/Alt encoding or control characters.
+previous_tab = "ctrl+shift+left"
+next_tab = "ctrl+shift+right"
+previous_workspace = "ctrl+shift+up"
+next_workspace = "ctrl+shift+down"
 
 # Use native split actions so the bindings are forwarded by `herdr --remote`.
 # Herdr does not forward local custom-command bindings to remote servers.
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 
-# Direct pane navigation.
-focus_pane_left = "alt+h"
-focus_pane_down = "alt+j"
-focus_pane_up = "alt+k"
-focus_pane_right = "alt+l"
+# Prefix-free pane navigation. Shift avoids stealing the shell's Ctrl+h/j/k/l.
+focus_pane_left = "ctrl+shift+h"
+focus_pane_down = "ctrl+shift+j"
+focus_pane_up = "ctrl+shift+k"
+focus_pane_right = "ctrl+shift+l"
 
 # Herdr exposes only one built-in reload binding. Keep Prefix+R as a server-side
 # reload alias; Prefix+r above is the full client reload action.

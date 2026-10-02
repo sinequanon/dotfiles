@@ -4,6 +4,7 @@
 tags
 *-256color.ti
 \.*netrwhist
+/.config/herdr/config-gpui.local.toml
 *vim\/sessions
 *vim\/session
 tmux-client-*.log

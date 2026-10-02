@@ -12,3 +12,4 @@ if [[ $WSL == true ]]; then
   export LIBGL_ALWAYS_INDIRECT=1
 fi
 export AGENT_BEACH_BIN="$HOME/.local/bin/agent-beach"
+[[ -r "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
