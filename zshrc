@@ -429,3 +429,5 @@ fi
 unalias claude 2>/dev/null
 functions[claude]="HERDR_AGENT=claude ${__claude_wrap} \"\$@\""
 unset __claude_wrap
+unalias codex 2>/dev/null
+functions[codex]='newt --app-type=coding-assistant exec --param HERDR_AGENT=codex -- codex "$@"'
