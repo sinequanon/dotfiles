@@ -429,5 +429,19 @@ fi
 unalias claude 2>/dev/null
 functions[claude]="HERDR_AGENT=claude ${__claude_wrap} \"\$@\""
 unset __claude_wrap
-unalias codex 2>/dev/null
-functions[codex]='newt --app-type=coding-assistant exec --param HERDR_AGENT=codex -- codex "$@"'
+
+# Preserve the installed Codex launcher without requiring Newt on personal hosts.
+# Keep an existing function on reload, after its original alias was consumed.
+if (( ${+aliases[codex]} || ! ${+functions[codex]} )); then
+  if (( ${+aliases[codex]} )); then
+    __codex_wrap=$aliases[codex]
+    if [[ $__codex_wrap == 'newt --app-type=coding-assistant exec '* && $__codex_wrap != *'--param HERDR_AGENT=codex'* ]]; then
+      __codex_wrap=${__codex_wrap/ exec / exec --param HERDR_AGENT=codex }
+    fi
+  else
+    __codex_wrap="command codex"
+  fi
+  unalias codex 2>/dev/null || true
+  functions[codex]="HERDR_AGENT=codex ${__codex_wrap} \"\$@\""
+  unset __codex_wrap
+fi

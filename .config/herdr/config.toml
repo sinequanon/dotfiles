@@ -21,6 +21,10 @@ reload_config = "prefix+r"
 new_workspace = "prefix+enter"
 cycle_pane_next = "prefix+tab"
 
+# Keep Prefix+O available for Annotate while preserving Herdr's notification
+# target action on a nearby, non-conflicting chord.
+open_notification_target = "prefix+ctrl+n"
+
 # Prefix-free navigation using explicit modified chords that survive remote
 # terminals without depending on Option/Alt encoding or control characters.
 previous_tab = "ctrl+shift+left"
@@ -52,3 +56,76 @@ command = "\"$HERDR_BIN_PATH\" server reload-config"
 key = "alt+enter"
 type = "shell"
 command = "sh ~/.config/herdr/new-main.sh"
+
+# Plugin shortcuts share the Ctrl+A prefix without taking Ctrl+A Ctrl+A away
+# from send-prefix. Y/Shift+Y replace Annotate's conflicting copy shortcuts;
+# Ctrl+R replaces reviewr's conflicting G shortcut. In terminal herdr --remote,
+# these commands require remote plugin/config installation and server keybindings.
+# GPUI can keep local navigation keys; commands come from the selected server.
+# Remote terminal selection capture additionally requires
+# the plugin's SSH/API workaround because any prefix key clears the selection.
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate selected terminal text"
+
+[[keys.command]]
+key = "prefix+y"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+shift+y"
+type = "plugin_action"
+command = "annotate.copy-archive"
+description = "copy annotations as context and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+v"
+type = "plugin_action"
+command = "annotate.paste-archive"
+description = "paste annotations into the agent prompt and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+s"
+type = "plugin_action"
+command = "annotate.send-archive"
+description = "send annotations to the agent and archive them"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's recent replies"
+
+[[keys.command]]
+key = "prefix+ctrl+o"
+type = "plugin_action"
+command = "annotate.last-newest"
+description = "review the agent's newest reply"
+
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "annotate.terminal"
+description = "review recent terminal output"
+
+[[keys.command]]
+key = "prefix+ctrl+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "toggle the reviewr pane"
