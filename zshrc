@@ -401,3 +401,31 @@ pi-update() {
   PATH="${pi_bin:h}:$PATH" "$pi_bin" update "$@" || return $?
   pi-flicker-fix
 }
+
+# The Netflix claude launcher execs into a version-pinned binary
+# (~/.local/share/claude/versions/X.Y.Z), so /proc sees that version string
+# as the process name instead of "claude". Herdr's foreground-agent
+# detection only recognizes the literal name, so it identifies the pane as
+# Claude for a few seconds at launch and then drops it back to no agent on
+# its next reconcile, which is why Claude panes vanish from the herdr
+# sidebar shortly after starting. HERDR_AGENT is herdr's documented hint
+# for agents hidden behind a wrapper/launcher; scope it to this function so
+# it doesn't mislabel anything else run in the same pane.
+# /etc/zsh/zshrc aliases claude to a `newt --app-type=...` wrapper we don't
+# own. zsh can't define a function over an existing alias of the same name,
+# so capture whatever that alias currently expands to and rebuild it as a
+# function with HERDR_AGENT added. Falls back to a plain `command claude`
+# if the alias is ever removed.
+# NOTE: this must not use `claude() { ... }` function syntax anywhere below,
+# even in a branch that won't run. `claude` is still an active alias at this
+# point in a sourced file, and zsh resolves aliases while parsing the whole
+# if/fi block, before any of it executes, regardless of which branch is
+# actually taken. `functions[claude]=...` assignment avoids that entirely.
+if (( ${+aliases[claude]} )); then
+  __claude_wrap=$aliases[claude]
+else
+  __claude_wrap="command claude"
+fi
+unalias claude 2>/dev/null
+functions[claude]="HERDR_AGENT=claude ${__claude_wrap} \"\$@\""
+unset __claude_wrap
