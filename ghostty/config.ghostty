@@ -17,6 +17,10 @@ undo-timeout = 30s
 # solves the backspace problem if you ssh into dev workspace
 shell-integration-features = true
 
+# Mac native Terminal glassy style
+# background-opacity = 0.99
+# background-blur = macos-glass-regular
+
 # Exact colors from Kitty's gruvbox_dark.conf. Ghostty's built-in
 # "Gruvbox Dark Hard" theme uses a slightly different background and palette.
 #background = #282828
