@@ -47,6 +47,9 @@ shell-integration-features = true
 
 # Mouse, clipboard, and bell behavior
 copy-on-select = true
+# Vim captures ordinary mouse drags. Keep Shift-drag reserved for Ghostty
+# selection so terminal copy shortcuts always have text to copy.
+mouse-shift-capture = never
 # Closest match to Kitty's "smart" trimming. Ghostty also trims rectangular
 # selections because it exposes only a boolean setting.
 clipboard-trim-trailing-spaces = true

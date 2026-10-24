@@ -1,0 +1,36 @@
+# Herdr GPUI overrides. Saved changes reload automatically.
+# Unset keys inherit config-gpui.toml; tables merge key by key.
+
+# New installs start with the roomy rounded sidebar. Remove this line for
+# the managed default, or pick another layout listed in config-gpui.toml.
+layout = "comfortable-rounded"
+theme = "Gruvbox Dark Hard"
+
+[terminal]
+family = "Operator Mono SSm Lig"
+size = 18.0
+
+[keybindings]
+# Direct GUI navigation; no terminal prefix chord is needed.
+focus_left = "ctrl-shift-h"
+focus_down = "ctrl-shift-j"
+focus_up = "ctrl-shift-k"
+focus_right = "ctrl-shift-l"
+previous_tab = "ctrl-shift-left"
+next_tab = "ctrl-shift-right"
+
+[sidebar]
+size = 14.0
+family = "Menlo"
+
+[ui]
+size = 14.0
+
+[tabs]
+size = 14.0
+
+[usage]
+show = true
+
+[notifications]
+enabled = true
