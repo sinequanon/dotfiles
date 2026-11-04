@@ -375,33 +375,6 @@ pi() {
   command node "$guard" "$@"
 }
 
-# pi-update: run `pi update` (forwarding all flags), then reapply the flicker fix.
-# The flicker fix is idempotent -- a no-op if pi wasn't reinstalled / already patched.
-#   pi-update               # update pi core, then reapply flicker fix
-#   pi-update --extensions  # update installed extensions/packages only
-#   pi-update --all         # update pi + extensions, then reapply
-#   pi-update --self        # update pi only
-#   pi-update npm:@foo/bar  # update a single package
-pi-update() {
-  local pi_bin c
-  # `pi` is normally the supervised shell function above; resolve the actual
-  # executable so this maintenance command does not recurse through the guard.
-  pi_bin="$(whence -p pi 2>/dev/null)"
-  if [[ -z "$pi_bin" ]]; then
-    # pi may be installed under an nvm node version that is not the active one on PATH
-    for c in "$HOME"/.nvm/versions/node/*/bin/pi(N) /usr/local/bin/pi /opt/homebrew/bin/pi; do
-      [[ -x "$c" ]] && pi_bin="$c" && break
-    done
-  fi
-  if [[ -z "$pi_bin" ]]; then
-    print -u2 "pi-update: could not find the pi binary (is pi installed?)."
-    return 1
-  fi
-  # Run with pi's own bin dir on PATH so the matching node/npm are available to the self-update.
-  PATH="${pi_bin:h}:$PATH" "$pi_bin" update "$@" || return $?
-  pi-flicker-fix
-}
-
 # The Netflix claude launcher execs into a version-pinned binary
 # (~/.local/share/claude/versions/X.Y.Z), so /proc sees that version string
 # as the process name instead of "claude". Herdr's foreground-agent
