@@ -1,7 +1,7 @@
 # DO NOT EDIT -- WILL BE OVERWRITTEN
-# Managed Herdr UI defaults, refreshed on startup and GUI config reload.
+# Managed Sheprd defaults, refreshed on startup and GUI config reload.
 # Put your overrides in config-gpui.local.toml beside this file.
-# Herdr GUI settings. Independent of the daemon config, except where a setting
+# Sheprd settings. Independent of the daemon config, except where a setting
 # below says it starts from one the daemon config already carries.
 # Save at $XDG_CONFIG_HOME/herdr/config-gpui.toml (default ~/.config/herdr/).
 # Omitted settings use defaults. Keys this build does not know, such as ones a
@@ -16,6 +16,11 @@
 # none. Uninstalled names are ignored, and at most 8 are accepted per section.
 # With none installed and [terminal] fallback unset, a pane showing an icon
 # brings up a dismissible card naming a Nerd Font to install.
+# [sidebar], [tabs], and [ui] then fall back to the platform's Chinese,
+# Japanese, and Korean faces (PingFang and Hiragino on macOS, Microsoft YaHei
+# and Yu Gothic on Windows, Noto Sans CJK on Linux), the one matching the
+# first CJK language in `language` or the system's languages first, so Han
+# characters take that region's shapes. [terminal] keeps the icons alone.
 # Saved changes to the local file reload automatically in every GUI window.
 
 # Built-ins: Default, Nord, Dracula, Catppuccin Mocha, Catppuccin Latte, plus
@@ -28,6 +33,9 @@
 # To follow the system light/dark appearance, name a theme for each side, as
 # Ghostty does: theme = "light:Catppuccin Latte,dark:Catppuccin Mocha"
 theme = "Default"
+# Themes starred in the Color Scheme picker, listed above the rest. The
+# picker's star button keeps this list in config-gpui.local.toml.
+# favorite_themes = ["Nord", "Catppuccin Mocha"]
 # How far the app's own colors (status dots, pull request badges, diff counts,
 # warnings, dim labels) stand off the sidebar and menus. "standard" moves a
 # color only when it would fall below 3:1, as pastels do on light themes.
@@ -38,6 +46,12 @@ contrast = "standard"
 # the theme, "system" from Windows Settings > Personalization > Colors.
 # Other platforms keep the theme's. Terminal colors never change with it.
 accent = "theme"
+# The language of the app's own text: "system" follows the OS's preferred
+# languages, or a BCP 47 tag such as "fr-CA". Only English ships so far, so
+# any other language shows English. "en-XA" (accented and longer) and "en-XB"
+# (right to left) are pseudo-locales for testing; see docs/i18n.md. Terminal
+# output, names, and what the daemon reports never change with it.
+language = "system"
 
 # Ask before closing a tab (closing terminates its terminal processes).
 confirm_close_tab = true
@@ -87,6 +101,15 @@ show_device_icons = true
 # on its sidebar row. Connected remote hosts are read over SSH every couple of
 # seconds; false stops all sampling. Also under Settings > Status bar.
 show_system_load = true
+# GPU and video memory, from nvidia-smi, the amdgpu driver, or ioreg on a Mac.
+# show_gpu_load shows the selected host's in the status bar (Settings > Status
+# bar); show_sidebar_gpu_load shows each host's on a sidebar line under its
+# CPU and memory, or as a gauge after its name in compact densities (Settings
+# > Sidebar). While
+# either is on, the Overview and Devices pages show GPUs too; with both off no
+# GPU tool runs on any host.
+show_gpu_load = false
+show_sidebar_gpu_load = false
 # Checkpoint a worktree each time one of its agents starts or finishes a turn,
 # locally or over SSH, so its files can be rolled back from the workspace
 # menu's Checkpoints. Snapshots include untracked (not ignored) files, live in
@@ -114,6 +137,12 @@ smooth_scroll = true
 # On Wayland without server-side decorations (GNOME), buttons are always shown
 # regardless of this setting.
 # show_window_controls = true
+# Linux and Windows: the row of menus at the top of the window, also under
+# Settings > General. false opens windows without it; Terminal > Toggle Menu
+# Bar, or a `toggle_menu_bar` binding, hides or shows it for the session. While
+# hidden, F10 opens the menus over the window and any window controls move to
+# the title bar.
+# show_menu_bar = true
 
 # Focus split terminal panes on hover in the active window, without clicking.
 focus_follows_mouse = true
@@ -155,6 +184,21 @@ keep_selection_after_copy = true
 # only) draw rows with a design of their own. "devices" lists each device with
 # its agents under it, and a search over them. View > Layout lists them all.
 layout = "normal"
+# How tab strips draw their tabs: "classic" (even cells divided by a rule),
+# "pills" (rounded pills led by the agent's logo, the status after the title),
+# "outline" (bare titles, the chosen one in an outlined pill with its close
+# button), "underline" (flat titles, a bar under the chosen one), "cards"
+# (browser-like, the chosen tab joined to its terminal), "curved" (the chosen
+# tab's curved body flows into content sitting in an inset card, and slides
+# between tabs), or "compact" (icons only, the chosen tab named). View > Tab
+# Layout lists them all.
+tab_layout = "classic"
+# New tabs run in herdr-core (Herdr 2), whose terminals Sheprd draws and
+# splits into native panes, instead of in Herdr 1. Herdr 1 tabs keep running
+# beside them. Without Herdr 1 installed, terminals are Herdr 2's anyway.
+# herdr-core runs on this computer only, so tabs on other hosts stay Herdr's.
+# Also under Settings > Tabs.
+herdr_2_terminals = false
 
 [palette]
 # Two short Shift taps open the unified palette in the focused GUI window.
@@ -213,14 +257,22 @@ project_roots = []
 # [updates]
 # channel = "stable"
 
+# Where the managed agent skill may go on its own, over the answer saved when
+# the app asked. "local" keeps it off saved SSH hosts; "off" never offers,
+# refreshes, or removes it anywhere. Settings and the palette still install it.
+# [agent_skill]
+# install = "ask"
+
 # Native shortcuts. Each key is a command; the value is one keystroke or a list,
 # primary first. "" or [] unbinds it. Assigning a keystroke here takes it away
 # from its default command. Modifiers: cmd (Super on Linux, Win on Windows),
 # ctrl, alt, shift, fn; keystrokes need at least one of cmd, ctrl, alt, or fn,
-# or a function key F1 through F24. Herdr > Keyboard Shortcuts also edits,
+# or a function key F1 through F24. Sheprd > Keyboard Shortcuts also edits,
 # unbinds, and resets them.
 # Herdr's own [keys] in config.toml (prefix chords included) add to these
-# defaults; a command named here keeps only the keystrokes listed here.
+# defaults; a command named here keeps only what is listed here. List a prefix
+# chord as prefix- and the key typed after the prefix, so to free Cmd-W and keep
+# Herdr's default chord for Close Pane: close_pane = "prefix-x".
 # The examples below use the macOS defaults. Linux and Windows have their own
 # Ctrl+Shift defaults (not Super or Win): new_tab = "ctrl-shift-t",
 # new_window = "ctrl-alt-n", close_window = "ctrl-alt-w",
@@ -255,6 +307,7 @@ project_roots = []
 # focus_tab_1 = "cmd-1"   # through focus_tab_9 = "cmd-9"
 # toggle_sidebar = "cmd-b"
 # toggle_status_bar = "cmd-ctrl-b"   # unbound by default
+# toggle_menu_bar = "ctrl-alt-m"     # Linux and Windows; no menu bar in the window on macOS
 # toggle_zen_mode = "ctrl-cmd-z"   # Linux and Windows: "ctrl-alt-z"
 # increase_font_size = ["cmd-=", "cmd-+"]
 # decrease_font_size = "cmd--"
@@ -275,18 +328,20 @@ project_roots = []
 # cycle_windows = "cmd-`"
 # close_window = "cmd-alt-shift-w"
 # Unbound by default: themes, reconnect, logs, about, worktree_notes,
-# edit_worktree_note.
+# edit_worktree_note, review_changes, git_menu, toggle_annotate.
 
 # What the focused pane receives instead of a keystroke, as Ghostty's text:
 # binds do. The value is a key a terminal can receive (ctrl-a, home, alt-b,
 # shift-enter), or "text:" and the text to type, at most 1024 bytes; an empty
 # string removes a default. A keystroke here leaves its default or daemon
 # command, but naming it in [keybindings] too is an error.
-# Shift-Enter sends Alt-Enter (Esc CR) by default everywhere, so a prompt that
-# never enabled the kitty keyboard protocol reads a newline instead of the bare
-# CR Herdr would send it; "shift-enter" = "" sends Shift-Enter unchanged.
-# On macOS these are also defaults:
+# Shift-Enter is sent unchanged, distinct from Alt-Enter for kitty programs
+# such as Pi. For legacy prompts needing Alt-Enter (Esc CR) for a newline,
+# opt in below. It affects every pane, including kitty programs; the GUI is
+# not told each pane's keyboard protocol. "shift-enter" = "" keeps it unchanged.
 # [pane_keys]
+# "shift-enter" = "alt-enter" # Optional legacy newline mapping, not a default.
+# On macOS these are defaults:
 # "cmd-left" = "ctrl-a"
 # "cmd-right" = "ctrl-e"
 # "cmd-backspace" = "ctrl-u"
@@ -308,6 +363,15 @@ project_roots = []
 # [devices.0123456789abcdef0123456789abcdef]
 # keybindings = "server"
 # theme = "Dracula"
+
+# SSH hosts whose host keys are never verified, by the target saved with the
+# device. Anyone who can intercept the connection to one can impersonate it.
+# Only for hosts that keep no key, such as `coder config-ssh`'s `*.coder`
+# aliases (`UserKnownHostsFile=/dev/null`). Add Device's "Skip host key
+# verification" box adds the target. To verify a host again, delete its
+# target here, or remove the device and add it again with the box clear.
+# [ssh]
+# skip_host_key_verification = ["dev.workspace.user.coder"]
 
 # Preferences offers a searchable picker for all four families together or each row.
 # Platform default removes the local family override; fallback cascades remain active.
@@ -347,6 +411,17 @@ size = 12
 # the uncommitted-work probe's slow schedule: one checkout at a time, each at
 # most every 30 seconds while the window is active.
 # change_counts = "pr"
+# What ends a coordinator session's name, which turns on coordinator groups.
+# A session named "demo-coord" gets the coordinator mark in place of its agent's
+# and leads the group "demo", whose workers are the sessions named "demo-12",
+# "demo-13", and so on, in any workspace or on any host. The agents header then
+# offers a filter: each click shows the next group, its coordinator first, and
+# then all groups again. A session's name is what `herdr agent start` or `agent
+# rename` gave it, or its pane's Rename label. Groups follow names, so a new
+# session given the coordinator's name takes the group over. Unset leaves the
+# agents list as it was. Agents nested under workspaces get the mark but no
+# filter.
+# coordinator_suffix = "-coord"
 
 # The activity bar: an icon column at the window's left edge. Workspaces is
 # the sidebar beside the terminals; Orchestrator, Pull requests, and Issues
@@ -354,12 +429,39 @@ size = 12
 # Settings sits at its foot. false keeps the plain sidebar.
 # activity_bar = true
 
+# The bar's Automations section, which lists the herdr-automate scripts and
+# runs of every host. false hides it, and Sheprd then neither reads nor
+# starts any host's automation daemon; daemons already running keep running.
+# automations = true
+
 # A colour per host, keyed by the host's name in the sidebar, as #rgb or
 # #rrggbb. It washes the host's header, its workspace rows, and its agents'
 # rows faintly, so a long list reads by colour. Names with spaces go in quotes.
 # [sidebar.hosts]
 # Personal = "#3a4a6b"
 # "Mac mini" = "#5a3a3a"
+
+# Linked Git worktrees, told apart from their repository's main checkout,
+# which keeps the theme as drawn. In every sidebar layout, worktrees nested
+# under their main checkout hang from it on the tree's thin guide lines; one
+# standing alone, its main checkout not open, shows the branch glyph in place
+# of the owner's avatar. With "terminal" in apply_to, its workspace also gets
+# a thin rule where the tab strip meets the terminals, and none while the
+# strip is hidden; terminal cells are never covered or recoloured. tint picks the glyph's and the rule's hue as
+# #rgb or #rrggbb; unset, it is the theme's blue. Either way the hue only gets
+# lighter or darker as far as it must to stand out from the chrome. apply_to
+# lists where the marks show, "sidebar" and "terminal"; it defaults to
+# ["sidebar"]. [] turns them off, leaving the guides only in the flat
+# layouts, which always drew them.
+# [worktrees]
+# tint = "#7aa2f7"
+# apply_to = ["sidebar", "terminal"]
+
+[tab_labels]
+# Show the agent's terminal title on a tab with no name of its own, in place
+# of its number, cut after 28 columns. A tab you named keeps its name, and a
+# tab without an agent or a title keeps its number.
+agent_title = false
 
 [tabs]
 # Default: "Menlo" on macOS, "Cascadia Mono" on Windows (Consolas when
@@ -411,13 +513,85 @@ size = 12
 # address. mode = "address" uses a server you run at url, with its ?tkn=
 # token; a url without a mode does too. Show VS Code appears in each editor
 # group's … menu once either is possible.
+# In start mode a workspace on an SSH host gets VS Code from that host, on
+# the workspace's folder there: the app downloads VS Code's command line to
+# ~/.herdr-gpui/vscode on the host, runs `code serve-web` over SSH, and stops
+# it when the app quits. A server with no machine settings yet gets
+# "window.autoDetectColorScheme": true in ~/.vscode-server/data/Machine/
+# settings.json, so VS Code follows the app's light or dark theme; a file
+# that already has settings is left alone.
 # [code]
 # mode = "start"
 # port = 51234
 # license_accepted = true
 # url = "http://127.0.0.1:8000/?tkn=..."
 
-# Native GitHub sign-in uses the public Herdr GPUI GitHub App by default.
+# px0 in an editor tab (local workspaces on macOS and Windows). With no url,
+# discover an existing workbench, or start installed px0 lazily. Set a local
+# workbench address to attach to your own. Settings > Code edits this value.
+# [px0]
+# url = "http://127.0.0.1:7777/"
+
+# How chat views draw: "timeline" (entries on a line with avatars), "bubbles"
+# (your messages in bubbles on the right, like Claude's app), "terminal"
+# (Claude Code's own screen, in the terminal font), "document" (each prompt
+# a heading, the reply prose under it), "cards" (each turn in one card),
+# "imessage" (blue and gray bubbles with tails, like Apple's Messages), or
+# "opencode" (tinted blocks, finished tools on one line, like OpenCode).
+# The button in a chat's header steps through them.
+# [chat]
+# layout = "timeline"
+# Maximum reading-column width in logical pixels: 320–4000, or 0 for full width.
+# Settings > General offers a width slider and Full-width chat switch.
+# Command line: sheprd config set chat.max_width 0
+# max_width = 800
+#
+# Scroll smoothly to a streaming reply's new text, rather than jumping to it
+# as each chunk lands. Settings > General edits this while ACP chats are on.
+# glide = false
+#
+# Where tab strips offer a one-click chat with each installed agent; "+" keeps
+# opening a terminal tab in every placement. "plus" (the agents slide out
+# beside "+" under the pointer), "beside" (right after "+"), "leading" (before
+# the tabs), "trailing" (at the strip's right end), "button" (one button for
+# the agent last started, the others sliding out beside it), or "off".
+# Settings > General edits this while ACP chats are on.
+# launcher = "plus"
+
+# Variables every chat's tab starts with, on this machine or an SSH host, so
+# an agent reaches a company endpoint the pane's shell does not set up: GitHub
+# Enterprise for Copilot, an LLM gateway for Claude. Values are stored as
+# written, so keep tokens in your shell or the agent's own sign-in. HERDR_ACP is
+# the app's own. Settings > General edits this while ACP chats are on.
+# [chat.env]
+# GH_HOST = "mycompany.ghe.com"
+# ANTHROPIC_BASE_URL = "https://llm.example.com"
+
+# Remote control from a phone or any browser: over HTTPS on the local network
+# and, when Tailscale runs, from anywhere. Turning it on installs the
+# herdr-remote-control daemon as a user service (a LaunchAgent on macOS, a systemd user
+# unit on Linux, a logon task on Windows); turning it off stops and removes it.
+# Settings > Remote control edits these and pairs devices. Device keys and the
+# certificate authority stay in the daemon's own state directory, never here.
+# [remote]
+# enabled = false
+# port = 7443
+# Every interface ("all"), or one interface's address.
+# bind = "all"
+# The daemon's own certificate authority, trusted once on the phone ("own"),
+# or a certificate and key of your own:
+# certificate = { cert = "/path/to/cert.pem", key = "/path/to/key.pem" }
+# certificate = "own"
+# Keep serving phones, and sending notifications, after Sheprd quits.
+# keep_running = true
+# "generic" notifications say which chat needs you, without its text;
+# "excerpt" adds a short excerpt of the message.
+# notifications = "generic"
+# Forget a paired device that has not connected for this many days (1 to 365),
+# or 0 to keep it until it is revoked.
+# device_idle_days = 30
+
+# Native GitHub sign-in uses the public Sheprd GitHub App by default.
 # Optionally override with your own Device Flow-enabled app's public client ID.
 # Never put an App ID, client secret, private key, or token here.
 # HERDR_GITHUB_OAUTH_CLIENT_ID overrides this field when set.
@@ -438,6 +612,21 @@ size = 12
 # its organizations, or one of its owners below is read with that account;
 # every other repository with the main sign-in. At most 8 accounts.
 # accounts = [{ id = "0123456789abcdef0123456789abcdef", owners = ["my-emu-org"] }]
+
+# GitLab tokens the Orchestrator reads issues with: GITLAB_TOKEN from the
+# checkout's .envrc (through direnv), then from your login shell, then the
+# account connected (Connect) or the token pasted in the title bar's account
+# menu (scope read_api; kept per instance in the credential store), then the
+# GitLab CLI's sign-in. Tokens are never read from this file.
+# [gitlab]
+# Same meaning as [github] allow_plaintext_credentials, for the saved tokens,
+# which are kept in their own 0600 gitlab-credentials file. Default is false.
+# allow_plaintext_credentials = false
+# The OAuth application that lets Connect sign in on a self-managed instance,
+# by instance. Register it on the instance (Settings > Applications): not
+# confidential, scope read_api; its redirect URI is never visited. gitlab.com
+# uses Sheprd's own application unless one is set here.
+# applications = { "gitlab.example.com" = "<application id>" }
 
 # A Coder deployment whose workspaces can be created and added as devices from
 # the device picker's "Add Coder Workspace…". Settings > Cloud devices edits
@@ -496,6 +685,63 @@ size = 12
 # is saved in its own 0600 daytona-api-key file. Default is false.
 # allow_plaintext_credentials = false
 
+# Containers on this computer's Docker or Podman engine as devices. Settings >
+# Cloud devices > Container edits this table. Each container gets its own home
+# volume and runs agents as an unprivileged "herdr" user, with the limits below,
+# no-new-privileges, and no access to this computer's files. Containers share
+# this computer's kernel, so prefer a VM provider for code you do not trust.
+# [container]
+# docker or podman; the first one installed when unset.
+# engine = "docker"
+# The image new containers start from, pinned to its digest when created. It
+# needs curl to install Herdr and git for checkouts.
+# image = "buildpack-deps:bookworm"
+# cpus = 4
+# memory = "8g"
+# pids_limit = 4096
+# Stop a running container once none of its agents has worked or waited for
+# input for this long (at least 5m); its files stay and the next connection
+# starts it. Default is never.
+# auto_stop = "30m"
+# The most containers kept as devices at once, up to 64. Default is 8.
+# max_containers = 8
+
+# Sandboxes on a self-hosted OpenSandbox server as devices (experimental).
+# Settings > Cloud devices > OpenSandbox edits this table and saves the API key
+# to the credential store; the key is never read from this file.
+# HERDR_OPENSANDBOX_API_KEY overrides the saved key and
+# HERDR_OPENSANDBOX_API_URL overrides api_url.
+# [opensandbox]
+# https, or http on this computer.
+# api_url = "http://127.0.0.1:8080"
+# image = "buildpack-deps:bookworm"
+# cpu = "2"
+# memory = "4Gi"
+# allow_plaintext_credentials = false
+
+# boxd machines as devices (experimental). Settings > Cloud devices > boxd edits
+# api_url and saves the API key to the credential store; the key is never read
+# from this file. HERDR_BOXD_API_KEY overrides the saved key and
+# HERDR_BOXD_API_URL overrides api_url.
+# [boxd]
+# The API of boxd's service; a region is https://<region>.boxd.sh:9443.
+# api_url = "https://boxd.sh:9443"
+# Labels added to every machine made here, beside sheprd = "device".
+# labels = { team = "web" }
+# Same meaning as [github] allow_plaintext_credentials, for the key, which is
+# saved in its own 0600 boxd-api-key file. Default is false.
+# allow_plaintext_credentials = false
+
+# Fly Sprites as devices (experimental). Settings > Cloud devices > Sprites
+# edits this table and saves the API token to the credential store; the token
+# is never read from this file. HERDR_SPRITES_TOKEN overrides the saved token
+# and HERDR_SPRITES_API_URL overrides api_url.
+# [sprites]
+# api_url = "https://api.sprites.dev"
+# Same meaning as [github] allow_plaintext_credentials, for the token, which is
+# saved in its own 0600 sprites-api-token file. Default is false.
+# allow_plaintext_credentials = false
+
 # What a new cloud device runs the first time it connects, in a "setup" tab:
 # the agents listed (claude, codex, gemini, opencode), each skipped when already
 # installed, then these lines with sh -e. Settings > Cloud devices > New device
@@ -513,7 +759,9 @@ size = 12
 # default opacity the window paints as it always has.
 # [backdrop]
 # How solid the theme's background is, from 0 (clear) to 1 (opaque). Terminal
-# colors a program chooses, popups, and dialogs stay opaque.
+# colors a program chooses, popups, and dialogs stay opaque. On Windows, a window
+# that starts below 1 shows no browser pages, and a change between the two takes
+# a restart.
 # opacity = 1.0
 # Blur the desktop behind a translucent window: macOS, Windows, and Wayland
 # compositors with KDE's blur protocol.
@@ -525,8 +773,9 @@ size = 12
 # over it; lower opacity shows more of it.
 # image = "~/Pictures/wallpaper.jpg"
 
-# What the status bar shows, also under Settings > Status bar. Whether usage
-# and CPU/memory show at all is [usage] show and show_system_load.
+# What the status bar shows, also under Settings > Status bar. Whether usage,
+# CPU/memory, and the GPU show at all is [usage] show, show_system_load, and
+# show_gpu_load.
 # [status_bar]
 # The bar itself. false opens windows without it; Terminal > Toggle Status Bar,
 # or a `toggle_status_bar` binding, hides or shows it for the session. While
@@ -537,6 +786,8 @@ size = 12
 # usage = "detailed"
 # "detailed" draws a CPU graph and a memory meter; "compact" shows the shares.
 # system_load = "detailed"
+# "detailed" draws a GPU graph and a video memory meter; "compact" the shares.
+# gpu_detail = "detailed"
 # The cup that keeps the machine awake; it stays while holding, so it can stop.
 # keep_awake = true
 # What the cup keeps awake: "display" holds the display and the system, so the
@@ -548,6 +799,14 @@ size = 12
 # theme = "label"
 # shortcuts = "label"
 # report_issue = "label"
+
+# Mods: sandboxed Luau folders in <config>/herdr/gpui-mods that add status
+# bar items, sidebar sections, and palette commands (docs/mods.md).
+# [mods]
+# false runs none.
+# enabled = true
+# Mods, by folder name, not to run.
+# disabled = []
 
 # Zen mode (View > Toggle Zen Mode, or `toggle_zen_mode`) hides the
 # header, sidebar, tab strips, status bar, and notices, and every group but
@@ -563,8 +822,12 @@ size = 12
 # back when it ends. Unset keeps the current size.
 # font_size = 24
 
-# Optional behaviors, all off unless turned on here or in Settings > General.
+# Optional behaviors, also under Settings > General.
 # [features]
+# Show sheprd-acp chats as native chat views and offer new chats with the
+# agents installed on the host. Off, chat panes keep their terminal.
+# acp_chats = true
+#
 # Open a space's menu when the pointer rests on its sidebar row, without a
 # right click. Moving the pointer anywhere but into that menu closes it again.
 # sidebar_hover_menu = false
@@ -582,7 +845,7 @@ size = 12
 # inline = true
 # Show these even when no sign-in was found, with what to set up. On the Mac
 # running Herdr, JetBrains AI, Kiro, and Windsurf are only read when listed
-# here, as macOS may ask before Herdr reads another app's data. Muse's
+# here, as macOS may ask before Sheprd reads another app's data. Muse's
 # keychain sign-in, like Zed's, also waits for Allow in its usage panel.
 # show_providers = ["cursor", "openrouter"]
 # Never show these, even when signed in.
@@ -897,8 +1160,8 @@ size = 12
 #   Support/JetBrains/IntelliJIdea2025.3" on a Mac or
 #   "~/.config/JetBrains/PyCharm2025.3" on Linux. Its
 #   options/AIAssistantQuotaManager2.xml appears once AI Assistant has been
-#   used. On the Mac running Herdr the IDEs are only looked for when this is set
-#   or jetbrains is in show_providers, as macOS may ask before Herdr reads
+#   used. On the Mac running Sheprd the IDEs are only looked for when this is
+#   set or jetbrains is in show_providers, as macOS may ask before Sheprd reads
 #   another app's data.
 # ide_path = ""
 #
@@ -966,7 +1229,7 @@ size = 12
 # base_url = ""  # or OPENROUTER_API_URL
 #   Optional client URL sent as the HTTP-Referer header.
 # http_referer = ""  # or OPENROUTER_HTTP_REFERER
-#   Optional client title sent as the X-Title header. Defaults to Herdr.
+#   Optional client title sent as the X-Title header. Defaults to Sheprd.
 # x_title = ""  # or OPENROUTER_X_TITLE
 #
 # ElevenLabs (elevenlabs)
@@ -994,8 +1257,8 @@ size = 12
 #   and devin_primary_org_id into one JSON object: {"devin_session_token":
 #   "…", "devin_auth1_token": "…", "devin_account_id": "…",
 #   "devin_primary_org_id": "…"}. Without it, the plan the Windsurf editor
-#   cached at its last launch is shown; on the Mac running Herdr only when
-#   windsurf is in show_providers, as macOS may ask before Herdr reads another
+#   cached at its last launch is shown; on the Mac running Sheprd only when
+#   windsurf is in show_providers, as macOS may ask before Sheprd reads another
 #   app's data.
 # session = ""
 #
