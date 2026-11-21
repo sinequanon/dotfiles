@@ -1,30 +1,26 @@
 #!/usr/bin/env bash
-# sync-pi-bolt-local.sh — sync pi-bolt configuration from work.dotfiles
-# into this (personal) dotfiles repo, then link into ~/.pi-bolt/agent/
+# sync-pi-bolt-local.sh — sync pi-bolt configuration to ~/.pi-bolt/agent/
 #
-# On a machine without the work dotfiles repo, run with --link-only to just
-# relink files that are already in this repo's .pi-bolt/ into ~/.pi-bolt/
-#
-# Note: pi-bolt stores config in ~/.pi-bolt-local/agent/, but this script
-# syncs to .pi-bolt/ in the dotfiles repo and links to ~/.pi-bolt/agent/.
+# Syncs from work.dotfiles (if available) or dotfiles repo to $HOME.
+# On a machine without the work dotfiles repo, the dotfiles repo is the source.
 #
 # Usage: sync-pi-bolt-local.sh [-n|--dry-run] [--link-only] [--pull] [--reload]
 #                              [--commit] [--push] [-h|--help]
 #   -n, --dry-run   print what would change; modify nothing
-#       --link-only skip work-repo sync; only relink this repo's .pi-bolt/* into ~/.pi-bolt/
+#       --link-only skip sync; only validate existing $HOME/.pi-bolt/agent/
 #       --pull      git pull work.dotfiles first (needs network + creds)
-#       --reload    reload pi-bolt after syncing/linking
-#       --commit    stage and commit files in this repo
+#       --reload    reload pi-bolt after syncing
+#       --commit    stage and commit files in this repo (if using work.dotfiles)
 #       --push      implies --commit, then push
 #   -h, --help      show this help
 #
-# Default: sync files + relink + validate. No git.
+# Default: sync files from source to ~/.pi-bolt/agent/. No git.
 
 set -euo pipefail
 
 usage() { sed -n '2,/^set -euo/p' "$0" | sed '$d; s/^#\{0,1\} \{0,1\}//'; }
 
-# Dotfiles directory pattern (uses .pi-bolt instead of .pi-bolt-local)
+# Dotfiles directory pattern (uses .pi-bolt/agent in repo, syncs to ~/.pi-bolt/agent/)
 DOTFILES_AGENT_PATTERN=".pi-bolt/agent"
 
 DRY=0; DO_PULL=0; DO_RELOAD=0; DO_COMMIT=0; DO_PUSH=0; LINK_ONLY=0
@@ -143,13 +139,13 @@ link_file() {
   fi
 }
 
-# Sync from work.dotfiles (if available), otherwise from ~/.pi-bolt-local/agent/
+# Sync to $HOME (from work.dotfiles or dotfiles repo)
 if [ "$LINK_ONLY" = 0 ]; then
-  # Determine source: work.dotfiles if available (uses .pi-bolt-local), otherwise pi-bolt config
+  # Determine source: work.dotfiles if available, otherwise dotfiles repo
   if [ -d "$WORK_DIR" ] && [ -f "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" ]; then
     WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
     SRC_DIR="$WORK_DIR/.pi-bolt-local/agent"
-    log "pi-bolt sync:  $WORK_DIR  ->  $DOTFILES_DIR"
+    log "pi-bolt sync:  $WORK_DIR  ->  $HOME"
     log "work HEAD: $WORK_HEAD"
 
     if [ "$DO_PULL" = 1 ]; then
@@ -158,59 +154,31 @@ if [ "$LINK_ONLY" = 0 ]; then
       WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
     fi
   else
-    # Try multiple potential locations for pi-bolt config
-    # pi-bolt stores actual agent config in ~/.pi-bolt-local/agent/
-    # ~/.pi-bolt/agent/ may exist but is usually a symlink target (not source)
-    if [ -f "$HOME/.pi-bolt-local/agent/AGENTS.md" ]; then
-      SRC_DIR="$HOME/.pi-bolt-local/agent"
-    elif [ -f "$HOME/.pi-bolt/agent/AGENTS.md" ] && [ ! -L "$HOME/.pi-bolt/agent/AGENTS.md" ]; then
-      SRC_DIR="$HOME/.pi-bolt/agent"
-    else
-      die "pi-bolt config not found. Searched: ~/.pi-bolt-local/agent, ~/.pi-bolt/agent"
-    fi
-    WORK_HEAD="live-config"
-    log "pi-bolt sync:  $SRC_DIR  ->  $DOTFILES_DIR"
-    log "source: live pi-bolt config (no work.dotfiles repo)"
+    SRC_DIR="$DOTFILES_DIR/.pi-bolt/agent"
+    log "pi-bolt sync:  $DOTFILES_DIR  ->  $HOME"
+    WORK_HEAD="dotfiles"
   fi
 
+  # Copy from source to $HOME
   log ""; log "==> files"
-  sync_file "$SRC_DIR/extensions/statusline.ts" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "$DOTFILES_AGENT_PATTERN/extensions/statusline.ts"
-  sync_file "$SRC_DIR/AGENTS.md" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" "$DOTFILES_AGENT_PATTERN/AGENTS.md"
-  sync_file "$SRC_DIR/settings.json" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" "$DOTFILES_AGENT_PATTERN/settings.json"
-  # Only sync models.json if not using work.dotfiles (it's machine-specific)
-  if [ "$WORK_DIR" != "${WORK_DOTFILES_DIR:-$HOME/github/work.dotfiles}" ] || [ ! -f "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" ]; then
-    sync_file "$SRC_DIR/models.json" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" "$DOTFILES_AGENT_PATTERN/models.json"
-  fi
-  sync_dir  "$SRC_DIR/skills" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills" "$DOTFILES_AGENT_PATTERN/skills"
+  sync_file "$SRC_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "$HOME/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "~/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts"
+  sync_file "$SRC_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" "$HOME/$DOTFILES_AGENT_PATTERN/AGENTS.md" "~/$DOTFILES_AGENT_PATTERN/AGENTS.md"
+  sync_file "$SRC_DIR/$DOTFILES_AGENT_PATTERN/settings.json" "$HOME/$DOTFILES_AGENT_PATTERN/settings.json" "~/$DOTFILES_AGENT_PATTERN/settings.json"
+  sync_dir  "$SRC_DIR/$DOTFILES_AGENT_PATTERN/skills" "$HOME/$DOTFILES_AGENT_PATTERN/skills" "~/$DOTFILES_AGENT_PATTERN/skills"
   [ "$CHANGED" = 0 ] && info "(no file changes)"
 fi
 
 # Link into ~/.pi-bolt/agent/ (create if needed)
-if [ -d "$HOME/.pi-bolt" ] || [ "$DRY" = 1 ]; then
-  log ""; log "==> live links"
-  # Create ~/.pi-bolt/agent/ if it doesn't exist (first-time setup)
-  if [ ! -d "$HOME/.pi-bolt/agent" ] && [ "$DRY" = 0 ]; then
-    mkdir -p "$HOME/.pi-bolt/agent"
-    info "created ~/.pi-bolt/agent/"
-  fi
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "$HOME/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" 0644
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" "$HOME/$DOTFILES_AGENT_PATTERN/AGENTS.md" 0644
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" "$HOME/$DOTFILES_AGENT_PATTERN/settings.json" 0644
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" "$HOME/$DOTFILES_AGENT_PATTERN/models.json" 0644
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/humanizer" "$HOME/$DOTFILES_AGENT_PATTERN/skills/humanizer" 0755
-  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" "$HOME/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" 0755
-  [ "$LINKED" = 0 ] && info "(all links already current)"
-fi
+# Skip symlinks - we're copying files directly to $HOME, not linking to dotfiles repo
 
 # Validate
 if [ "$DRY" = 0 ]; then
   log ""; log "==> validate"
-  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" ] && info "AGENTS.md exists"
-  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" ] && info "settings.json exists"
-  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" ] && info "models.json exists"
-  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" ] && info "statusline.ts exists"
-  [ -d "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/humanizer" ] && info "humanizer skill exists"
-  [ -d "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" ] && info "no-ai-slop skill exists"
+  [ -f "$HOME/$DOTFILES_AGENT_PATTERN/AGENTS.md" ] && info "AGENTS.md exists"
+  [ -f "$HOME/$DOTFILES_AGENT_PATTERN/settings.json" ] && info "settings.json exists"
+  [ -f "$HOME/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" ] && info "statusline.ts exists"
+  [ -d "$HOME/$DOTFILES_AGENT_PATTERN/skills/humanizer" ] && info "humanizer skill exists"
+  [ -d "$HOME/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" ] && info "no-ai-slop skill exists"
 fi
 
 # Reload pi-bolt

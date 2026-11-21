@@ -153,6 +153,50 @@ alias rm="trash"
 alias ssh='TERM=xterm-256color ssh'
 
 alias m3uget='f() { ffmpeg -user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:82.0) Gecko/20100101 Firefox/82.0" -i $1 -c copy $2; };f'
+
+# Compress recordings for Slack without resizing them or replacing originals.
+_slackvideo() {
+  emulate -L zsh
+  if (( $# == 0 )); then
+    print -u2 -- 'Usage: slackvideo <recording> [recording ...]'
+    return 2
+  fi
+  if (( ! $+commands[ffmpeg] )); then
+    print -u2 -- 'slackvideo: ffmpeg is required (macOS: brew install ffmpeg)'
+    return 1
+  fi
+
+  local input output staging
+  for input in "$@"; do
+    input="${input:a}"
+    if [[ ! -f "$input" ]]; then
+      print -u2 -- "slackvideo: file not found: $input"
+      return 1
+    fi
+    output="${input:h}/Slack/${input:t:r}.mp4"
+    if [[ -e "$output" || -L "$output" ]]; then
+      print -r -- "Skipping existing output: $output"
+      continue
+    fi
+    command mkdir -p -- "${output:h}" || return
+    staging="$(command mktemp "${output:h}/.slackvideo.XXXXXX")" || return
+    {
+      command ffmpeg -hide_banner -nostdin -y -i "$input" \
+        -map 0:v:0 -map '0:a?' -map_metadata -1 \
+        -c:v libx264 -preset slow -crf 20 -threads 8 -pix_fmt yuv420p \
+        -fps_mode vfr -enc_time_base demux \
+        -c:a aac -b:a 128k -movflags +faststart -f mp4 "$staging" || return
+      # Publish only completed files; ln refuses to replace an existing output.
+      command ln -- "$staging" "$output" || return
+    } always {
+      command rm -f -- "$staging"
+    }
+    print -r -- "Saved: $output"
+  done
+  return 0
+}
+alias slackvideo='_slackvideo'
+
 alias example='f() { echo Your arg was $1. $2; };f'
 alias glb='git lb'
 alias gcpb='f() { git cherry-pick $(git merge-base $1 ${2})..$2; };f'
@@ -418,3 +462,96 @@ if (( ${+aliases[codex]} || ! ${+functions[codex]} )); then
   functions[codex]="HERDR_AGENT=codex ${__codex_wrap} \"\$@\""
   unset __codex_wrap
 fi
+# Cancel a test membership immediately, then deactivate its MOP or expire its primary card.
+former-nomop() {
+  emulate -L zsh
+  setopt extended_glob
+  if (( $# < 1 || $# > 2 )) || [[ "${2-}" != "" && "${2-}" != --expired ]]; then
+    print -u2 -- 'Usage: former-nomop <cid-or-email> [--expired] (cancel membership, then deactivate MOP or expire primary card in test)'
+    return 2
+  fi
+
+  local account="$1" mop_option="${2-}" cid payload response dependency
+  for dependency in metatron jq; do
+    if (( ! $+commands[$dependency] )); then
+      print -u2 -- "former-nomop: required command not found: $dependency"
+      return 1
+    fi
+  done
+
+  if [[ "$account" == <-> && "$account" == *[1-9]* ]]; then
+    cid="$account"
+  elif [[ "$account" == ?*@?* ]]; then
+    payload="$(command jq -nc --arg email "$account" '{email: $email}')" || return
+    response="$(command metatron -n curl -a venkman -f -timeout 10s \
+      'https://venkman.cluster.us-east-1.test.cloud.netflix.net:8443/grpc/venkman/com.netflix.venkman.VenkmanService/GetSubscriberInfoByEmail' \
+      -X POST -H 'Content-Type: application/json' -d "$payload")" || return
+
+    # Keep int64 CIDs exact; reject numeric responses beyond jq's safe range.
+    cid="$(print -r -- "$response" | command jq -er '
+      select((.error // "") == "") | .subscriberInfo.customerId
+      | if type == "string" then .
+        elif type == "number" and . > 0 and . <= 9007199254740991 and . == floor
+        then tostring else empty end
+      | select(test("^[0-9]+$") and test("[1-9]"))
+    ')" || {
+      print -u2 -- "former-nomop: could not resolve a valid CID for $account in test"
+      return 1
+    }
+  else
+    print -u2 -- 'former-nomop: provide a positive numeric CID or an email address'
+    return 2
+  fi
+
+  # Strip leading zeros without converting the CID to a floating-point number.
+  cid="${cid##0#}"
+  payload="$(command jq -nc --arg cid "$cid" \
+    '{cid: $cid, deferred: false, cancelReason: "CUSTOMER_REQUEST"}')" || return
+  response="$(command metatron -n curl -a mediator -f -timeout 10s \
+    'https://mediator-int.cluster.us-east-1.test.cloud.netflix.net:8443/grpc/mediator/com.netflix.mediator.MediatorService/CancelMembership' \
+    -X POST -H 'Content-Type: application/json' -d "$payload")" || {
+    print -u2 -- 'former-nomop: cancellation request failed; membership state is unconfirmed. MOP update was not attempted.'
+    return 1
+  }
+  if ! print -r -- "$response" | command jq -e --arg cid "$cid" '
+    (.cid | tostring) == $cid
+    and (.error.errCode // "") == ""
+    and (.error.errMsg // "") == ""
+  ' >/dev/null; then
+    print -u2 -- "former-nomop: cancellation was not confirmed; MOP update was not attempted: $response"
+    return 1
+  fi
+  print -r -- "former-nomop: Mediator reported successful immediate cancellation for CID $cid (test)"
+
+  if [[ "$mop_option" == --expired ]]; then
+    payload="$(command jq -nc --arg cid "$cid" \
+      '{customerId: $cid, expirationYear: 2000, expirationMonth: 1}')" || return
+    response="$(command metatron -n curl -a minter -f -timeout 10s \
+      'https://minter.cluster.us-east-1.test.cloud.netflix.net:8443/grpc/minter/com.netflix.minter.MinterService/modifyCCExpiration' \
+      -X POST -H 'Content-Type: application/json' -d "$payload")" || {
+      print -u2 -- 'former-nomop: cancellation succeeded, but primary-card expiration update is unconfirmed.'
+      return 1
+    }
+    if ! print -r -- "$response" | command jq -e '.success == true' >/dev/null; then
+      print -u2 -- "former-nomop: cancellation succeeded, but Minter did not report a successful primary-card expiration update: $response"
+      return 1
+    fi
+    print -r -- "former-nomop: Minter reported successful primary-card expiration update to 2000-01 for CID $cid (test)"
+    print -r -- 'former-nomop: this API leaves India and South Korea cards unchanged, even when it reports success.'
+    return 0
+  fi
+
+  payload="$(command jq -nc --arg cid "$cid" '{cid: $cid, isForceNoMop: true}')" || return
+  response="$(command metatron -n curl -a minter -f -timeout 10s \
+    'https://minter.cluster.us-east-1.test.cloud.netflix.net:8443/grpc/minter/com.netflix.minter.MinterService/deactivateMop' \
+    -X POST -H 'Content-Type: application/json' -d "$payload")" || {
+    print -u2 -- 'former-nomop: cancellation succeeded, but MOP deactivation is unconfirmed.'
+    return 1
+  }
+
+  if ! print -r -- "$response" | command jq -e '.resultCode == "SUCCESS"' >/dev/null; then
+    print -u2 -- "former-nomop: cancellation succeeded, but Minter did not report successful MOP deactivation: $response"
+    return 1
+  fi
+  print -r -- "former-nomop: Minter reported successful MOP deactivation for CID $cid (test)"
+}

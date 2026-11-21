@@ -1,3 +1,10 @@
+##### BEGIN METATRON AUTOCONFIG
+# Do not remove the above line. The metatron CLI uses it to update this file.
+# Set git proxy configuration (must be the first directive in this file)
+[include]
+    path = /Users/rsotto/.gitconfig-proxy
+# Do not remove the below line. The metatron CLI uses it to update this file.
+##### END METATRON AUTOCONFIG
 [core]
     excludesfile = /home/rowell/.gitignore
 ; [diff]
@@ -61,3 +68,10 @@
 	required = true
 [http]
 	postBuffer = 536870912
+[include]
+	path = ~/.gitconfig-proxy
+[maintenance]
+	repo = /Users/rsotto/github/iosui-argo/.worktrees/ab90204-reduced-return
+	repo = /Users/rsotto/github/iosui-argo/.worktrees/ab90204-main-verification
+	repo = /Users/rsotto/github/iosui-argo/.worktrees/ab90204-bitbot-feedback
+	repo = /Users/rsotto/github/iosui-argo/.worktrees/ab90204-isolation-20261118

@@ -5,6 +5,7 @@
 # the managed default, or pick another layout listed in config-gpui.toml.
 layout = "comfortable-rounded"
 theme = "Gruvbox Dark Hard"
+tab_layout = "classic"
 
 [terminal]
 family = "Operator Mono SSm Lig"
@@ -34,3 +35,6 @@ show = true
 
 [notifications]
 enabled = true
+
+[chat]
+layout = "timeline"
