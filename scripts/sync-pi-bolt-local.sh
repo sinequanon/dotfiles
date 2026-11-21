@@ -164,10 +164,6 @@ if [ "$LINK_ONLY" = 0 ]; then
       SRC_DIR="$HOME/.pi-bolt/agent"
     elif [ -f "$HOME/.pi-bolt-local/agent/AGENTS.md" ]; then
       SRC_DIR="$HOME/.pi-bolt-local/agent"
-    elif [ -f "/Users/rsotto/.pi-bolt/agent/AGENTS.md" ] && [ ! -L "/Users/rsotto/.pi-bolt/agent/AGENTS.md" ]; then
-      SRC_DIR="/Users/rsotto/.pi-bolt/agent"
-    elif [ -f "/Users/rsotto/.pi-bolt-local/agent/AGENTS.md" ]; then
-      SRC_DIR="/Users/rsotto/.pi-bolt-local/agent"
     else
       die "pi-bolt config not found. Searched: ~/.pi-bolt/agent, ~/.pi-bolt-local/agent"
     fi
