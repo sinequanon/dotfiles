@@ -159,13 +159,14 @@ if [ "$LINK_ONLY" = 0 ]; then
     fi
   else
     # Try multiple potential locations for pi-bolt config
-    # Check for actual files, not symlinks (symlinks may point to missing dotfiles)
-    if [ -f "$HOME/.pi-bolt/agent/AGENTS.md" ] && [ ! -L "$HOME/.pi-bolt/agent/AGENTS.md" ]; then
-      SRC_DIR="$HOME/.pi-bolt/agent"
-    elif [ -f "$HOME/.pi-bolt-local/agent/AGENTS.md" ]; then
+    # pi-bolt stores actual agent config in ~/.pi-bolt-local/agent/
+    # ~/.pi-bolt/agent/ may exist but is usually a symlink target (not source)
+    if [ -f "$HOME/.pi-bolt-local/agent/AGENTS.md" ]; then
       SRC_DIR="$HOME/.pi-bolt-local/agent"
+    elif [ -f "$HOME/.pi-bolt/agent/AGENTS.md" ] && [ ! -L "$HOME/.pi-bolt/agent/AGENTS.md" ]; then
+      SRC_DIR="$HOME/.pi-bolt/agent"
     else
-      die "pi-bolt config not found. Searched: ~/.pi-bolt/agent, ~/.pi-bolt-local/agent"
+      die "pi-bolt config not found. Searched: ~/.pi-bolt-local/agent, ~/.pi-bolt/agent"
     fi
     WORK_HEAD="live-config"
     log "pi-bolt sync:  $SRC_DIR  ->  $DOTFILES_DIR"
