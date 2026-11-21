@@ -14,7 +14,11 @@ This directory contains the pi-bolt-local agent configuration, synced from `work
 
 ## Sync Process
 
-Run `scripts/sync-pi-bolt-local.sh` to copy configuration from `work.dotfiles` to personal dotfiles, then link into `~/.pi-bolt-local/agent/`:
+Run `scripts/sync-pi-bolt-local.sh` to copy configuration from either:
+- `work.dotfiles` (if available on workstations)
+- `~/.pi-bolt-local/agent/` (live config, for other machines)
+
+Then sync to personal dotfiles and link into `~/.pi-bolt-local/agent/`:
 
 ```bash
 # Preview changes
@@ -26,7 +30,7 @@ Run `scripts/sync-pi-bolt-local.sh` to copy configuration from `work.dotfiles` t
 # With git commit and push
 ./scripts/sync-pi-bolt-local.sh --push
 
-# On a machine without work.dotfiles, just create links from existing repo files
+# On a machine without work.dotfiles or live pi-bolt-local, just create links from existing repo files
 ./scripts/sync-pi-bolt-local.sh --link-only
 ```
 

@@ -52,11 +52,6 @@ WORK_DIR="${WORK_DOTFILES_DIR:-$HOME/github/work.dotfiles}"
 
 [ -d "$DOTFILES_DIR" ] || die "dotfiles repo not found: $DOTFILES_DIR"
 
-# Work repo only needed for sync (not --link-only)
-if [ "$LINK_ONLY" = 0 ]; then
-  [ -d "$WORK_DIR" ] || die "work dotfiles repo not found: $WORK_DIR (set WORK_DOTFILES_DIR)"
-fi
-
 CHANGED=0; LINKED=0
 
 # Copy one file if different, honoring --dry-run
@@ -130,23 +125,32 @@ link_file() {
   fi
 }
 
-# Sync from work.dotfiles (if available)
+# Sync from work.dotfiles (if available), otherwise from ~/.pi-bolt-local/agent/
 if [ "$LINK_ONLY" = 0 ]; then
-  WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
-  log "pi-bolt-local sync:  $WORK_DIR  ->  $DOTFILES_DIR"
-  log "work HEAD: $WORK_HEAD"
-
-  if [ "$DO_PULL" = 1 ]; then
-    log ""; log "==> pull work repo"
-    [ "$DRY" = 1 ] || git -C "$WORK_DIR" pull --ff-only
+  # Determine source: work.dotfiles if available, otherwise pi-bolt-local live config
+  if [ -d "$WORK_DIR" ] && [ -f "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" ]; then
     WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
+    SRC_DIR="$WORK_DIR/.pi-bolt-local/agent"
+    log "pi-bolt-local sync:  $WORK_DIR  ->  $DOTFILES_DIR"
+    log "work HEAD: $WORK_HEAD"
+
+    if [ "$DO_PULL" = 1 ]; then
+      log ""; log "==> pull work repo"
+      [ "$DRY" = 1 ] || git -C "$WORK_DIR" pull --ff-only
+      WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
+    fi
+  else
+    SRC_DIR="$HOME/.pi-bolt-local/agent"
+    WORK_HEAD="live-config"
+    log "pi-bolt-local sync:  ~/.pi-bolt-local/agent  ->  $DOTFILES_DIR"
+    log "source: live pi-bolt-local config (no work.dotfiles repo)"
   fi
 
   log ""; log "==> files"
-  sync_file "$WORK_DIR/.pi-bolt-local/agent/extensions/statusline.ts" "$DOTFILES_DIR/.pi-bolt-local/agent/extensions/statusline.ts" ".pi-bolt-local/agent/extensions/statusline.ts"
-  sync_file "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" "$DOTFILES_DIR/.pi-bolt-local/agent/AGENTS.md" ".pi-bolt-local/agent/AGENTS.md"
-  sync_file "$WORK_DIR/.pi-bolt-local/agent/settings.json" "$DOTFILES_DIR/.pi-bolt-local/agent/settings.json" ".pi-bolt-local/agent/settings.json"
-  sync_dir  "$WORK_DIR/.pi-bolt-local/agent/skills" "$DOTFILES_DIR/.pi-bolt-local/agent/skills" ".pi-bolt-local/agent/skills"
+  sync_file "$SRC_DIR/extensions/statusline.ts" "$DOTFILES_DIR/.pi-bolt-local/agent/extensions/statusline.ts" ".pi-bolt-local/agent/extensions/statusline.ts"
+  sync_file "$SRC_DIR/AGENTS.md" "$DOTFILES_DIR/.pi-bolt-local/agent/AGENTS.md" ".pi-bolt-local/agent/AGENTS.md"
+  sync_file "$SRC_DIR/settings.json" "$DOTFILES_DIR/.pi-bolt-local/agent/settings.json" ".pi-bolt-local/agent/settings.json"
+  sync_dir  "$SRC_DIR/skills" "$DOTFILES_DIR/.pi-bolt-local/agent/skills" ".pi-bolt-local/agent/skills"
   [ "$CHANGED" = 0 ] && info "(no file changes)"
 fi
 
