@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# sync-pi-bolt-local.sh — sync pi-bolt-local configuration from work.dotfiles
-# into this (personal) dotfiles repo, then link into ~/.pi-bolt-local/agent/
+# sync-pi-bolt-local.sh — sync pi-bolt configuration from work.dotfiles
+# into this (personal) dotfiles repo, then link into ~/.pi-bolt/agent/
 #
 # On a machine without the work dotfiles repo, run with --link-only to just
-# relink files that are already in this repo's .pi-bolt-local/ into $HOME.
+# relink files that are already in this repo's .pi-bolt/ into ~/.pi-bolt/
+#
+# Note: pi-bolt stores config in ~/.pi-bolt-local/agent/, but this script
+# syncs to .pi-bolt/ in the dotfiles repo and links to ~/.pi-bolt/agent/.
 #
 # Usage: sync-pi-bolt-local.sh [-n|--dry-run] [--link-only] [--pull] [--reload]
 #                              [--commit] [--push] [-h|--help]
 #   -n, --dry-run   print what would change; modify nothing
-#       --link-only skip work-repo sync; only relink this repo's .pi-bolt-local/* into $HOME
+#       --link-only skip work-repo sync; only relink this repo's .pi-bolt/* into ~/.pi-bolt/
 #       --pull      git pull work.dotfiles first (needs network + creds)
 #       --reload    reload pi-bolt after syncing/linking
 #       --commit    stage and commit files in this repo
@@ -20,6 +23,9 @@
 set -euo pipefail
 
 usage() { sed -n '2,/^set -euo/p' "$0" | sed '$d; s/^#\{0,1\} \{0,1\}//'; }
+
+# Dotfiles directory pattern (uses .pi-bolt instead of .pi-bolt-local)
+DOTFILES_AGENT_PATTERN=".pi-bolt/agent"
 
 DRY=0; DO_PULL=0; DO_RELOAD=0; DO_COMMIT=0; DO_PUSH=0; LINK_ONLY=0
 while [ $# -gt 0 ]; do
@@ -73,16 +79,28 @@ sync_dir() {
   shopt -s nullglob
   for f in "$srcd"/*; do
     base="${f##*/}"
-    [ -d "$f" ] && continue
-    sync_file "$f" "$destd/$base" "$relp/$base"
+    if [ -d "$f" ]; then
+      # Recursively sync subdirectories
+      sync_dir "$f" "$destd/$base" "$relp/$base"
+    else
+      sync_file "$f" "$destd/$base" "$relp/$base"
+    fi
   done
   for f in "$destd"/*; do
     base="${f##*/}"
-    [ -d "$f" ] && continue
-    if [ ! -e "$srcd/$base" ]; then
-      info "delete  $relp/$base"
-      CHANGED=1
-      [ "$DRY" = 1 ] || rm -f "$f"
+    if [ -d "$f" ]; then
+      # Remove empty directories that no longer exist in source
+      if [ ! -e "$srcd/$base" ]; then
+        info "delete  $relp/$base"
+        CHANGED=1
+        [ "$DRY" = 1 ] || rm -rf "$f"
+      fi
+    else
+      if [ ! -e "$srcd/$base" ]; then
+        info "delete  $relp/$base"
+        CHANGED=1
+        [ "$DRY" = 1 ] || rm -f "$f"
+      fi
     fi
   done
   shopt -u nullglob
@@ -127,11 +145,11 @@ link_file() {
 
 # Sync from work.dotfiles (if available), otherwise from ~/.pi-bolt-local/agent/
 if [ "$LINK_ONLY" = 0 ]; then
-  # Determine source: work.dotfiles if available, otherwise pi-bolt-local live config
+  # Determine source: work.dotfiles if available (uses .pi-bolt-local), otherwise pi-bolt config
   if [ -d "$WORK_DIR" ] && [ -f "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" ]; then
     WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
     SRC_DIR="$WORK_DIR/.pi-bolt-local/agent"
-    log "pi-bolt-local sync:  $WORK_DIR  ->  $DOTFILES_DIR"
+    log "pi-bolt sync:  $WORK_DIR  ->  $DOTFILES_DIR"
     log "work HEAD: $WORK_HEAD"
 
     if [ "$DO_PULL" = 1 ]; then
@@ -140,39 +158,61 @@ if [ "$LINK_ONLY" = 0 ]; then
       WORK_HEAD="$(git -C "$WORK_DIR" rev-parse --short HEAD 2>/dev/null || echo '?')"
     fi
   else
-    SRC_DIR="$HOME/.pi-bolt-local/agent"
+    # Try multiple potential locations for pi-bolt config
+    if [ -f "$HOME/.pi-bolt/agent/AGENTS.md" ]; then
+      SRC_DIR="$HOME/.pi-bolt/agent"
+    elif [ -f "$HOME/.pi-bolt-local/agent/AGENTS.md" ]; then
+      SRC_DIR="$HOME/.pi-bolt-local/agent"
+    elif [ -f "/Users/rsotto/.pi-bolt/agent/AGENTS.md" ]; then
+      SRC_DIR="/Users/rsotto/.pi-bolt/agent"
+    elif [ -f "/Users/rsotto/.pi-bolt-local/agent/AGENTS.md" ]; then
+      SRC_DIR="/Users/rsotto/.pi-bolt-local/agent"
+    else
+      die "pi-bolt config not found. Searched: ~/.pi-bolt/agent, ~/.pi-bolt-local/agent"
+    fi
     WORK_HEAD="live-config"
-    log "pi-bolt-local sync:  ~/.pi-bolt-local/agent  ->  $DOTFILES_DIR"
-    log "source: live pi-bolt-local config (no work.dotfiles repo)"
+    log "pi-bolt sync:  $SRC_DIR  ->  $DOTFILES_DIR"
+    log "source: live pi-bolt config (no work.dotfiles repo)"
   fi
 
   log ""; log "==> files"
-  sync_file "$SRC_DIR/extensions/statusline.ts" "$DOTFILES_DIR/.pi-bolt-local/agent/extensions/statusline.ts" ".pi-bolt-local/agent/extensions/statusline.ts"
-  sync_file "$SRC_DIR/AGENTS.md" "$DOTFILES_DIR/.pi-bolt-local/agent/AGENTS.md" ".pi-bolt-local/agent/AGENTS.md"
-  sync_file "$SRC_DIR/settings.json" "$DOTFILES_DIR/.pi-bolt-local/agent/settings.json" ".pi-bolt-local/agent/settings.json"
-  sync_dir  "$SRC_DIR/skills" "$DOTFILES_DIR/.pi-bolt-local/agent/skills" ".pi-bolt-local/agent/skills"
+  sync_file "$SRC_DIR/extensions/statusline.ts" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "$DOTFILES_AGENT_PATTERN/extensions/statusline.ts"
+  sync_file "$SRC_DIR/AGENTS.md" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" "$DOTFILES_AGENT_PATTERN/AGENTS.md"
+  sync_file "$SRC_DIR/settings.json" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" "$DOTFILES_AGENT_PATTERN/settings.json"
+  # Only sync models.json if not using work.dotfiles (it's machine-specific)
+  if [ "$WORK_DIR" != "${WORK_DOTFILES_DIR:-$HOME/github/work.dotfiles}" ] || [ ! -f "$WORK_DIR/.pi-bolt-local/agent/AGENTS.md" ]; then
+    sync_file "$SRC_DIR/models.json" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" "$DOTFILES_AGENT_PATTERN/models.json"
+  fi
+  sync_dir  "$SRC_DIR/skills" "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills" "$DOTFILES_AGENT_PATTERN/skills"
   [ "$CHANGED" = 0 ] && info "(no file changes)"
 fi
 
-# Link into ~/.pi-bolt-local/agent/
-if [ -d "$HOME/.pi-bolt-local" ] || [ "$DRY" = 1 ]; then
+# Link into ~/.pi-bolt/agent/ (create if needed)
+if [ -d "$HOME/.pi-bolt" ] || [ "$DRY" = 1 ]; then
   log ""; log "==> live links"
-  link_file "$DOTFILES_DIR/.pi-bolt-local/agent/extensions/statusline.ts" "$HOME/.pi-bolt-local/agent/extensions/statusline.ts" 0644
-  link_file "$DOTFILES_DIR/.pi-bolt-local/agent/AGENTS.md" "$HOME/.pi-bolt-local/agent/AGENTS.md" 0644
-  link_file "$DOTFILES_DIR/.pi-bolt-local/agent/settings.json" "$HOME/.pi-bolt-local/agent/settings.json" 0644
-  link_file "$DOTFILES_DIR/.pi-bolt-local/agent/skills/humanizer" "$HOME/.pi-bolt-local/agent/skills/humanizer" 0755
-  link_file "$DOTFILES_DIR/.pi-bolt-local/agent/skills/no-ai-slop" "$HOME/.pi-bolt-local/agent/skills/no-ai-slop" 0755
+  # Create ~/.pi-bolt/agent/ if it doesn't exist (first-time setup)
+  if [ ! -d "$HOME/.pi-bolt/agent" ] && [ "$DRY" = 0 ]; then
+    mkdir -p "$HOME/.pi-bolt/agent"
+    info "created ~/.pi-bolt/agent/"
+  fi
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" "$HOME/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" 0644
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" "$HOME/$DOTFILES_AGENT_PATTERN/AGENTS.md" 0644
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" "$HOME/$DOTFILES_AGENT_PATTERN/settings.json" 0644
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" "$HOME/$DOTFILES_AGENT_PATTERN/models.json" 0644
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/humanizer" "$HOME/$DOTFILES_AGENT_PATTERN/skills/humanizer" 0755
+  link_file "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" "$HOME/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" 0755
   [ "$LINKED" = 0 ] && info "(all links already current)"
 fi
 
 # Validate
 if [ "$DRY" = 0 ]; then
   log ""; log "==> validate"
-  [ -f "$DOTFILES_DIR/.pi-bolt-local/agent/AGENTS.md" ] && info "AGENTS.md exists"
-  [ -f "$DOTFILES_DIR/.pi-bolt-local/agent/settings.json" ] && info "settings.json exists"
-  [ -f "$DOTFILES_DIR/.pi-bolt-local/agent/extensions/statusline.ts" ] && info "statusline.ts exists"
-  [ -d "$DOTFILES_DIR/.pi-bolt-local/agent/skills/humanizer" ] && info "humanizer skill exists"
-  [ -d "$DOTFILES_DIR/.pi-bolt-local/agent/skills/no-ai-slop" ] && info "no-ai-slop skill exists"
+  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/AGENTS.md" ] && info "AGENTS.md exists"
+  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/settings.json" ] && info "settings.json exists"
+  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/models.json" ] && info "models.json exists"
+  [ -f "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/extensions/statusline.ts" ] && info "statusline.ts exists"
+  [ -d "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/humanizer" ] && info "humanizer skill exists"
+  [ -d "$DOTFILES_DIR/$DOTFILES_AGENT_PATTERN/skills/no-ai-slop" ] && info "no-ai-slop skill exists"
 fi
 
 # Reload pi-bolt
@@ -185,11 +225,11 @@ fi
 if [ "$DO_COMMIT" = 1 ]; then
   log ""; log "==> git"
   [ "$DRY" = 1 ] || {
-    git -C "$DOTFILES_DIR" add .pi-bolt-local/
+    git -C "$DOTFILES_DIR" add .pi-bolt/
     if git -C "$DOTFILES_DIR" diff --cached --quiet; then
       info "nothing staged to commit"
     else
-      git -C "$DOTFILES_DIR" commit -m "pi-bolt-local: sync from work.dotfiles ($WORK_HEAD)"
+      git -C "$DOTFILES_DIR" commit -m "pi-bolt: sync from work.dotfiles ($WORK_HEAD)"
       info "committed"
       [ "$DO_PUSH" = 1 ] && { git -C "$DOTFILES_DIR" push && info "pushed"; }
     fi
@@ -200,10 +240,10 @@ fi
 if [ "$DRY" = 1 ]; then
   log ""; log "Dry run only — nothing was changed."
 elif [ "$LINK_ONLY" = 1 ]; then
-  if [ "$LINKED" = 1 ]; then log "Linked pi-bolt-local into \$HOME."; else log "All links already current."; fi
+  if [ "$LINKED" = 1 ]; then log "Linked pi-bolt into \$HOME."; else log "All links already current."; fi
 elif [ "$CHANGED" = 1 ] && [ "$DO_COMMIT" = 0 ]; then
   log ""; log "Synced. Review & commit in the dotfiles repo:"
-  log "  git -C \"$DOTFILES_DIR\" add .pi-bolt-local/ && git -C \"$DOTFILES_DIR\" commit && git -C \"$DOTFILES_DIR\" push"
+  log "  git -C \"$DOTFILES_DIR\" add .pi-bolt/ && git -C \"$DOTFILES_DIR\" commit && git -C \"$DOTFILES_DIR\" push"
   log "  (or re-run with --push to do it automatically)"
 else
   log ""; log "Up to date."
