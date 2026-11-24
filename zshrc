@@ -21,6 +21,13 @@ fi
 export term=xterm-256color
 export colorterm=TRUECOLOR
 
+# Codex desktop imports an interactive shell's environment; read only its bridge key.
+if [[ -r "$HOME/.codex/.env" ]]; then
+  export CODEX_MODEL_BRIDGE_API_KEY="$(
+    /usr/bin/awk '/^CODEX_MODEL_BRIDGE_API_KEY=/ { sub(/^[^=]*=/, ""); print; exit }' "$HOME/.codex/.env"
+  )"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 

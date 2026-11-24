@@ -6,6 +6,7 @@
 layout = "comfortable-rounded"
 theme = "Gruvbox Dark Hard"
 tab_layout = "classic"
+status_icons = "tiles"
 
 [terminal]
 family = "Operator Mono SSm Lig"
@@ -19,6 +20,11 @@ focus_up = "ctrl-shift-k"
 focus_right = "ctrl-shift-l"
 previous_tab = "ctrl-shift-left"
 next_tab = "ctrl-shift-right"
+resize_pane_left = ["shift-alt-left"]
+resize_pane_right = ["shift-alt-right"]
+resize_pane_up = ["shift-alt-up"]
+resize_pane_down = ["shift-alt-down"]
+resize_mode = ["shift-alt-r"]
 
 [sidebar]
 size = 14.0
